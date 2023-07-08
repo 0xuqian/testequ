@@ -131,7 +131,7 @@ import type {
   PotteryDrawAbi,
   Zap,
   PredictionsV1,
-} from 'config/abi/types'
+} from 'config/types'
 import { ChainId } from '@pancakeswap/sdk'
 
 export const getContract = (abi: any, address: string, signer?: Signer | Provider) => {

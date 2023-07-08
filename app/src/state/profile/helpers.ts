@@ -1,5 +1,5 @@
 import { Profile } from 'state/types'
-import { PancakeProfile } from 'config/abi/types/PancakeProfile'
+import { PancakeProfile } from 'config/types/PancakeProfile'
 import profileABI from 'config/abi/pancakeProfile.json'
 import { getTeam } from 'state/teams/helpers'
 import { NftToken } from 'state/nftMarket/types'

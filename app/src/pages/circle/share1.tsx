@@ -172,10 +172,9 @@ const CircleShare: React.FC<React.PropsWithChildren<{ projectAddress: string }>>
     const accountAddress = accounts[0];
     const provider = new ethers.providers.Web3Provider(window.ethereum);
     const signer = provider.getSigner();
-    const contract = new ethers.Contract("0xecB698B980ab2279Fb179a9E54Afbf79B21DF0a3", TokenTransferAbi.output.abi, signer);
+    const contract = new ethers.Contract("0xecB698B980ab2279Fb179a9E54Afbf79B21DF0a3", TokenTransferAbi, signer);
     const tx = await contract.mintNfts("0x45a938E690709B8c9C34D18487Aa56251d088E2a","0xD6e8024e4572d954371c9f95acf33c65947233C9",accountAddress,ethers.BigNumber.from(value));
     const receipt1 = await tx.wait();
-
   }
   return (
     <>     

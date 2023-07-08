@@ -1,162 +1,118 @@
-{
-	"compiler": {
-		"version": "0.7.6+commit.7338295f"
-	},
-	"language": "Solidity",
-	"output": {
-		"abi": [
+[
+	{
+		"inputs": [
 			{
-				"inputs": [
-					{
-						"internalType": "address",
-						"name": "nftContractAddress",
-						"type": "address"
-					},
-					{
-						"internalType": "address",
-						"name": "handTokenAddress",
-						"type": "address"
-					},
-					{
-						"internalType": "address",
-						"name": "minter",
-						"type": "address"
-					},
-					{
-						"internalType": "uint256",
-						"name": "total",
-						"type": "uint256"
-					}
-				],
-				"name": "mintNfts",
-				"outputs": [
-					{
-						"internalType": "bool",
-						"name": "",
-						"type": "bool"
-					}
-				],
-				"stateMutability": "nonpayable",
-				"type": "function"
+				"internalType": "address",
+				"name": "nftContractAddress",
+				"type": "address"
 			},
 			{
-				"inputs": [
-					{
-						"internalType": "address[]",
-						"name": "tos",
-						"type": "address[]"
-					},
-					{
-						"internalType": "uint256[]",
-						"name": "values",
-						"type": "uint256[]"
-					}
-				],
-				"name": "transferBNB",
-				"outputs": [
-					{
-						"internalType": "bool",
-						"name": "",
-						"type": "bool"
-					}
-				],
-				"stateMutability": "payable",
-				"type": "function"
+				"internalType": "address",
+				"name": "handTokenAddress",
+				"type": "address"
 			},
 			{
-				"inputs": [
-					{
-						"internalType": "address",
-						"name": "tokenAddress",
-						"type": "address"
-					},
-					{
-						"internalType": "address[]",
-						"name": "tos",
-						"type": "address[]"
-					},
-					{
-						"internalType": "uint256[]",
-						"name": "values",
-						"type": "uint256[]"
-					}
-				],
-				"name": "transferTokens",
-				"outputs": [
-					{
-						"internalType": "bool",
-						"name": "",
-						"type": "bool"
-					}
-				],
-				"stateMutability": "nonpayable",
-				"type": "function"
+				"internalType": "address",
+				"name": "minter",
+				"type": "address"
 			},
 			{
-				"inputs": [
-					{
-						"internalType": "address",
-						"name": "tokenAddress",
-						"type": "address"
-					},
-					{
-						"internalType": "address[]",
-						"name": "tos",
-						"type": "address[]"
-					},
-					{
-						"internalType": "uint256[]",
-						"name": "values",
-						"type": "uint256[]"
-					}
-				],
-				"name": "transferViipTokens",
-				"outputs": [
-					{
-						"internalType": "bool",
-						"name": "",
-						"type": "bool"
-					}
-				],
-				"stateMutability": "nonpayable",
-				"type": "function"
+				"internalType": "uint256",
+				"name": "total",
+				"type": "uint256"
 			}
 		],
-		"devdoc": {
-			"kind": "dev",
-			"methods": {},
-			"version": 1
-		},
-		"userdoc": {
-			"kind": "user",
-			"methods": {},
-			"version": 1
-		}
+		"name": "mintNfts",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "nonpayable",
+		"type": "function"
 	},
-	"settings": {
-		"compilationTarget": {
-			"contracts/transfers.sol": "TokenTransfer"
-		},
-		"evmVersion": "istanbul",
-		"libraries": {},
-		"metadata": {
-			"bytecodeHash": "ipfs"
-		},
-		"optimizer": {
-			"enabled": true,
-			"runs": 200
-		},
-		"remappings": []
+	{
+		"inputs": [
+			{
+				"internalType": "address[]",
+				"name": "tos",
+				"type": "address[]"
+			},
+			{
+				"internalType": "uint256[]",
+				"name": "values",
+				"type": "uint256[]"
+			}
+		],
+		"name": "transferBNB",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "payable",
+		"type": "function"
 	},
-	"sources": {
-		"contracts/transfers.sol": {
-			"keccak256": "0xcf10ce7e591de2ff4b49dacb4ea890b955422dd6cf8a293fe0813788c5ccfd86",
-			"license": "Unlicensed",
-			"urls": [
-				"bzz-raw://577fd9d41c98222ef00e35acbf4621d8bbe8418bfee00fc93125daf020117daa",
-				"dweb:/ipfs/QmNZQAuAHySUK6c3vKeRtu8HNeg5GLD15pNbrEtwqTjXuN"
-			]
-		}
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "tokenAddress",
+				"type": "address"
+			},
+			{
+				"internalType": "address[]",
+				"name": "tos",
+				"type": "address[]"
+			},
+			{
+				"internalType": "uint256[]",
+				"name": "values",
+				"type": "uint256[]"
+			}
+		],
+		"name": "transferTokens",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "nonpayable",
+		"type": "function"
 	},
-	"version": 1
-}
+	{
+		"inputs": [
+			{
+				"internalType": "address",
+				"name": "tokenAddress",
+				"type": "address"
+			},
+			{
+				"internalType": "address[]",
+				"name": "tos",
+				"type": "address[]"
+			},
+			{
+				"internalType": "uint256[]",
+				"name": "values",
+				"type": "uint256[]"
+			}
+		],
+		"name": "transferViipTokens",
+		"outputs": [
+			{
+				"internalType": "bool",
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	}
+]

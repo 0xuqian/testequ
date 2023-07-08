@@ -52,7 +52,7 @@ import {
   CakeVaultV2,
   CakeFlexibleSideVaultV2,
   Zap,
-} from 'config/abi/types'
+} from 'config/types'
 import zapAbi from 'config/abi/zap.json'
 
 // Imports below migrated from Exchange useContract.ts
@@ -69,7 +69,7 @@ import HandABI from '../config/abi/handNft.json'
 import multiCallAbi from '../config/abi/Multicall.json'
 import { getContract, getProviderOrSigner } from '../utils'
 
-import { IPancakePair } from '../config/abi/types/IPancakePair'
+import { IPancakePair } from '../config/types/IPancakePair'
 import { VaultKey } from '../state/types'
 
 /**
