@@ -1,4 +1,6 @@
 {
-  "devDependencies": {
+  "devDependencies": {},
+  "dependencies": {
+    "yarn": "^1.22.19"
   }
 }

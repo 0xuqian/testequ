@@ -39,7 +39,7 @@ yarn-debug.log*
 yarn-error.log*
 debug.log*
 
-**/config/abi/types
+
 
 
 # Sentry
