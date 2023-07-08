@@ -168,7 +168,7 @@ const CircleShare: React.FC<React.PropsWithChildren<{ projectAddress: string }>>
   };
 
   const handleMint = async () => {
-    var accounts = await window.ethereum.request({ method: "eth_requestAccounts" });
+    const accounts = await window.ethereum.request({ method: "eth_requestAccounts" });
     const accountAddress = accounts[0];
     const provider = new ethers.providers.Web3Provider(window.ethereum);
     const signer = provider.getSigner();

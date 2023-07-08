@@ -14,7 +14,31 @@ const mockRouter: NextRouter = {
   pathname: '/',
   route: '/',
   asPath: '/',
-   ...router }}>
+  query: {},
+  push: jest.fn(),
+  replace: jest.fn(),
+  reload: jest.fn(),
+  back: jest.fn(),
+  prefetch: jest.fn(),
+  beforePopState: jest.fn(),
+  events: {
+    on: jest.fn(),
+    off: jest.fn(),
+    emit: jest.fn(),
+  },
+  isFallback: false,
+  isLocaleDomain: false,
+  isReady: true,
+  isPreview: false,
+}
+
+export function renderWithProvider(
+  ui,
+  { preloadedState = undefined, store = initializeStore(preloadedState), router = {}, ...renderOptions } = {},
+) {
+  function Wrapper({ children }) {
+    return (
+      <RouterContext.Provider value={{ ...mockRouter, ...router }}>
         <Provider store={store}>{children}</Provider>
       </RouterContext.Provider>
     )

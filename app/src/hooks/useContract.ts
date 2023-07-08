@@ -69,7 +69,7 @@ import HandABI from '../config/abi/handNft.json'
 import multiCallAbi from '../config/abi/Multicall.json'
 import { getContract, getProviderOrSigner } from '../utils'
 
-import { IPancakePair } from '../config/types/IPancakePair'
+// import { IPancakePair } from '../config/types/IPancakePair'
 import { VaultKey } from '../state/types'
 
 /**
@@ -371,9 +371,9 @@ export function useBytes32TokenContract(tokenAddress?: string, withSignerIfPossi
   return useContract<Erc20Bytes32>(tokenAddress, ERC20_BYTES32_ABI, withSignerIfPossible)
 }
 
-export function usePairContract(pairAddress?: string, withSignerIfPossible?: boolean): IPancakePair | null {
-  return useContract(pairAddress, IPancakePairABI, withSignerIfPossible)
-}
+// export function usePairContract(pairAddress?: string, withSignerIfPossible?: boolean): IPancakePair | null {
+//   return useContract(pairAddress, IPancakePairABI, withSignerIfPossible)
+// }
 
 export function useAirdopContract(pairAddress?: string, withSignerIfPossible?: boolean): Contract | null {
   return useContract(pairAddress, AirdopABI, withSignerIfPossible)

@@ -172,7 +172,7 @@ const ProfilePage = () => {
           <TitleName>昵称</TitleName>
           <NickNameDiv>
             {isEditing ? (
-              <input type='text' value={nickname} onChange={handleNicknameChange} onBlur={handleNicknameBlur} autoFocus />
+              <input type='text' value={nickname} onChange={handleNicknameChange} onBlur={handleNicknameBlur}  />
             ) : (
               <div onClick={handleNicknameClick} onKeyPress={handleNicknameClick} tabIndex={0} role="button">{nickname}</div>
             )}
