@@ -4,6 +4,8 @@ import CircleHeader from "views/Circle/components/CircleHeader"
 import Page from "views/Page"
 import { useWeb3React } from '@web3-react/core'
 import {Button} from '@pancakeswap/uikit'
+import { CopyToClipboard } from 'react-copy-to-clipboard';
+import { useEffect, useState } from "react"
 
 const ListWrapper = styled.div`
   width: 100%;
@@ -64,20 +66,16 @@ const MintSucText = styled.text`
 `
 const CircleShare: React.FC<React.PropsWithChildren<{ projectAddress: string, leaderAddress:string }>> = ({ projectAddress,leaderAddress }) => {
   const {account} = useWeb3React()
-  console.log(account)
+  console.info(account)
+
 
   const handleCopy = () => {
-    // navigator.clipboard.writeText(`https://www.equityswap.club/circle/claim/${projectAddress}/${leaderAddress}`);
-    // navigator.clipboard.writeText('gg')
-    // alert("链接已复制到剪贴板！");
-    navigator.clipboard.writeText(`https://www.equityswap.club/circle/claim/${projectAddress}/${leaderAddress}` )
-    .then(() => {
-      alert("链接已复制到剪贴板！");
-    })
-    .catch((error) => {
-      console.error("剪贴板操作失败：", error);
-    });
+    // setCopied(true);
+    setTimeout(() => "", 2000);
+    alert("链接已复制到剪贴板！");
   };
+
+
 
   return(
     <Page>
@@ -92,10 +90,26 @@ const CircleShare: React.FC<React.PropsWithChildren<{ projectAddress: string, le
         <Image src="/images/circle/check.png" />
         <MintSucText>mint成功</MintSucText>
       </SuccessDiv>
+      {/* <CopyToClipboard text="gg" onCopy={() => {
+                                              setCopied(`https://www.equityswap.club/circle/claim/${projectAddress}/${leaderAddress}`)
+                                              setTimeout(() => setCopied(null), 2000)
+                                            }} />
       <SelectButton
               // disabled={isDisabled}
-              onClick={handleCopy}
-          >分享链接</SelectButton>
+              // onClick={}
+          >分享链接</SelectButton> */}
+           <>
+      <CopyToClipboard
+        text={`https://www.equityswap.club/circle/claim/${projectAddress}/${leaderAddress}`}
+        onCopy={handleCopy}
+      >
+              <SelectButton
+              // disabled={isDisabled}
+              // onClick={}
+          >分享链接</SelectButton> 
+      </CopyToClipboard>
+    </>
+
       </LinkInner>
       </ListWrapper>
     </Page>

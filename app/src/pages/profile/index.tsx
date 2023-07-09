@@ -168,7 +168,6 @@ const ProfilePage = () => {
   }
 
   const handleSubmit = async () => {
-
     const signature = await verifySignature()
     let url;
     try {

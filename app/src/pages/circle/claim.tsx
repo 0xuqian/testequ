@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import {Button} from '@pancakeswap/uikit'
-import queryString from 'query-string';
+import { ethers } from 'ethers';
 import Page from '../../views/Page'
 import CircleHeader from '../../views/Circle/components/CircleHeader'
 import HandNftAbi from '../../config/abi/HandNft_metadata.json'
@@ -62,7 +62,6 @@ const CircleClaim: React.FC<React.PropsWithChildren<{ projectAddr: string, leade
 
   const [projectAddress, setProjectAddress] = useState('');
   const [communityAddress, setCommunityAddress] = useState('');
-
   useEffect(() => {
     const urlPath = window.location.pathname;
     const params = urlPath.split('/').filter(Boolean); // 使用斜杠进行分割，并过滤掉空字符串
@@ -93,37 +92,35 @@ const CircleClaim: React.FC<React.PropsWithChildren<{ projectAddr: string, leade
       const body = JSON.stringify({
         miner: communityAddress,
         project: projectAddress,
-        net: `evm--97`
+        net: `evm--97`,
       });
       console.info(body)
-      const requestPromise = new Promise((resolve, reject) => {
-        fetch("https://www.equityswap.club/app/user/claim_nft", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body,
-        })
-          .then(resolve)
-          .catch(reject);
-      });
-    
-      const response = await requestPromise;
-      console.info(response);
+
+      const response = await fetch('https://www.equityswap.club/app/user/claim_nft', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body,
+          });
+      const data = await response.json();
+      return data.data.id
     } catch (error) {
       console.info(error);
     }
   }
 
   const handleTransfer = async () => {
-    getNFTId()
-    // await window.ethereum.request({ method: "eth_requestAccounts" });
-    // const provider = new ethers.providers.Web3Provider(window.ethereum);
-    // const signer = provider.getSigner();
-    // const contract = new ethers.Contract("0x45a938E690709B8c9C34D18487Aa56251d088E2a", HandNftAbi, signer);
-    // const tx = await contract.claim("id");
-    // const receipt1 = await tx.wait();
-    // console.log(receipt1);
+    const nftId = await getNFTId()
+    const accounts = await window.ethereum.request({ method: "eth_requestAccounts" });
+    const accountAddress = accounts[0];
+    console.log(accountAddress)
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    const signer = provider.getSigner();
+    const contract = new ethers.Contract("0x45a938E690709B8c9C34D18487Aa56251d088E2a", HandNftAbi, signer);
+    const tx = await contract.claim(nftId);
+    const receipt1 = await tx.wait();
+    console.log(receipt1);
   }
   return (
     <>     
