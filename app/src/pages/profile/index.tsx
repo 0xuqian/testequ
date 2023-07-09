@@ -1,5 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components'
+import { create } from 'ipfs-http-client';
+import { useWeb3React } from '@web3-react/core'
+import useRankingInfo from '../../hooks/useRankingDetails'
 
 
 const ListWrapper = styled.div`
@@ -85,10 +88,44 @@ const AvatarImageDiv = styled.div`
 
 const ProfilePage = () => {
 
+  const { account } = useWeb3React()
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [isEditing, setIsEditing] = useState(false);
-  const [nickname, setNickname] = useState('Nickname');
+  const [nickname, setNickname] = useState('Your Nickname');
+  const [userInfoLoaded, setUserInfoLoaded] = useState(false);
+
+  const userInfo = useRankingInfo(account)
+  const projectId = '2RxSDjGGChYbDccqxgSHDCGWDGT';
+  const projectSecret = '9a0a07cc2c7e8b6a9115b8a8b451391c';
+  const ipfs = create({
+    host: 'ipfs.infura.io',
+    port: 5001,
+    protocol: 'https',
+    headers: {
+      authorization: `Basic ${  btoa(`${projectId}:${projectSecret}`)}`
+    }
+  });
+
+  useEffect(() => {
+    setUserInfoLoaded(false)
+  }, [account]);
+
+  useEffect(() => {
+    if (userInfo && userInfo.user_wallet?.toLowerCase() === account?.toLowerCase() && !userInfoLoaded) {
+
+      setImagePreview(userInfo.icon);
+      setNickname(userInfo.name);
+      setUserInfoLoaded(true);
+    }
+  }, [userInfo, userInfoLoaded,account]);
+  
+  useEffect(() => {
+    if (userInfo?.icon !== imagePreview && userInfo?.name !== nickname && userInfoLoaded){
+      setImagePreview(imagePreview);
+      setNickname(nickname);
+    }
+  }, [account, nickname, imagePreview, userInfo]);
 
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -111,17 +148,24 @@ const ProfilePage = () => {
   };
 
   const handleSubmit = async () => {
+    let url;
+    try {
+      // 将文件添加到 IPFS
+      const added = await ipfs.add(selectedImage);
+      // 创建一个 URL 来访问 IPFS 上的图片
+      url = `https://ipfs.io/ipfs/${added.path}`;
+      console.log(url)
+    } catch (err) {
+      console.error(err);
+    }
+
     if (selectedImage && nickname) {
+      console.log(url)
       try {
-        const reader = new FileReader();
-        reader.readAsDataURL(selectedImage); // 'selectedImage' 是 File 对象
-        reader.onloadend = async () => {
-          const base64Image = reader.result;
-          console.log(base64Image)
           const body = JSON.stringify({
-            new_icon: base64Image,
+            new_icon: url,
             new_name: nickname,
-            wallet: "0xe18778455dd4Ff13f319F9f72defE070ee696969",
+            wallet: account,
             new_tg: null,
             new_twitter: null,
           });
@@ -137,16 +181,12 @@ const ProfilePage = () => {
           if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
           }
-  
+          console.log(body)
           const data = await response.json();
           console.log(data);
-        };
-        reader.onerror = () => {
-          console.error("Failed to read image file:", reader.error);
-        };
-      } catch (error) {
-        console.error('Failed to upload data:', error);
-      }
+        }catch{
+          console.log("上传ipfs失败")
+        }
     }
   };
 

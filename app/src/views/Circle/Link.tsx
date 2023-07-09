@@ -3,7 +3,6 @@ import BigNumber from "bignumber.js";
 import {useEffect, useState} from 'react'
 import {useRouter} from "next/router";
 import {BoxProps, Button, Image, InjectedModalProps, useModal} from '@pancakeswap/uikit'
-import LinkSwitch from './components/LinkSwitch'
 import CircleHeader from './components/CircleHeader'
 import LinkInfo from './components/LinkInfo'
 import Page from '../Page'

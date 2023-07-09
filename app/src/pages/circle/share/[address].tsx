@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import CircleShare from "../share1";
+import CircleShare from "../share";
 
 const SharePage = () => {
   const router = useRouter()

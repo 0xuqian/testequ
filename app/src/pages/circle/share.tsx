@@ -5,6 +5,7 @@ import { useRouter } from "next/router";
 import {Button} from '@pancakeswap/uikit'
 import BigNumber from "bignumber.js";
 import { ethers } from 'ethers';
+import useActiveWeb3React from "hooks/useActiveWeb3React";
 import { useCircleProjectInfo} from "../../hooks/useCircleProject";
 import Page from '../../views/Page'
 import CircleHeader from '../../views/Circle/components/CircleHeader'
@@ -110,7 +111,7 @@ justify-content: space-between;
 padding: 0 12px 0 16px;
 align-items: center;
 text-align: right;
-font-size: 15px
+font-size: 16px
 `;
 
 const SelectButton = styled(Button)`
@@ -128,10 +129,11 @@ const InputLabel = styled.span`
 `;
 
 const CircleShare: React.FC<React.PropsWithChildren<{ projectAddress: string }>> = ({ projectAddress }) => {
+  console.log(projectAddress)
   const router = useRouter()
   const [value, setValue] = useState('');
   const [isDisabled, setIsDisabled] = useState<boolean>(true);
-    
+  const { chainId, account } = useActiveWeb3React()
 
   // const handleInput = (event: React.FormEvent<HTMLInputElement>) => {
   //   const inputValue = event.currentTarget.value;
@@ -167,15 +169,47 @@ const CircleShare: React.FC<React.PropsWithChildren<{ projectAddress: string }>>
     event.preventDefault(); 
   };
 
+  const updateToServerMintInfo = async () => {
+    
+    try {
+      const body = JSON.stringify({
+        addr: account,
+        amount: parseInt(value, 10),
+        net: account ? `evm--${Number(chainId)}` : `evm--97`,
+      });
+      console.info(body)
+      const response = await fetch("https://www.equityswap.club/app/user/mint_nft", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body,
+    });
+      console.info(response)
+    } catch (error) {
+      console.info(error);
+    }
+  };
+
   const handleMint = async () => {
     const accounts = await window.ethereum.request({ method: "eth_requestAccounts" });
     const accountAddress = accounts[0];
     const provider = new ethers.providers.Web3Provider(window.ethereum);
     const signer = provider.getSigner();
     const contract = new ethers.Contract("0xecB698B980ab2279Fb179a9E54Afbf79B21DF0a3", TokenTransferAbi, signer);
-    const tx = await contract.mintNfts("0x45a938E690709B8c9C34D18487Aa56251d088E2a","0xD6e8024e4572d954371c9f95acf33c65947233C9",accountAddress,ethers.BigNumber.from(value));
-    const receipt1 = await tx.wait();
+    const tx = await contract.mintNfts("0x45a938E690709B8c9C34D18487Aa56251d088E2a",projectAddress,accountAddress,ethers.BigNumber.from(value));
+    try{
+      const receipt = await tx.wait();
+      console.info(receipt)
+      if (receipt){
+        updateToServerMintInfo();
+        router.push(`/circle/share-link/${projectAddress}/${account.toLowerCase()}`)
+      }
+    }catch(error){
+      console.error(error)
+    }
   }
+
   return (
     <>     
        <Page>
@@ -227,7 +261,7 @@ const CircleShare: React.FC<React.PropsWithChildren<{ projectAddress: string }>>
             <SelectButton
               disabled={isDisabled}
               onClick={handleMint}
-          >Mint</SelectButton>
+          >MINT</SelectButton>
           </LinkInner>
         </LinkWrapper>
       </Page>
