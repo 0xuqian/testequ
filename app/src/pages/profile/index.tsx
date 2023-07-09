@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components'
 import { create } from 'ipfs-http-client';
+import { ethers } from 'ethers';
 import { useWeb3React } from '@web3-react/core'
 import useRankingInfo from '../../hooks/useRankingDetails'
 
@@ -147,12 +148,31 @@ const ProfilePage = () => {
     setNickname(event.target.value);
   };
 
+  const verifySignature= async (): Promise<string>  => {
+
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    const network = await provider.getNetwork();
+    const signer = provider.getSigner();
+    const address = await signer.getAddress();
+
+    console.log('Connected wallet address:', address);
+    console.log('Connected network:', network);
+
+    const message = `Request to change personal information:
+  address: ${address}
+    `;
+
+    const signature = await signer.signMessage(message)
+    console.log(signature)
+    return signature
+  }
+
   const handleSubmit = async () => {
+
+    const signature = await verifySignature()
     let url;
     try {
-      // 将文件添加到 IPFS
       const added = await ipfs.add(selectedImage);
-      // 创建一个 URL 来访问 IPFS 上的图片
       url = `https://ipfs.io/ipfs/${added.path}`;
       console.log(url)
     } catch (err) {
@@ -166,6 +186,7 @@ const ProfilePage = () => {
             new_icon: url,
             new_name: nickname,
             wallet: account,
+            sign: signature,
             new_tg: null,
             new_twitter: null,
           });
