@@ -3,6 +3,7 @@ import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import {Button} from '@pancakeswap/uikit'
 import { ethers } from 'ethers';
+import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import Page from '../../views/Page'
 import CircleHeader from '../../views/Circle/components/CircleHeader'
 import HandNftAbi from '../../config/abi/HandNft_metadata.json'
@@ -58,7 +59,7 @@ const ProjectTitle = styled.div`
 const CircleClaim: React.FC<React.PropsWithChildren<{ projectAddr: string, leaderAddress:string }>> = () => {
   
   const router = useRouter()
-
+  const {chainId,account} = useActiveWeb3React()
 
   const [projectAddress, setProjectAddress] = useState('');
   const [communityAddress, setCommunityAddress] = useState('');
@@ -106,7 +107,8 @@ const CircleClaim: React.FC<React.PropsWithChildren<{ projectAddr: string, leade
       const data = await response.json();
       return data.data.id
     } catch (error) {
-      console.info(error);
+      console.error(error);
+      throw error; 
     }
   }
 
@@ -114,11 +116,13 @@ const CircleClaim: React.FC<React.PropsWithChildren<{ projectAddr: string, leade
     const nftId = await getNFTId()
     const accounts = await window.ethereum.request({ method: "eth_requestAccounts" });
     const accountAddress = accounts[0];
-    console.log(accountAddress)
+    console.log(chainId,account,accountAddress)
     const provider = new ethers.providers.Web3Provider(window.ethereum);
     const signer = provider.getSigner();
     const contract = new ethers.Contract("0x45a938E690709B8c9C34D18487Aa56251d088E2a", HandNftAbi, signer);
-    const tx = await contract.claim(nftId);
+    console.log(nftId)
+    const nftId1 = ethers.BigNumber.from("13")
+    const tx = await contract.claim(11);
     const receipt1 = await tx.wait();
     console.log(receipt1);
   }

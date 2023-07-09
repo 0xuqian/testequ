@@ -171,14 +171,14 @@ const ProfilePage = () => {
     const signature = await verifySignature()
     let url;
     try {
-      const added = await ipfs.add(selectedImage);
+      const added = await ipfs.add(imagePreview);
       url = `https://ipfs.io/ipfs/${added.path}`;
       console.log(url)
     } catch (err) {
       console.error(err);
     }
 
-    if (selectedImage && nickname) {
+    if (imagePreview && nickname) {
       console.log(url)
       try {
           const body = JSON.stringify({
@@ -189,7 +189,7 @@ const ProfilePage = () => {
             new_tg: null,
             new_twitter: null,
           });
-  
+          console.log(url,nickname)
           const response = await fetch('https://www.equityswap.club/app/user/setuserinfo', {
             method: 'POST',
             headers: {
