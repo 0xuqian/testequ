@@ -121,8 +121,8 @@ const CircleClaim: React.FC<React.PropsWithChildren<{ projectAddr: string, leade
     const signer = provider.getSigner();
     const contract = new ethers.Contract("0x45a938E690709B8c9C34D18487Aa56251d088E2a", HandNftAbi, signer);
     console.log(nftId)
-    const nftId1 = ethers.BigNumber.from("13")
-    const tx = await contract.claim(11);
+    // const nftId1 = ethers.BigNumber.from("186")
+    const tx = await contract.claim(nftId);
     const receipt1 = await tx.wait();
     console.log(receipt1);
   }
