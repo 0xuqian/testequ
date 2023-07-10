@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import styled from 'styled-components'
+import styled, { useTheme } from 'styled-components'
 import { create } from 'ipfs-http-client';
 import { ethers } from 'ethers';
 import { useWeb3React } from '@web3-react/core'
+import Page from 'views/Page';
 import useRankingInfo from '../../hooks/useRankingDetails'
 
 
@@ -15,6 +16,7 @@ const ListWrapper = styled.div`
   min-height: 550px;
   background: #ffff;
   padding: 0 20px 0 16px;
+  background-color: ${({ theme }) => theme.colors.backgroundAlt};
 `
 const List = styled.div`
   width: 100%;
@@ -25,7 +27,6 @@ const List = styled.div`
   justify-content: space-between;
   align-items: center;
   // border-radius: 8px;
-  // padding: 0 8px;
   &:hover {
     background: #e8e8e8;  
   }
@@ -51,7 +52,6 @@ const TitleName = styled.div`
   width: 50px;
   height: 50px;
   line-height: 50px;
-  text
 `
 
 const ListItem = styled.div`
@@ -66,6 +66,7 @@ const ListItem = styled.div`
   @media screen and (max-width: 852px) {
     height: 80px;
   }
+    background-color: ${({ theme }) => theme.colors.backgroundAlt};
 `
 
 const NickNameDiv = styled.div`
@@ -89,6 +90,7 @@ const AvatarImageDiv = styled.div`
 
 const ProfilePage = () => {
 
+  const theme = useTheme()
   const { account } = useWeb3React()
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
@@ -212,6 +214,7 @@ const ProfilePage = () => {
 
 
   return(
+    <Page>
     <ListWrapper>
       <List>
       <ListItem onClick={() => document.getElementById('fileInput')?.click()}>
@@ -250,6 +253,7 @@ const ProfilePage = () => {
         <SaveButtion onClick={handleSubmit} style={{marginTop: '15px'}}>SAVE</SaveButtion>
       </List>
     </ListWrapper>
+    </Page>
   )
 }
 export default ProfilePage

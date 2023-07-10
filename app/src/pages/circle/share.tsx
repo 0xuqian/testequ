@@ -10,6 +10,7 @@ import { useCircleProjectInfo} from "../../hooks/useCircleProject";
 import Page from '../../views/Page'
 import CircleHeader from '../../views/Circle/components/CircleHeader'
 import TokenTransferAbi from '../../config/abi/TokenTransfer_metadata.json'
+import { over } from "lodash";
 
 const ProjectInfo = styled.div`
   display: flex;
@@ -79,6 +80,7 @@ const LinkWrapper = styled.div`
   min-height: 550px;
   background: #ffff;
   padding: 0 16px;
+  border-radius: 20px
 `
 
 const ProjectTokenName = styled.div`
@@ -131,7 +133,7 @@ const InputLabel = styled.span`
 const CircleShare: React.FC<React.PropsWithChildren<{ projectAddress: string }>> = ({ projectAddress }) => {
   console.log(projectAddress)
   const router = useRouter()
-  const [value, setValue] = useState('');
+  const [amount, setAmount] = useState('');
   const [isDisabled, setIsDisabled] = useState<boolean>(true);
   const { chainId, account } = useActiveWeb3React()
 
@@ -147,20 +149,20 @@ const CircleShare: React.FC<React.PropsWithChildren<{ projectAddress: string }>>
     // eslint-disable-next-line @typescript-eslint/no-shadow
     let {value} = event.target;
     if (value === '' || (Number(value) >= 0 && Number(value) <= 200)) {
-      setValue(value);
+      setAmount(value);
     }else {
       value = Number(value);
       if (value > 200) {
         value = 200;
       }
-      setValue(value.toString());
+      setAmount(value.toString());
     }
   };
   
 
   useEffect(() => {
-    setIsDisabled(value === '' || parseInt(value, 10) === 0);
-  }, [value]);
+    setIsDisabled(amount === '' || parseInt(amount, 10) === 0);
+  }, [amount]);
 
 
   const { project } = useCircleProjectInfo(projectAddress)
@@ -174,7 +176,7 @@ const CircleShare: React.FC<React.PropsWithChildren<{ projectAddress: string }>>
     try {
       const body = JSON.stringify({
         addr: account,
-        amount: parseInt(value, 10),
+        amount: parseInt(amount, 10),
         net: account ? `evm--${Number(chainId)}` : `evm--97`,
       });
       console.info(body)
@@ -193,17 +195,22 @@ const CircleShare: React.FC<React.PropsWithChildren<{ projectAddress: string }>>
 
   const handleMint = async () => {
     
+    const mintPrice = 0.00022
     const accounts = await window.ethereum.request({ method: "eth_requestAccounts" });
     const accountAddress = accounts[0];
     const provider = new ethers.providers.Web3Provider(window.ethereum);
     const signer = provider.getSigner();
-    const contract = new ethers.Contract("0xecB698B980ab2279Fb179a9E54Afbf79B21DF0a3", TokenTransferAbi, signer);
-    const tx = await contract.mintNfts("0x45a938E690709B8c9C34D18487Aa56251d088E2a",projectAddress,accountAddress,ethers.BigNumber.from(value));
+    const overrides = {
+      value:  ethers.utils.parseUnits(( Number(amount)* mintPrice).toString(), 'ether')
+    }
+    const contract = new ethers.Contract("0x465Cf12F874AFCe0CA4C339c8e51fFB4628D17e0", TokenTransferAbi, signer);
+    // const tx = await contract.mintNfts("0x522338F22de2687c2f488627E0Bd750d40090254","0x237585E5583894C04B16413b10525DcC4604f2Be",accountAddress,amount,overrides);
+    const tx = await contract.mintNfts("0x522338F22de2687c2f488627E0Bd750d40090254",projectAddress,accountAddress,amount,overrides);
     try{
       const receipt = await tx.wait();
       console.info(receipt)
       if (receipt){
-        updateToServerMintInfo();
+        await updateToServerMintInfo();
         router.push(`/circle/share-link/${projectAddress}/${account.toLowerCase()}`)
       }
     }catch(error){
@@ -224,7 +231,7 @@ const CircleShare: React.FC<React.PropsWithChildren<{ projectAddress: string }>>
               <InputLabel>人数</InputLabel>
              <Input
               type="number"
-              value={value}
+              value={amount}
               onChange={handleInputChange}
               min={0}
               max={200}

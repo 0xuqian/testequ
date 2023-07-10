@@ -19,6 +19,7 @@ const LinkWrapper = styled.div`
   min-height: 550px;
   background: #ffff;
   padding: 0 16px;
+  border-radius: 20px
 `
 
 const LinkInner = styled.div`
