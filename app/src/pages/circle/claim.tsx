@@ -113,6 +113,7 @@ const CircleClaim: React.FC<React.PropsWithChildren<{ projectAddr: string, leade
   }
 
   const handleTransfer = async () => {
+    const claimPrice = 0.00066
     const nftId = await getNFTId()
     const accounts = await window.ethereum.request({ method: "eth_requestAccounts" });
     const accountAddress = accounts[0];
@@ -121,7 +122,10 @@ const CircleClaim: React.FC<React.PropsWithChildren<{ projectAddr: string, leade
     const signer = provider.getSigner();
     const contract = new ethers.Contract("0x522338F22de2687c2f488627E0Bd750d40090254", HandNftAbi, signer);
     console.log(nftId)
-    const tx = await contract.claim(nftId);
+    const overrides = {
+      value:  ethers.utils.parseUnits(claimPrice.toString(), 'ether')
+    }
+    const tx = await contract.claim(nftId,overrides);
     const receipt1 = await tx.wait();
     console.log(receipt1);
   }
