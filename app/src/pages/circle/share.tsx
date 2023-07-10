@@ -10,7 +10,6 @@ import { useCircleProjectInfo} from "../../hooks/useCircleProject";
 import Page from '../../views/Page'
 import CircleHeader from '../../views/Circle/components/CircleHeader'
 import TokenTransferAbi from '../../config/abi/TokenTransfer_metadata.json'
-import { over } from "lodash";
 
 const ProjectInfo = styled.div`
   display: flex;
