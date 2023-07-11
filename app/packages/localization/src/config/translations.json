@@ -628,6 +628,7 @@
   "Your CAKE prizes for round %lotteryId% have been sent to your wallet": "Your CAKE prizes for round %lotteryId% have been sent to your wallet",
   "Claim %claimNum% of %claimTotal% for round %lotteryId% was successful. Please confirm the next transaction": "Claim %claimNum% of %claimTotal% for round %lotteryId% was successful. Please confirm the next transaction",
   "Claiming": "Claiming",
+  "Claiming...": "Claiming...",
   "Tickets must match the winning number in the exact same order, starting from the first digit.": "Tickets must match the winning number in the exact same order, starting from the first digit.",
   "If the winning number is “123456”:": "If the winning number is “123456”:",
   "“120000” matches the first 2 digits.": "“120000” matches the first 2 digits.",
@@ -1935,5 +1936,17 @@
   "airdop_click_claim_test_coins": "Click to claim test coins",
   "airdop_claim_test_coins": "Claim Test Coins",
   "airdop_can_claim": "You can claim 10,000 USDT today (test coins)",
-  "airdop_n_can_claim": "You have already claimed for today. Please come back after 24 hours"
+  "airdop_n_can_claim": "You have already claimed for today. Please come back after 24 hours",
+  "mintNFT_share": "Mint & Share NFT",
+  "Claim_NFT": "Claim NFT",
+  "mint_limit_text": "Number 1-500",
+  "paste_proj_addr_text": "Please paste the address of the project:",
+  "leader_address": "The wallet address of community leader:",
+  "Mint_success": "Mint Success!",
+  "share_link": "Share link",
+  "failed_to_mint": "Failed to mint",
+  "insuff_fund_gas": "insufficient funds for gas!",
+  "Your nft was minted successfully": "Your nft was minted successfully",
+  "User denied transaction signature": "User denied transaction signature",
+  "Share link has been copied to clipboard": "Share link has been copied to clipboard."
 }

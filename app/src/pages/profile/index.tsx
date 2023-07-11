@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import styled, { useTheme } from 'styled-components'
+import styled from 'styled-components'
 import { create } from 'ipfs-http-client';
 import { ethers } from 'ethers';
 import { useWeb3React } from '@web3-react/core'
@@ -90,7 +90,6 @@ const AvatarImageDiv = styled.div`
 
 const ProfilePage = () => {
 
-  const theme = useTheme()
   const { account } = useWeb3React()
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);

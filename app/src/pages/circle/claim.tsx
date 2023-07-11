@@ -1,9 +1,10 @@
 import styled from 'styled-components'
 import { useRouter } from 'next/router'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useTransition } from 'react'
 import {Button} from '@pancakeswap/uikit'
 import { ethers } from 'ethers';
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
+import { useTranslation } from '@pancakeswap/localization';
 import Page from '../../views/Page'
 import CircleHeader from '../../views/Circle/components/CircleHeader'
 import HandNftAbi from '../../config/abi/HandNft_metadata.json'
@@ -17,6 +18,7 @@ const LinkWrapper = styled.div`
   min-height: 550px;
   background: #ffff;
   padding: 0 16px;
+  background: ${({ theme }) => theme.colors.backgroundAlt};
 `
 
 const SelectButton = styled(Button)`
@@ -39,6 +41,7 @@ const CurrentProject = styled.div`
   display: flex;
   justify-content: space-between;
   padding: 0 12px 0 16px;
+  background-color: ${({ theme }) => theme.colors.backgroundAlt};
   align-items: center;
 `
 
@@ -49,26 +52,30 @@ const Input = styled.input`
   border: none;
   background: transparent;
   text-align: right;
-  font-size: 15px
+  font-size: 15.8px
 `;
 
 const ProjectTitle = styled.div`
   margin: 25px 0;
-  font-size: 15px
+  font-size: 15px;
+  font-weight: 600;
+  padding-left: 5px;
 `
 const CircleClaim: React.FC<React.PropsWithChildren<{ projectAddr: string, leaderAddress:string }>> = () => {
   
   const router = useRouter()
   const {chainId,account} = useActiveWeb3React()
-
+  const { t } = useTranslation()
+  const [isClaiming,setIsClaiming] = useState(false);
+  const [isDisabled, setIsDisabled] = useState<boolean>(false);
   const [projectAddress, setProjectAddress] = useState('');
   const [communityAddress, setCommunityAddress] = useState('');
+
   useEffect(() => {
     const urlPath = window.location.pathname;
     const params = urlPath.split('/').filter(Boolean); // 使用斜杠进行分割，并过滤掉空字符串
 
     if (params.length === 4) {
-
       const lastTwoParams = params.slice(-2); // 获取最后两个参数
       const [project, leader] = lastTwoParams;
 
@@ -77,12 +84,14 @@ const CircleClaim: React.FC<React.PropsWithChildren<{ projectAddr: string, leade
       setCommunityAddress(leader)
     }
   }, []);
-  
+
+  useEffect(() => {
+    setIsDisabled(!projectAddress || !communityAddress);
+  },[projectAddress,communityAddress])
+
   const handleProjectAddressChange = (event) => {
     setProjectAddress(event.target.value);
   };
-
-  const isDisabled = !projectAddress || !communityAddress;
 
   const handleCommunityAddressChange = (event) => {
     setCommunityAddress(event.target.value);
@@ -113,6 +122,8 @@ const CircleClaim: React.FC<React.PropsWithChildren<{ projectAddr: string, leade
   }
 
   const handleTransfer = async () => {
+    setIsClaiming(true)
+    setIsDisabled(true)
     const claimPrice = 0.00066
     const nftId = await getNFTId()
     const accounts = await window.ethereum.request({ method: "eth_requestAccounts" });
@@ -120,14 +131,22 @@ const CircleClaim: React.FC<React.PropsWithChildren<{ projectAddr: string, leade
     console.log(chainId,account,accountAddress)
     const provider = new ethers.providers.Web3Provider(window.ethereum);
     const signer = provider.getSigner();
-    const contract = new ethers.Contract("0x522338F22de2687c2f488627E0Bd750d40090254", HandNftAbi, signer);
+    const contract = new ethers.Contract("0xA81bD9B64F8686ee97A8629Fffb3b10cC3E17700", HandNftAbi, signer);
     console.log(nftId)
     const overrides = {
       value:  ethers.utils.parseUnits(claimPrice.toString(), 'ether')
     }
-    const tx = await contract.claim(nftId,overrides);
-    const receipt1 = await tx.wait();
-    console.log(receipt1);
+    try{
+      const tx = await contract.claim(nftId,overrides);
+      const receipt1 = await tx.wait();
+      setIsClaiming(false)
+      setIsDisabled(false)
+      console.log(receipt1);
+    }catch(error){
+      setIsClaiming(false)
+      setIsDisabled(false)
+      console.error(error)
+    }
   }
   return (
     <>     
@@ -137,9 +156,9 @@ const CircleClaim: React.FC<React.PropsWithChildren<{ projectAddr: string, leade
             <CircleHeader
               // width = 
               backFn={() => router.push('/circle/')}
-              title="领取NFT" Right={undefined}
+              title={t('Claim_NFT')} Right={undefined}
             />
-            <ProjectTitle>请选择项目地址</ProjectTitle>
+            <ProjectTitle>{t("paste_proj_addr_text")}</ProjectTitle>
             <CurrentProject>
             <Input
               type="text"
@@ -150,7 +169,7 @@ const CircleClaim: React.FC<React.PropsWithChildren<{ projectAddr: string, leade
              }}
            />
             </CurrentProject>
-            <ProjectTitle>社区长钱包地址</ProjectTitle>
+            <ProjectTitle>{t('leader_address')}</ProjectTitle>
             <CurrentProject>
             <Input
               type="text"
@@ -165,7 +184,7 @@ const CircleClaim: React.FC<React.PropsWithChildren<{ projectAddr: string, leade
             <SelectButton
               disabled={isDisabled}
               onClick={handleTransfer}
-          >领取</SelectButton>
+          >{ isClaiming? t('Claiming...'):t('Claim')}</SelectButton>
           </LinkWrapper>
           </Page>
     </>

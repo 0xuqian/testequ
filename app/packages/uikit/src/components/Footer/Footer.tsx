@@ -1,5 +1,6 @@
 import React from "react";
 import {LogoWithTextIcon, Text} from "@pancakeswap/uikit";
+import styled from "styled-components";
 import { darkColors } from "../../theme/colors";
 import { Flex } from "../Box";
 import { StyledFooter, StyledIconMobileContainer, StyledSocialLinks, StyledToolsContainer } from "./styles";
@@ -8,6 +9,18 @@ import { ThemeSwitcher } from "../ThemeSwitcher";
 import LangSelector from "../LangSelector/LangSelector";
 import { Colors } from "../..";
 import LogoWithText from "../Svg/Icons/LogoWithText";
+
+const ListTitle = styled.div`
+  font-family: 'PingFang SC';
+  font-style: normal;
+  font-weight: 800;
+  font-size: 14px;
+  line-height: 140%;
+  display: flex;
+  align-items: center;
+  color: white;
+`
+
 
 const MenuItem: React.FC<React.PropsWithChildren<FooterProps>> = ({
   isDark,
@@ -73,7 +86,7 @@ const MenuItem: React.FC<React.PropsWithChildren<FooterProps>> = ({
             />
           </Flex>
           <Flex alignItems="center">
-            <Text color="light">Copyright EquitySwap All Rights Reserved.</Text>
+            <ListTitle color="light">Copyright EquitySwap All Rights Reserved.</ListTitle>
           </Flex>
         </StyledToolsContainer>
       </Flex>

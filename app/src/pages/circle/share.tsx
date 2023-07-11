@@ -6,6 +6,9 @@ import {Button} from '@pancakeswap/uikit'
 import BigNumber from "bignumber.js";
 import { ethers } from 'ethers';
 import useActiveWeb3React from "hooks/useActiveWeb3React";
+import { useTranslation } from "@pancakeswap/localization";
+import useToast from "hooks/useToast";
+import { ToastDescriptionWithTx } from "components/Toast";
 import { useCircleProjectInfo} from "../../hooks/useCircleProject";
 import Page from '../../views/Page'
 import CircleHeader from '../../views/Circle/components/CircleHeader'
@@ -14,6 +17,7 @@ import TokenTransferAbi from '../../config/abi/TokenTransfer_metadata.json'
 const ProjectInfo = styled.div`
   display: flex;
   align-items: center;
+
 `;
 
 const ProjectSelect = styled.div`
@@ -22,18 +26,17 @@ const ProjectSelect = styled.div`
   font-weight: 400;
   font-size: 16px;
   line-height: 26px;
-  color: #15141f;
+  // color: #15141f;
   &.loading {
     color: #e6e6e6;
   }
 `
 
 const CurrentProject = styled.div`
-  cursor: pointer;
   margin-top: 12px;
   width: 100%;
   height: 60px;
-  background: #FFFFFF;
+  background-color: ${({ theme }) => theme.colors.backgroundAlt};
   border: 1px solid #e7e8f3;
   border-radius: 12px;
   display: flex;
@@ -61,7 +64,7 @@ const ProjectPriceValue = styled.div`
   font-weight: 500;
   font-size: 14px;
   line-height: 26px;
-  color: #15141f;
+  // color: #15141f;
   margin-right: 2px;
 `;
 
@@ -77,7 +80,7 @@ const LinkWrapper = styled.div`
   display: flex;
   flex-direction: column;
   min-height: 550px;
-  background: #ffff;
+  background-color: ${({ theme }) => theme.colors.backgroundAlt};
   padding: 0 16px;
   border-radius: 20px
 `
@@ -88,7 +91,7 @@ const ProjectTokenName = styled.div`
   font-weight: 500;
   font-size: 16px;
   line-height: 26px;
-  color: #15141f;
+  // color: #15141f;
   margin-left: 5px;
 `
 
@@ -104,7 +107,7 @@ font-weight: 500;
 margin-top: 12px;
 width: 100%;
 height: 60px;
-background: #FFFFFF;
+background: ${({ theme }) => theme.colors.backgroundAlt};
 border: 1px solid #e7e8f3;
 border-radius: 12px;
 display: flex;
@@ -130,9 +133,11 @@ const InputLabel = styled.span`
 `;
 
 const CircleShare: React.FC<React.PropsWithChildren<{ projectAddress: string }>> = ({ projectAddress }) => {
-  console.log(projectAddress)
+  const { t } = useTranslation()
+  const { toastError, toastSuccess } = useToast()
   const router = useRouter()
-  const [amount, setAmount] = useState('');
+  const [amount, setAmount] = useState('');  
+  const [minting, isMinting] = useState<boolean>(false);
   const [isDisabled, setIsDisabled] = useState<boolean>(true);
   const { chainId, account } = useActiveWeb3React()
 
@@ -147,12 +152,12 @@ const CircleShare: React.FC<React.PropsWithChildren<{ projectAddress: string }>>
   const handleInputChange = (event) => {
     // eslint-disable-next-line @typescript-eslint/no-shadow
     let {value} = event.target;
-    if (value === '' || (Number(value) >= 0 && Number(value) <= 200)) {
+    if (value === '' || (Number(value) >= 0 && Number(value) <= 500)) {
       setAmount(value);
     }else {
       value = Number(value);
-      if (value > 200) {
-        value = 200;
+      if (value > 500) {
+        value = 500;
       }
       setAmount(value.toString());
     }
@@ -193,8 +198,12 @@ const CircleShare: React.FC<React.PropsWithChildren<{ projectAddress: string }>>
   };
 
   const handleMint = async () => {
-    
+    setIsDisabled(true)    
+
     const mintPrice = 0.00022
+    const nftContract = '0xA81bD9B64F8686ee97A8629Fffb3b10cC3E17700'
+    const tokenAddr = '0xA4E2932721763f9B3b99a74a0dCCbc71F2341031'
+
     const accounts = await window.ethereum.request({ method: "eth_requestAccounts" });
     const accountAddress = accounts[0];
     const provider = new ethers.providers.Web3Provider(window.ethereum);
@@ -204,16 +213,37 @@ const CircleShare: React.FC<React.PropsWithChildren<{ projectAddress: string }>>
     }
     const contract = new ethers.Contract("0x465Cf12F874AFCe0CA4C339c8e51fFB4628D17e0", TokenTransferAbi, signer);
     // const tx = await contract.mintNfts("0x522338F22de2687c2f488627E0Bd750d40090254","0x237585E5583894C04B16413b10525DcC4604f2Be",accountAddress,amount,overrides);
-    const tx = await contract.mintNfts("0x522338F22de2687c2f488627E0Bd750d40090254",projectAddress,accountAddress,amount,overrides);
     try{
-      const receipt = await tx.wait();
-      console.info(receipt)
-      if (receipt){
-        await updateToServerMintInfo();
-        router.push(`/circle/share-link/${projectAddress}/${account.toLowerCase()}`)
+      isMinting(true)
+      const tx = await contract.mintNfts(nftContract,tokenAddr,accountAddress,amount,overrides);
+        const receipt = await tx.wait();
+        console.info(receipt)
+        if (receipt){
+          await updateToServerMintInfo();
+          toastSuccess(
+            `${t('Mint_success')}!`,
+            <ToastDescriptionWithTx txHash={receipt.transactionHash}>
+              {t('Your nft was minted successfully')}
+            </ToastDescriptionWithTx>,
+          )
+          // toastSuccess(t('Your nft was minted successfully'))
+          isMinting(false)
+          setIsDisabled(false) 
+          router.push(`/circle/share-link/${projectAddress.toLowerCase()}/${account.toLowerCase()}`)
       }
     }catch(error){
-      console.error(error)
+      setIsDisabled(false) 
+      isMinting(false)
+
+      if (error.data && error.data.message) {
+        if (error.data.message.includes("Insufficient funds for gas")) {
+          toastError(t('failed_to_mint'), t('insuff_fund_gas'));
+        }
+      } else if (error.message && error.message.includes("User denied transaction signature")) {
+        toastError(t('failed_to_mint'), t('User denied transaction signature'));
+      } else {
+        toastError(t('failed_to_mint'), t('Unknown error'));
+      }
     }
   }
 
@@ -223,9 +253,8 @@ const CircleShare: React.FC<React.PropsWithChildren<{ projectAddress: string }>>
         <LinkWrapper>
           <LinkInner>
             <CircleHeader
-              // width = 
               backFn={() => router.push('/circle/link')}
-              title="Mint NFT 分享" Right={undefined}
+              title = {t('Mint')} Right={undefined}
             />
               <InputLabel>人数</InputLabel>
              <Input
@@ -233,9 +262,9 @@ const CircleShare: React.FC<React.PropsWithChildren<{ projectAddress: string }>>
               value={amount}
               onChange={handleInputChange}
               min={0}
-              max={200}
+              max={500}
               onWheel={handleWheel}
-              placeholder="0个起步, 最多200"
+              placeholder= {t('mint_limit_text')}
       />
     
             {/* <LinkSwitch /> */}
@@ -268,7 +297,8 @@ const CircleShare: React.FC<React.PropsWithChildren<{ projectAddress: string }>>
             <SelectButton
               disabled={isDisabled}
               onClick={handleMint}
-          >MINT</SelectButton>
+          >{minting ? t('Minting...') : t('Mint')}
+          </SelectButton>
           </LinkInner>
         </LinkWrapper>
       </Page>
@@ -277,3 +307,4 @@ const CircleShare: React.FC<React.PropsWithChildren<{ projectAddress: string }>>
 }
 
 export default CircleShare
+

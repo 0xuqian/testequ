@@ -4,8 +4,9 @@ import CircleHeader from "views/Circle/components/CircleHeader"
 import Page from "views/Page"
 import { useWeb3React } from '@web3-react/core'
 import {Button} from '@pancakeswap/uikit'
+import useToast from "hooks/useToast";
 import { CopyToClipboard } from 'react-copy-to-clipboard';
-import { useEffect, useState } from "react"
+import { useTranslation } from "@pancakeswap/localization"
 
 const ListWrapper = styled.div`
   width: 100%;
@@ -16,6 +17,7 @@ const ListWrapper = styled.div`
   min-height: 550px;
   background: #ffff;
   padding: 0 20px 0 16px;
+  background: ${({ theme }) => theme.colors.backgroundAlt};
 `
 
 const SelectButton = styled(Button)`
@@ -48,31 +50,33 @@ const LinkInner = styled.div`
 `
 
 const SuccessDiv = styled.div`
-  width: 100%;
-  height: 60%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center
-  margin-top: 40px;
-  // align-content: center;
-  flex-wrap: wrap;
-  align-items: center;
+width: 100%;
+height: 60%;
+display: flex;
+flex-direction: column;
+justify-content: center;
+margin-top: 40px;
+flex-wrap: wrap;
+align-items: center;
+text-align: center;
 `;
 
 const MintSucText = styled.text`
-  font-size:20px;
-  padding-top: 40px;
-  color: blue;
+font-size: 20px;
+padding-top: 40px;
+padding-left: 25px;
+font-weight: 800;
+text-align: center;
+color: blue;
 `
 const CircleShare: React.FC<React.PropsWithChildren<{ projectAddress: string, leaderAddress:string }>> = ({ projectAddress,leaderAddress }) => {
-  const {account} = useWeb3React()
-  console.info(account)
-
+  const { t } = useTranslation()
+  const {  toastSuccess } = useToast()
 
   const handleCopy = () => {
     // setCopied(true);
     setTimeout(() => "", 2000);
-    alert("链接已复制到剪贴板！");
+    toastSuccess(t('Share link has been copied to clipboard'))
   };
 
 
@@ -83,12 +87,12 @@ const CircleShare: React.FC<React.PropsWithChildren<{ projectAddress: string, le
       <LinkInner>
         <CircleHeader
             backFn={() => router.push('/circle/')}
-            title="Mint NFT 分享"
+            title={t('share_link')}
             Right={undefined}
         />
       <SuccessDiv>
         <Image src="/images/circle/check.png" />
-        <MintSucText>mint成功</MintSucText>
+        <MintSucText>{t('Mint_success')}</MintSucText>
       </SuccessDiv>
       {/* <CopyToClipboard text="gg" onCopy={() => {
                                               setCopied(`https://www.equityswap.club/circle/claim/${projectAddress}/${leaderAddress}`)
@@ -106,7 +110,7 @@ const CircleShare: React.FC<React.PropsWithChildren<{ projectAddress: string, le
               <SelectButton
               // disabled={isDisabled}
               // onClick={}
-          >分享链接</SelectButton> 
+          >{t('share_link')}</SelectButton> 
       </CopyToClipboard>
     </>
 
@@ -118,3 +122,5 @@ const CircleShare: React.FC<React.PropsWithChildren<{ projectAddress: string, le
 
 
 export default CircleShare
+
+

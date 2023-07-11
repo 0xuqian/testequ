@@ -1850,5 +1850,6 @@
   "airdop_click_claim_test_coins": "Click to claim test coins",
   "airdop_claim_test_coins": "Claim Test Coins",
   "airdop_can_claim": "You can claim 10,000 USDT today (test coins)",
-  "airdop_n_can_claim": "You have already claimed for today. Please come back after 24 hours"
+  "airdop_n_can_claim": "You have already claimed for today. Please come back after 24 hours",
+  "mintNFT_share": "Mint & Share NFT"
 }
