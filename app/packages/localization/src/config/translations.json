@@ -1943,10 +1943,17 @@
   "paste_proj_addr_text": "Please paste the address of the project:",
   "leader_address": "The wallet address of community leader:",
   "Mint_success": "Mint Success!",
+  "Claim_success": "Claim Success!",
   "share_link": "Share link",
   "failed_to_mint": "Failed to mint",
-  "insuff_fund_gas": "insufficient funds for gas!",
+  "failed_to_claim": "Failed to claim",
+  "insuff_fund_gas": "Insufficient funds for gas!",
   "Your nft was minted successfully": "Your nft was minted successfully",
+  "Your nft was claimed successfully": "Your nft was claimed successfully",
+  "maybe have claimd": "Unable to claim, may have already been claimed",
   "User denied transaction signature": "User denied transaction signature",
-  "Share link has been copied to clipboard": "Share link has been copied to clipboard."
+  "Share link has been copied to clipboard": "Share link has been copied to clipboard.",
+  "can not claim, you are minter": "Unable to claim the NFT minted by yourself, please change the address of the community leader",
+  "people": "Number",
+  "have handed":"Have already claimed the nft of the project"
 }

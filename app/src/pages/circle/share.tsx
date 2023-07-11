@@ -218,7 +218,7 @@ const CircleShare: React.FC<React.PropsWithChildren<{ projectAddress: string }>>
       const tx = await contract.mintNfts(nftContract,tokenAddr,accountAddress,amount,overrides);
         const receipt = await tx.wait();
         console.info(receipt)
-        if (receipt){
+        if (receipt?.status){
           await updateToServerMintInfo();
           toastSuccess(
             `${t('Mint_success')}!`,
@@ -236,7 +236,7 @@ const CircleShare: React.FC<React.PropsWithChildren<{ projectAddress: string }>>
       isMinting(false)
 
       if (error.data && error.data.message) {
-        if (error.data.message.includes("Insufficient funds for gas")) {
+        if (error.data.message.includes("insufficient funds for gas")) {
           toastError(t('failed_to_mint'), t('insuff_fund_gas'));
         }
       } else if (error.message && error.message.includes("User denied transaction signature")) {
@@ -256,7 +256,7 @@ const CircleShare: React.FC<React.PropsWithChildren<{ projectAddress: string }>>
               backFn={() => router.push('/circle/link')}
               title = {t('Mint')} Right={undefined}
             />
-              <InputLabel>人数</InputLabel>
+              <InputLabel>{t('people')}</InputLabel>
              <Input
               type="number"
               value={amount}

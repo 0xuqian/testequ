@@ -1,10 +1,12 @@
 import styled from 'styled-components'
 import { useRouter } from 'next/router'
-import { useEffect, useState, useTransition } from 'react'
+import { useEffect, useState } from 'react'
 import {Button} from '@pancakeswap/uikit'
 import { ethers } from 'ethers';
+import useToast from "hooks/useToast";
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useTranslation } from '@pancakeswap/localization';
+import { ToastDescriptionWithTx } from 'components/Toast';
 import Page from '../../views/Page'
 import CircleHeader from '../../views/Circle/components/CircleHeader'
 import HandNftAbi from '../../config/abi/HandNft_metadata.json'
@@ -65,6 +67,7 @@ const CircleClaim: React.FC<React.PropsWithChildren<{ projectAddr: string, leade
   
   const router = useRouter()
   const {chainId,account} = useActiveWeb3React()
+  const { toastError, toastSuccess } = useToast()
   const { t } = useTranslation()
   const [isClaiming,setIsClaiming] = useState(false);
   const [isDisabled, setIsDisabled] = useState<boolean>(false);
@@ -139,13 +142,51 @@ const CircleClaim: React.FC<React.PropsWithChildren<{ projectAddr: string, leade
     try{
       const tx = await contract.claim(nftId,overrides);
       const receipt1 = await tx.wait();
+      if (receipt1?.status){
+        toastSuccess(
+          `${t('Claim_success')}!`,
+          <ToastDescriptionWithTx txHash={receipt1.transactionHash}>
+            {t('Your nft was claimed successfully')}
+          </ToastDescriptionWithTx>,
+        )
+    }
       setIsClaiming(false)
       setIsDisabled(false)
+
+      router.push(`/circle/claimed`)
       console.log(receipt1);
+      
     }catch(error){
       setIsClaiming(false)
       setIsDisabled(false)
-      console.error(error)
+      // if (error.data && error.data.message) {
+      //   if (error.data.message.includes("Insufficient funds for gas")) {
+      //     toastError(t('failed_to_claim'), t('insuff_fund_gas'));
+      //   }else if(error.data.message.includes("you are minter")) {
+      //     toastError(t('failed_to_claim'),t('can not claim, you are minter'))
+      //   }
+      // } else if (error.message && error.message.includes("User denied transaction signature")) {
+      //   toastError(t('failed_to_claim'), t('User denied transaction signature'));
+      // }else {
+      //   toastError(t('failed_to_claim'), t('Unknown error'));
+      // }
+
+      if (error.data?.message) {
+        if (error.data.message.includes("insufficient funds for gas")) {
+          toastError(t('failed_to_claim'), t('insuff_fund_gas'));
+        } else if (error.data.message.includes("you are minter")) {
+          toastError(t('failed_to_claim'), t('can not claim, you are minter'));
+        }else if (error.data.message.includes("maybe have claimd")){
+          toastError(t('failed_to_claim'), t('maybe have claimd'))
+        }else if (error.data.message.includes("have handed")){
+          toastError(t('failed_to_claim'),t('have handed'))
+        }
+      } else if (error.message?.includes("User denied transaction signature")) {
+        toastError(t('failed_to_claim'), t('User denied transaction signature'));
+      } else {
+        toastError(t('failed_to_claim'), t('Unknown error'));
+      }
+      
     }
   }
   return (

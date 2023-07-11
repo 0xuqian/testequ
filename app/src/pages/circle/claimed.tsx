@@ -2,10 +2,8 @@ import router from "next/router"
 import styled from "styled-components"
 import CircleHeader from "views/Circle/components/CircleHeader"
 import Page from "views/Page"
-import { useWeb3React } from '@web3-react/core'
 import {Button} from '@pancakeswap/uikit'
 import useToast from "hooks/useToast";
-import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { useTranslation } from "@pancakeswap/localization"
 
 const ListWrapper = styled.div`
@@ -68,7 +66,7 @@ font-weight: 800;
 text-align: center;
 color: blue;
 `
-const CircleShare: React.FC<React.PropsWithChildren<{ projectAddress: string, leaderAddress:string }>> = ({ projectAddress,leaderAddress }) => {
+export default function Claimed() {
   const { t } = useTranslation()
   const {  toastSuccess } = useToast()
 
@@ -86,12 +84,12 @@ const CircleShare: React.FC<React.PropsWithChildren<{ projectAddress: string, le
       <LinkInner>
         <CircleHeader
             backFn={() => router.push('/circle/')}
-            title={t('share_link')}
+            title={t('Claim_success')}
             Right={undefined}
         />
       <SuccessDiv>
         <Image src="/images/circle/check.png" />
-        <MintSucText>{t('Mint_success')}</MintSucText>
+        <MintSucText>{t('Claim_success')}</MintSucText>
       </SuccessDiv>
       {/* <CopyToClipboard text="gg" onCopy={() => {
                                               setCopied(`https://www.equityswap.club/circle/claim/${projectAddress}/${leaderAddress}`)
@@ -102,15 +100,6 @@ const CircleShare: React.FC<React.PropsWithChildren<{ projectAddress: string, le
               // onClick={}
           >分享链接</SelectButton> */}
            <>
-      <CopyToClipboard
-        text={`https://www.equityswap.club/circle/claim/${projectAddress}/${leaderAddress}`}
-        onCopy={handleCopy}
-      >
-              <SelectButton
-              // disabled={isDisabled}
-              // onClick={}
-          >{t('share_link')}</SelectButton> 
-      </CopyToClipboard>
     </>
 
       </LinkInner>
@@ -118,8 +107,4 @@ const CircleShare: React.FC<React.PropsWithChildren<{ projectAddress: string, le
     </Page>
   )
 }
-
-
-export default CircleShare
-
 

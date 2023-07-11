@@ -1858,10 +1858,17 @@
   "paste_proj_addr_text": "请粘贴项目地址：",
   "leader_address": "社区长钱包地址：",
   "Mint_success": "铸造成功！",
+  "Claim_success": "领取成功！",
   "share_link": "分享链接",
   "failed_to_mint": "铸造失败",
+  "failed_to_claim": "领取失败",
   "insuff_fund_gas": "gas资金不足！",
   "Your nft was minted successfully": "您的NFT铸造成功",
+  "Your nft was claimed successfully": "您的NFT领取成功",
+  "maybe have claimd": "该NFT可能已被领取",
   "User denied transaction signature": "用户拒绝交易签名",
-  "Share link has been copied to clipboard": "分享链接已经复制到剪贴板"
+  "Share link has been copied to clipboard": "分享链接已经复制到剪贴板",
+  "can not claim, you are minter": "不能领取自己铸造的NFT，请更换社区长地址",
+  "people": "人数",
+  "have handed":"已经领取过该项目的NFT"
 }
