@@ -118,8 +118,8 @@ export default function CircleList() {
   const { projects } = useCircleProject()
   const [onSelectModal] = useModal(<SelectModal setProject={setProject} projects={projects} />)
   const inv = useCircleInv(project?.token_addr)
-
   console.info(projects)
+  
   return (
       <Page>
         <LinkWrapper>

@@ -12,9 +12,8 @@ import { useMintContract, useNFTHandContract } from './useContract';
 
 export const useCircleProject = () => {
   const { chainId, account } = useActiveWeb3React()
+  const [projects, setProjects] = useState(null)
 
-  // const [projects, setProjects] = useState(null)
-  let projects ;
   const fetchProjects = useCallback(async () => {
     try {
       const res: any = await fetch(
@@ -35,8 +34,7 @@ export const useCircleProject = () => {
       )
       const obj = await res.json()
       if (obj?.code === 0) {
-        projects = obj?.datas?.list
-        console.log(projects,obj?.datas?.list)
+        setProjects(obj?.datas?.list)
       }
 
     } catch (error) {
