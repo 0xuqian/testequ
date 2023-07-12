@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import Image from "next/image";
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRouter } from "next/router";
 import {Button} from '@pancakeswap/uikit'
 import BigNumber from "bignumber.js";
@@ -201,8 +201,9 @@ const CircleShare: React.FC<React.PropsWithChildren<{ projectAddress: string }>>
     setIsDisabled(true)    
 
     const mintPrice = 0.00022
-    const nftContract = '0xA81bD9B64F8686ee97A8629Fffb3b10cC3E17700'
-    const tokenAddr = '0xA4E2932721763f9B3b99a74a0dCCbc71F2341031'
+    const nftContract = '0xc2452DB583AFB353cB44Ac6edC2f61Da7C23A8bB'
+    const tokenAddr = '0xd4FEc4cEf94F97d79Ec8E7C83445887833fC4d28'
+
 
     const accounts = await window.ethereum.request({ method: "eth_requestAccounts" });
     const accountAddress = accounts[0];
@@ -211,8 +212,9 @@ const CircleShare: React.FC<React.PropsWithChildren<{ projectAddress: string }>>
     const overrides = {
       value:  ethers.utils.parseUnits(( Number(amount)* mintPrice).toString(), 'ether')
     }
-    const contract = new ethers.Contract("0x465Cf12F874AFCe0CA4C339c8e51fFB4628D17e0", TokenTransferAbi, signer);
+    const contract = new ethers.Contract("0x6E6CFb3A5b93367495D52aF339835739258b9295", TokenTransferAbi, signer);
     // const tx = await contract.mintNfts("0x522338F22de2687c2f488627E0Bd750d40090254","0x237585E5583894C04B16413b10525DcC4604f2Be",accountAddress,amount,overrides);
+    
     try{
       isMinting(true)
       const tx = await contract.mintNfts(nftContract,tokenAddr,accountAddress,amount,overrides);

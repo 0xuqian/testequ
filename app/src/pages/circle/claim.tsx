@@ -70,7 +70,7 @@ const CircleClaim: React.FC<React.PropsWithChildren<{ projectAddr: string, leade
   const { toastError, toastSuccess } = useToast()
   const { t } = useTranslation()
   const [isClaiming,setIsClaiming] = useState(false);
-  const [isDisabled, setIsDisabled] = useState<boolean>(false);
+  const [isDisabled, setIsDisabled] = useState<boolean>(true);
   const [projectAddress, setProjectAddress] = useState('');
   const [communityAddress, setCommunityAddress] = useState('');
 
@@ -134,7 +134,7 @@ const CircleClaim: React.FC<React.PropsWithChildren<{ projectAddr: string, leade
     console.log(chainId,account,accountAddress)
     const provider = new ethers.providers.Web3Provider(window.ethereum);
     const signer = provider.getSigner();
-    const contract = new ethers.Contract("0xA81bD9B64F8686ee97A8629Fffb3b10cC3E17700", HandNftAbi, signer);
+    const contract = new ethers.Contract("0xc2452DB583AFB353cB44Ac6edC2f61Da7C23A8bB", HandNftAbi, signer);
     console.log(nftId)
     const overrides = {
       value:  ethers.utils.parseUnits(claimPrice.toString(), 'ether')
