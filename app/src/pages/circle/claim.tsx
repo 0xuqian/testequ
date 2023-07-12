@@ -66,7 +66,7 @@ const ProjectTitle = styled.div`
 const CircleClaim: React.FC<React.PropsWithChildren<{ projectAddr: string, leaderAddress:string }>> = () => {
   
   const router = useRouter()
-  const {chainId,account} = useActiveWeb3React()
+  const {library,chainId,account} = useActiveWeb3React()
   const { toastError, toastSuccess } = useToast()
   const { t } = useTranslation()
   const [isClaiming,setIsClaiming] = useState(false);
@@ -105,7 +105,7 @@ const CircleClaim: React.FC<React.PropsWithChildren<{ projectAddr: string, leade
       const body = JSON.stringify({
         miner: communityAddress,
         project: projectAddress,
-        net: `evm--97`,
+        net: account ? `evm--${Number(chainId)}` : `evm--97`,
       });
       console.info(body)
 
@@ -125,15 +125,15 @@ const CircleClaim: React.FC<React.PropsWithChildren<{ projectAddr: string, leade
   }
 
   const handleTransfer = async () => {
+
     setIsClaiming(true)
     setIsDisabled(true)
     const claimPrice = 0.00066
     const nftId = await getNFTId()
-    const accounts = await window.ethereum.request({ method: "eth_requestAccounts" });
-    const accountAddress = accounts[0];
-    console.log(chainId,account,accountAddress)
-    const provider = new ethers.providers.Web3Provider(window.ethereum);
-    const signer = provider.getSigner();
+    await library.provider.request({ method: "eth_requestAccounts" });
+
+    // const provider = new ethers.providers.Web3Provider(window.ethereum);
+    const signer = library.getSigner();
     const contract = new ethers.Contract("0xc2452DB583AFB353cB44Ac6edC2f61Da7C23A8bB", HandNftAbi, signer);
     console.log(nftId)
     const overrides = {

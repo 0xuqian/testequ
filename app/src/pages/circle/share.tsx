@@ -139,7 +139,7 @@ const CircleShare: React.FC<React.PropsWithChildren<{ projectAddress: string }>>
   const [amount, setAmount] = useState('');  
   const [minting, isMinting] = useState<boolean>(false);
   const [isDisabled, setIsDisabled] = useState<boolean>(true);
-  const { chainId, account } = useActiveWeb3React()
+  const { library,chainId, account } = useActiveWeb3React()
 
   // const handleInput = (event: React.FormEvent<HTMLInputElement>) => {
   //   const inputValue = event.currentTarget.value;
@@ -205,10 +205,9 @@ const CircleShare: React.FC<React.PropsWithChildren<{ projectAddress: string }>>
     const tokenAddr = '0xd4FEc4cEf94F97d79Ec8E7C83445887833fC4d28'
 
 
-    const accounts = await window.ethereum.request({ method: "eth_requestAccounts" });
+    const accounts = await library.provider.request({ method: "eth_requestAccounts" });
     const accountAddress = accounts[0];
-    const provider = new ethers.providers.Web3Provider(window.ethereum);
-    const signer = provider.getSigner();
+    const signer = library.getSigner();
     const overrides = {
       value:  ethers.utils.parseUnits(( Number(amount)* mintPrice).toString(), 'ether')
     }
