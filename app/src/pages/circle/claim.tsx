@@ -136,7 +136,7 @@ const CircleClaim: React.FC<React.PropsWithChildren<{ projectAddr: string, leade
     // const provider = new ethers.providers.Web3Provider(window.ethereum);
     const signer = library.getSigner();
     const contract = new ethers.Contract(nftContract, HandNftAbi, signer);
-    console.log(nftId)
+    console.info(nftId)
     const overrides = {
       value:  ethers.utils.parseUnits(claimPrice.toString(), 'ether')
     }

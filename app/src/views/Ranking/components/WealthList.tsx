@@ -161,7 +161,6 @@ const Tooltip = styled.div<{
 `
 
 export default function WealthList({timeType, type}) {
-  const theme = useTheme()
   const { t } = useTranslation()
   const [currentPage, setCurrentPage] = useState(1)
   const { isDesktop } = useMatchBreakpointsContext()
@@ -169,10 +168,6 @@ export default function WealthList({timeType, type}) {
   const [isLoading, setLoading] = useState(false)
   const size = 10
   const { list, page } = useRankingInfo('wealth', size, timeType.key, type, currentPage, setLoading)
-
-  console.log(list)
-
-  
 
   const SkeletonWrapper = []
   for (let i = 0; i < size; i++) {

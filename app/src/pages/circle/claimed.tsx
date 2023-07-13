@@ -42,7 +42,6 @@ const ClaimSuccDetail = styled.div`
 
 const Image = styled.img`
   width: 30%;
-
 `
 const LinkInner = styled.div`
   flex: 1;

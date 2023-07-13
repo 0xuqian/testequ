@@ -1,4 +1,4 @@
-import {useCallback, useEffect, useState, useRef, useMemo} from 'react'
+import {useCallback, useEffect, useState } from 'react'
 import {useTranslation} from "@pancakeswap/localization";
 import useActiveWeb3React from "./useActiveWeb3React";
 import {useCallWithGasPrice} from "./useCallWithGasPrice";

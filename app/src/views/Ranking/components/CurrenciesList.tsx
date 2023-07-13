@@ -8,7 +8,6 @@ import CopyToClipboard from 'react-copy-to-clipboard'
 import {useMatchBreakpointsContext, useOnClickOutside} from "@pancakeswap/uikit";
 import useRankingInfo from "../../../hooks/useRankingInfo";
 import PageBtnList from "./PageBtnList";
-import {PredictionsChartView} from "../../../state/types";
 
 const TopBar = styled.div`
   margin: 14px 0;

@@ -1958,5 +1958,10 @@
   "have handed": "Have already claimed the nft of the project",
   "rank": "Rank",
   "NFT Details": "NFT Details",
-  "contract address": "Contract address"
+  "contract address": "Contract address",
+  "Profitability of all members": "Profitability of all members of the community (including community leader)",
+  "excluding community leader": "Profitability of all members of the community (excluding community leader)",
+  "received by individuals": "Total trading rebates received by individuals",
+  "users brought to each project": "The average valid number of users brought to each project",
+  "brought to the project": "The number of valid users brought to the project"
 }

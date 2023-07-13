@@ -1,11 +1,19 @@
 import styled from 'styled-components'
 import {useEffect, useMemo, useRef, useState} from 'react'
 import { useTranslation } from '@pancakeswap/localization'
-import {Card, useMatchBreakpointsContext, useOnClickOutside} from '@pancakeswap/uikit'
+import {Card, useMatchBreakpointsContext, useOnClickOutside, useTooltip } from '@pancakeswap/uikit'
 import Page from '../Page'
 import WealthList from './components/WealthList'
 import TrendingList from './components/TrendingList'
 import CurrenciesList from './components/CurrenciesList'
+
+const ReferenceElement = styled.div`
+  position: absolute;
+  // display: inline-block;
+  top: 70%;
+  z-index: 1000;
+  right: 0px;
+`
 
 const StyledAppBody = styled(Card)`
   border: none;
@@ -167,12 +175,22 @@ const TimeMenuItem = styled.div`
   }
 `
 
-export default function Dcs() {
+const HelpBtn = styled.img`
+   width: 60px;
+`
+export default function Ranking() {
+
   const { t, currentLanguage } = useTranslation()
   const [listType, setListType] = useState<'Wealth' | 'Trending' | 'Currencies'>('Wealth')
   const [visible, setVisible] = useState(false)
   const [isShowMenu, setIsShowMenu] = useState(true)
   const { isDesktop } = useMatchBreakpointsContext()
+  const [helpContent, setHelpContent] = useState("");
+
+  const { targetRef, tooltip, tooltipVisible } = useTooltip(
+    helpContent,
+    { placement: 'top-end', tooltipOffset: [20, 10] },
+  )
 
   const node = useRef<HTMLDivElement>()
   useOnClickOutside(node, setVisible ? () => setVisible(false)  : undefined)
@@ -210,6 +228,35 @@ export default function Dcs() {
     setTimeType(timeList.find((item) => (item.key === timeType.key)))
   }, [currentLanguage.language])
 
+  useEffect(()=>{
+    switch (type) {
+      case "recommend": {
+        setHelpContent(t('Profitability of all members'))
+        break;
+      }
+      case "team": {
+        setHelpContent(t('excluding community leader'))
+        break;
+      }
+      case "income": {
+        setHelpContent(t('received by individuals'))
+        break;
+      }
+      case "people": {
+        setHelpContent(t('users brought to each project'))
+        break;
+      }
+      case "": {
+        setHelpContent(t('brought to the project'))
+        break;
+      }
+      default: {
+        setHelpContent(t('Profitability of all members'))
+        break;
+      }
+    }
+  },[type,currentLanguage.language])
+  
   const List = useMemo(() => {
     switch (listType) {
       case "Wealth": {
@@ -403,6 +450,10 @@ export default function Dcs() {
         }
         {List}
       </StyledAppBody>
+      <ReferenceElement ref={targetRef}>
+          <HelpBtn src='/images/questionIcon.png'/>
+      </ReferenceElement>
+      {tooltipVisible && tooltip}
     </Page>
   )
 }

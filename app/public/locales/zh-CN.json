@@ -1873,5 +1873,10 @@
   "have handed": "已经领取过该项目的NFT",
   "rank": "排名",
   "NFT Details": "NFT详情",
-  "contract address": "合约地址"
+  "contract address": "合约地址",
+  "Profitability of all members": "社区所有人的盈利情况(包含社区长)",
+  "excluding community leader": "社区所有成员的盈利情况(除去社区长)",
+  "received by individuals": "个人获得的交易返佣总额",
+  "users brought to each project": "为每个项目带来的平均有效用户数量",
+  "brought to the project": "该项目分享的人数"
 }
