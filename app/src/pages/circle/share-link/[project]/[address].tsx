@@ -1,13 +1,13 @@
 import { useRouter } from "next/router";
-import ShareLink from "../../claimed";
+import CircleShare from "../../share-link";
 
 const SharePage = () => {
   const router = useRouter();
-  const { project } = router.query;
+  const { project, address } = router.query;
+  console.log(project,address)
   return (
-    <ShareLink
-      projectAddress={String(project)}
-    />
+    <CircleShare
+      projectAddress={String(project)} leaderAddress={String(address)}    />
   );
 };
 

@@ -3,10 +3,10 @@ import CircleClaim from '../../claim';
 
 const CircleClaimPage = () => {
   const router = useRouter();
-  const { project, leader } = router.query;
+  const { project, leaderAddress } = router.query;
 
   return (
-    <CircleClaim projectAddr ={String(project)} leaderAddress={String(leader)} />
+    <CircleClaim projectAddr ={String(project)} leaderAddress={String(leaderAddress)} />
   );
 };
 
