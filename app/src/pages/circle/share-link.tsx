@@ -2,7 +2,6 @@ import router from "next/router"
 import styled from "styled-components"
 import CircleHeader from "views/Circle/components/CircleHeader"
 import Page from "views/Page"
-import { useWeb3React } from '@web3-react/core'
 import {Button} from '@pancakeswap/uikit'
 import useToast from "hooks/useToast";
 import { CopyToClipboard } from 'react-copy-to-clipboard';
@@ -90,7 +89,7 @@ const CircleShare: React.FC<React.PropsWithChildren<{ projectAddress: string, le
             Right={undefined}
         />
       <SuccessDiv>
-        <Image src="/images/circle/check.png" />
+        <Image src="/images/circle/checked.png" />
         <MintSucText>{t('Mint_success')}</MintSucText>
       </SuccessDiv>
       {/* <CopyToClipboard text="gg" onCopy={() => {

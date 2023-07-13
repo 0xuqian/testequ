@@ -76,10 +76,10 @@ const CircleClaim: React.FC<React.PropsWithChildren<{ projectAddr: string, leade
 
   useEffect(() => {
     const urlPath = window.location.pathname;
-    const params = urlPath.split('/').filter(Boolean); // 使用斜杠进行分割，并过滤掉空字符串
+    const params = urlPath.split('/').filter(Boolean); 
 
     if (params.length === 4) {
-      const lastTwoParams = params.slice(-2); // 获取最后两个参数
+      const lastTwoParams = params.slice(-2); 
       const [project, leader] = lastTwoParams;
 
       // 在这里处理获取到的参数
@@ -153,7 +153,7 @@ const CircleClaim: React.FC<React.PropsWithChildren<{ projectAddr: string, leade
       setIsClaiming(false)
       setIsDisabled(false)
 
-      router.push(`/circle/claimed`)
+      router.push(`/circle/claimed/${projectAddress}/${nftId}`)
       console.log(receipt1);
       
     }catch(error){

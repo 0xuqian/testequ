@@ -1,14 +1,12 @@
 import { useRouter } from 'next/router';
-import CircleList from '../../claim'; 
+import CircleClaim from '../../claim'; 
 
 const CircleClaimPage = () => {
   const router = useRouter();
   const { project, leader } = router.query;
 
-  // 在这里使用获取到的参数进行处理
-
   return (
-    <CircleList projectAddr ={String(project)} leaderAddress={String(leader)} />
+    <CircleClaim projectAddr ={String(project)} leaderAddress={String(leader)} />
   );
 };
 

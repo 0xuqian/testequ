@@ -227,7 +227,6 @@ const CircleShare: React.FC<React.PropsWithChildren<{ projectAddress: string }>>
               {t('Your nft was minted successfully')}
             </ToastDescriptionWithTx>,
           )
-          // toastSuccess(t('Your nft was minted successfully'))
           isMinting(false)
           setIsDisabled(false) 
           router.push(`/circle/share-link/${projectAddress.toLowerCase()}/${account.toLowerCase()}`)

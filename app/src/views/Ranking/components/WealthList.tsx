@@ -238,7 +238,7 @@ export default function WealthList({timeType, type}) {
                         list.map((item, i) => (
                             <ListItem style={item?.wallet ? {cursor: 'pointer'} : {}} key={item?.index} onClick={() => {
                               if (item?.wallet) {
-                                window.open(`/dcs/${item.wallet}`)
+                                window.open(`/rank/${item.wallet}`)
                               }
                             }}>
                               <InfoWrapper>

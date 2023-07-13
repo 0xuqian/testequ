@@ -1,13 +1,12 @@
 import { useRouter } from "next/router";
-import ShareLink from "../../share-link";
+import ShareLink from "../../claimed";
 
 const SharePage = () => {
   const router = useRouter();
-  const { project, address} = router.query;
+  const { project } = router.query;
   return (
     <ShareLink
       projectAddress={String(project)}
-      leaderAddress={String(address)}
     />
   );
 };

@@ -1955,5 +1955,8 @@
   "Share link has been copied to clipboard": "Share link has been copied to clipboard.",
   "can not claim, you are minter": "Unable to claim the NFT minted by yourself, please change the address of the community leader",
   "people": "Number",
-  "have handed":"Have already claimed the nft of the project"
+  "have handed": "Have already claimed the nft of the project",
+  "rank": "Rank",
+  "NFT Details": "NFT Details",
+  "contract address": "Contract address"
 }
