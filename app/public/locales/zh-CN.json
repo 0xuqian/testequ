@@ -1854,7 +1854,7 @@
   "airdop_n_can_claim": "今日已领取，请24小时后再来",
   "mintNFT_share": "铸造和分享NFT",
   "Claim_NFT": "领取NFT",
-  "mint_limit_text": "数量 1～200",
+  "mint_limit_text": "数量 1～500",
   "paste_proj_addr_text": "请粘贴项目地址：",
   "leader_address": "社区长钱包地址：",
   "Mint_success": "铸造成功！",
@@ -1878,5 +1878,6 @@
   "excluding community leader": "社区所有成员的盈利情况(除去社区长)",
   "received by individuals": "个人获得的交易返佣总额",
   "users brought to each project": "为每个项目带来的平均有效用户数量",
-  "brought to the project": "该项目分享的人数"
+  "brought to the project": "该项目分享的人数",
+  "claim record": "领取记录"
 }

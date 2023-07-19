@@ -157,7 +157,7 @@ const CircleClaim: React.FC<React.PropsWithChildren<{ projectAddr: string, leade
       router.push(`/circle/claimed/${nftContract}/${nftId}`)
       console.log(receipt1);
       
-    }catch(error){
+    }catch(error: any){
       setIsClaiming(false)
       setIsDisabled(false)
       // if (error.data && error.data.message) {

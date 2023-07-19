@@ -1,4 +1,4 @@
-import styled, {  } from 'styled-components'
+import styled from 'styled-components'
 import { Image } from '@pancakeswap/uikit'
 
 const Header = styled.div`
