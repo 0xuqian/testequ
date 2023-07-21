@@ -56,7 +56,7 @@ const ListValue = styled.div`
   color: #11142d;
 `
 
-const ProjectInfo = ( {projectInfo}:{projectInfo: NftHistory} ) => {
+const ProjectInfo = ( {projectInfo}:{projectInfo: NftHistory}) => {
   return (
     <List>
     <ListLeft>
