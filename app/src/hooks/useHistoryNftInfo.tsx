@@ -63,9 +63,9 @@ export const useHistoryNftInfo = (setNetwork): AllHistory | null  => {
 
 
 export const useKLine = (): AllHistory | null  => {
+
   const {chainId,account} = useActiveWeb3React()
   const [KData, setKData] = useState<AllHistory | null >(null)
-
   const fetchData = useCallback(async () => {
     try {
       const res: any = await fetch(`https://www.equityswap.club/app/k_line`,
@@ -91,5 +91,6 @@ export const useKLine = (): AllHistory | null  => {
   useEffect(() => {
     fetchData()
   }, [chainId, account, fetchData])
+  
   return KData;
 }

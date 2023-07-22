@@ -41,8 +41,6 @@ export default function CircleHistory() {
   const { t } = useTranslation()
   const data = useHistoryNftInfo(setNetwork)
 
-  console.log(data)
-  
   return (
       <Page>
         <LinkWrapper>
