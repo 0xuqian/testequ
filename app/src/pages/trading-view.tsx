@@ -46,6 +46,7 @@ const LineChartLoader11 = styled(LineChartLoader)`
 `
 
 const AllCartContainer = styled.div`
+  font-family: 'Inter', sans-serif;
   width: 100%;
   max-width: 800px;
   margin: 0 auto;
@@ -53,7 +54,6 @@ const AllCartContainer = styled.div`
   flex-direction: column;
   justify-content: center;
   min-height: 550px;
-  background: #ffff;
   padding: 0 16px;
   background: ${({ theme }) => theme.colors.backgroundAlt};
 `
@@ -73,7 +73,7 @@ const LinePlot: FC<LinePlotProps> = ({
   marginTop = 20,
   marginRight = 20,
   marginBottom = 50,
-  marginLeft = 50,
+  marginLeft = 60,
   isDesktop= false,
   onMousePositionChange
 }) => {
@@ -142,10 +142,10 @@ const LinePlot: FC<LinePlotProps> = ({
     svg.selectAll("*").remove();
     
     svg.append("rect")
-    .attr("x", 50)
+    .attr("x", 60)
     .attr("y", 0)
-    .attr("width",570)
-    .attr("height", 340)
+    .attr("width",width - marginLeft - marginRight)
+    .attr("height", height- marginBottom)
     .style("fill", "transparent")
 
     svg
@@ -156,9 +156,10 @@ const LinePlot: FC<LinePlotProps> = ({
     svg
       .append("g")
       .attr("transform", `translate(${marginLeft}, 0)`)
-      .call(d3.axisLeft(y)).selectAll(".domain, .tick line")
+      .call(d3.axisLeft(y))
+      .selectAll(".domain, .tick line")
+      .attr("stroke-width", 50)
       .remove()
-      .style("z-index","999");
 
       svg.on("mousemove", handleMouseMove)
       svg.on('mouseleave', handleMouseOut);
@@ -258,7 +259,7 @@ const LinePlot: FC<LinePlotProps> = ({
   const handleMouseMove = (event) => {
     const { clientX, clientY } = event;
     const { left, top } = svgRef.current.getBoundingClientRect();
-    const x1: number = clientX - left;
+    const x1: number = clientX - left + 12;
     const y1: number = clientY - top;
 
     if  (x1 >= marginLeft && x1 <= width - marginRight && y1 >= marginTop && y1 <= height - marginBottom) {
@@ -336,7 +337,7 @@ const Tocao: FC<{data1:any | null}> = ({data1}) => {
         <PriceDate price = {mousePosition?.y ||  dataPoints[price.length - 1].price } date={mousePosition?.x || formatDate(dataPoints[price.length - 1].time) } />
         <ChartContainer>
 
-            {isDesktop? <svg width="700" height="450"><LinePlot width= {700} height ={450}  data={dataPoints} isDesktop = {isDesktop}onMousePositionChange={setMousePosition} /></svg>
+            {isDesktop? <svg width="768" height="450"><LinePlot width= {768} height ={450}  data={dataPoints} isDesktop = {isDesktop}onMousePositionChange={setMousePosition} /></svg>
             :<svg width="350" height="450"><LinePlot width= {350} height ={450}  data={dataPoints} onMousePositionChange={setMousePosition} /></svg>}
             
         </ChartContainer>
