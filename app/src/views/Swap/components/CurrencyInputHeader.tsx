@@ -75,7 +75,7 @@ const CurrencyInputHeader: React.FC<React.PropsWithChildren<Props>> = ({
         </Flex>
         <Flex>
           <></>
-          <div><ChartImg  onClick={() =>router.push('/test')} src='/images/kchart.png' alt='gg' /></div>
+          <div><ChartImg  onClick={() =>router.push('/trading-view')} src='/images/kchart.png' alt='gg' /></div>
           <NotificationDot show={expertMode}>
             <GlobalSettings mr="0" mode={SettingsMode.SWAP_LIQUIDITY} />
           </NotificationDot>

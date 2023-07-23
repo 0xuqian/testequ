@@ -5,6 +5,7 @@ interface PriceDateProps {
   date: string;
   projectIcon?: string;
   tokenName?: string;
+  
 }
 
 const PriceInfo = styled.div`
