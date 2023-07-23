@@ -1,5 +1,10 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components'
+import { create } from 'ipfs-http-client';
+import { ethers } from 'ethers';
+import { useWeb3React } from '@web3-react/core'
+import Page from 'views/Page';
+import useRankingInfo from '../../hooks/useRankingDetails'
 
 
 const ListWrapper = styled.div`
@@ -11,6 +16,7 @@ const ListWrapper = styled.div`
   min-height: 550px;
   background: #ffff;
   padding: 0 20px 0 16px;
+  background-color: ${({ theme }) => theme.colors.backgroundAlt};
 `
 const List = styled.div`
   width: 100%;
@@ -21,7 +27,6 @@ const List = styled.div`
   justify-content: space-between;
   align-items: center;
   // border-radius: 8px;
-  // padding: 0 8px;
   &:hover {
     background: #e8e8e8;  
   }
@@ -47,7 +52,6 @@ const TitleName = styled.div`
   width: 50px;
   height: 50px;
   line-height: 50px;
-  text
 `
 
 const ListItem = styled.div`
@@ -62,6 +66,7 @@ const ListItem = styled.div`
   @media screen and (max-width: 852px) {
     height: 80px;
   }
+    background-color: ${({ theme }) => theme.colors.backgroundAlt};
 `
 
 const NickNameDiv = styled.div`
@@ -85,10 +90,44 @@ const AvatarImageDiv = styled.div`
 
 const ProfilePage = () => {
 
+  const { account } = useWeb3React()
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [isEditing, setIsEditing] = useState(false);
-  const [nickname, setNickname] = useState('Nickname');
+  const [nickname, setNickname] = useState('Your Nickname');
+  const [userInfoLoaded, setUserInfoLoaded] = useState(false);
+
+  const userInfo = useRankingInfo(account)
+  const projectId = '2RxSDjGGChYbDccqxgSHDCGWDGT';
+  const projectSecret = '9a0a07cc2c7e8b6a9115b8a8b451391c';
+  const ipfs = create({
+    host: 'ipfs.infura.io',
+    port: 5001,
+    protocol: 'https',
+    headers: {
+      authorization: `Basic ${  btoa(`${projectId}:${projectSecret}`)}`
+    }
+  });
+
+  useEffect(() => {
+    setUserInfoLoaded(false)
+  }, [account]);
+
+  useEffect(() => {
+    if (userInfo && userInfo.user_wallet?.toLowerCase() === account?.toLowerCase() && !userInfoLoaded) {
+
+      setImagePreview(userInfo.icon);
+      setNickname(userInfo.name);
+      setUserInfoLoaded(true);
+    }
+  }, [userInfo, userInfoLoaded,account]);
+  
+  useEffect(() => {
+    if (userInfo?.icon !== imagePreview && userInfo?.name !== nickname && userInfoLoaded){
+      setImagePreview(imagePreview);
+      setNickname(nickname);
+    }
+  }, [account, nickname, imagePreview, userInfo]);
 
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -110,22 +149,48 @@ const ProfilePage = () => {
     setNickname(event.target.value);
   };
 
+  const verifySignature= async (): Promise<string>  => {
+
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    const network = await provider.getNetwork();
+    const signer = provider.getSigner();
+    const address = await signer.getAddress();
+
+    console.log('Connected wallet address:', address);
+    console.log('Connected network:', network);
+
+    const message = `Request to change personal information:
+  address: ${address}
+    `;
+
+    const signature = await signer.signMessage(message)
+    console.log(signature)
+    return signature
+  }
+
   const handleSubmit = async () => {
-    if (selectedImage && nickname) {
+    const signature = await verifySignature()
+    let url;
+    try {
+      const added = await ipfs.add(imagePreview);
+      url = `https://ipfs.io/ipfs/${added.path}`;
+      console.log(url)
+    } catch (err) {
+      console.error(err);
+    }
+
+    if (imagePreview && nickname) {
+      console.log(url)
       try {
-        const reader = new FileReader();
-        reader.readAsDataURL(selectedImage); // 'selectedImage' 是 File 对象
-        reader.onloadend = async () => {
-          const base64Image = reader.result;
-          console.log(base64Image)
           const body = JSON.stringify({
-            new_icon: base64Image,
+            new_icon: url,
             new_name: nickname,
-            wallet: "0xe18778455dd4Ff13f319F9f72defE070ee696969",
+            wallet: account,
+            sign: signature,
             new_tg: null,
             new_twitter: null,
           });
-  
+          console.log(url,nickname)
           const response = await fetch('https://www.equityswap.club/app/user/setuserinfo', {
             method: 'POST',
             headers: {
@@ -137,21 +202,18 @@ const ProfilePage = () => {
           if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
           }
-  
+          console.log(body)
           const data = await response.json();
           console.log(data);
-        };
-        reader.onerror = () => {
-          console.error("Failed to read image file:", reader.error);
-        };
-      } catch (error) {
-        console.error('Failed to upload data:', error);
-      }
+        }catch{
+          console.log("上传ipfs失败")
+        }
     }
   };
 
 
   return(
+    <Page>
     <ListWrapper>
       <List>
       <ListItem onClick={() => document.getElementById('fileInput')?.click()}>
@@ -190,6 +252,7 @@ const ProfilePage = () => {
         <SaveButtion onClick={handleSubmit} style={{marginTop: '15px'}}>SAVE</SaveButtion>
       </List>
     </ListWrapper>
+    </Page>
   )
 }
 export default ProfilePage

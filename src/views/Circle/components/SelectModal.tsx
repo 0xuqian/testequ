@@ -13,7 +13,7 @@ const ProjectPriceValue = styled.div`
   font-weight: 500;
   font-size: 14px;
   line-height: 26px;
-  color: #15141f;
+  // color: #15141f;
   margin-right: 2px;
 `
 
@@ -36,7 +36,7 @@ const ProjectTokenName = styled.div`
   font-weight: 500;
   font-size: 16px;
   line-height: 26px;
-  color: #15141f;
+  // color: #15141f;
 `
 
 const CurrentProject = styled.div`
@@ -49,9 +49,11 @@ const CurrentProject = styled.div`
   justify-content: space-between;
   padding: 0 12px 0 16px;
   align-items: center;
+  background: ${({ theme }) => theme.colors.backgroundAlt};
 `
 
-const ProjectToken = styled.div``
+const ProjectToken = styled.div`
+`
 
 const ProjectPrice = styled.div`
   display: flex;

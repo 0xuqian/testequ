@@ -75,7 +75,7 @@ export const USDT = {
   ),
   [ChainId.BSC]: new Token(
       ChainId.BSC,
-      '0x55d398326f99059ff775485246999027b3197955',
+      '0x510FA634aF7e97AF0b78594c5323976111BAE058',
       18,
       'USDT',
       'USDT',

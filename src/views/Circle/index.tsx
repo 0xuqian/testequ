@@ -1,7 +1,7 @@
-import styled, { useTheme } from 'styled-components'
+import styled from 'styled-components'
 import { Image } from '@pancakeswap/uikit'
 import { useRouter } from 'next/router'
-
+import { useTranslation } from '@pancakeswap/localization'
 import Page from '../Page'
 
 const ListWrapper = styled.div`
@@ -12,7 +12,9 @@ const ListWrapper = styled.div`
   flex-direction: column;
   min-height: 550px;
   background: #ffff;
-  padding: 0 20px 0 16px;
+  padding: 20px 20px 0 16px;
+  background-color: ${({ theme }) => theme.colors.backgroundAlt};
+  border-radius: 20px
 `
 
 const Line = styled.div`
@@ -63,10 +65,10 @@ const ListTitle = styled.div`
   line-height: 140%;
   display: flex;
   align-items: center;
-  color: #11142D;
 `
 
 export default function CircleList() {
+  const { t } = useTranslation()
   const router = useRouter()
 
   return (
@@ -75,7 +77,7 @@ export default function CircleList() {
           <List onClick={() => router.push('/circle/link')}>
             <ListLeft>
               <Icon width={20} height={20} src="/images/circle/link.png" alt="link" />
-              <ListTitle>Mint NFT分享</ListTitle>
+              <ListTitle> {t('mintNFT_share')} </ListTitle>
             </ListLeft>
             <ListRight>
               <Arrow width={16} height={16}  src="/images/circle/arrow.png" alt="to link" />
@@ -85,7 +87,7 @@ export default function CircleList() {
           <List onClick={() => router.push('/circle/claim')}>
             <ListLeft>
               <Icon width={20} height={20} src="/images/circle/link.png" alt="link" />
-              <ListTitle>领取NFT</ListTitle>
+              <ListTitle >{t('Claim_NFT')}</ListTitle>
             </ListLeft>
             <ListRight>
               <Arrow width={16} height={16}  src="/images/circle/arrow.png" alt="to link" />

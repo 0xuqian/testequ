@@ -42,6 +42,13 @@ import {
   getPredictionsV1Contract,
 } from 'utils/contractHelpers'
 import { getMulticallAddress, getPredictionsV1Address, getZapAddress } from 'utils/addressHelpers'
+import zapAbi from 'config/abi/zap.json'
+// Imports below migrated from Exchange useContract.ts
+import { Contract } from '@ethersproject/contracts'
+import { bscRpcProvider } from 'utils/providers'
+import { ChainId, WNATIVE } from '@pancakeswap/sdk'
+import { IPancakePair } from 'config/abi/types/IPancakePair'
+import IPancakePairABI from 'config/abi/IPancakePair.json'
 import {
   Erc20,
   Erc20Bytes32,
@@ -52,14 +59,7 @@ import {
   CakeVaultV2,
   CakeFlexibleSideVaultV2,
   Zap,
-} from 'config/types'
-import zapAbi from 'config/abi/zap.json'
-
-// Imports below migrated from Exchange useContract.ts
-import { Contract } from '@ethersproject/contracts'
-import { bscRpcProvider } from 'utils/providers'
-import { ChainId, WNATIVE } from '@pancakeswap/sdk'
-import IPancakePairABI from '../config/abi/IPancakePair.json'
+} from '../config/abi/types'
 import { ERC20_BYTES32_ABI } from '../config/abi/erc20'
 import ERC20_ABI from '../config/abi/erc20.json'
 import WETH_ABI from '../config/abi/weth.json'
@@ -371,9 +371,9 @@ export function useBytes32TokenContract(tokenAddress?: string, withSignerIfPossi
   return useContract<Erc20Bytes32>(tokenAddress, ERC20_BYTES32_ABI, withSignerIfPossible)
 }
 
-// export function usePairContract(pairAddress?: string, withSignerIfPossible?: boolean): IPancakePair | null {
-//   return useContract(pairAddress, IPancakePairABI, withSignerIfPossible)
-// }
+export function usePairContract(pairAddress?: string, withSignerIfPossible?: boolean): IPancakePair | null {
+  return useContract(pairAddress, IPancakePairABI, withSignerIfPossible)
+}
 
 export function useAirdopContract(pairAddress?: string, withSignerIfPossible?: boolean): Contract | null {
   return useContract(pairAddress, AirdopABI, withSignerIfPossible)

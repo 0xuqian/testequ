@@ -2,8 +2,8 @@ import styled, { useTheme } from 'styled-components'
 import BigNumber from "bignumber.js";
 import {useEffect, useState} from 'react'
 import {useRouter} from "next/router";
-import {BoxProps, Button, Image, InjectedModalProps, useModal} from '@pancakeswap/uikit'
-import LinkSwitch from './components/LinkSwitch'
+import {BoxProps, Button, Image, useModal} from '@pancakeswap/uikit'
+import { useTranslation } from '@pancakeswap/localization';
 import CircleHeader from './components/CircleHeader'
 import LinkInfo from './components/LinkInfo'
 import Page from '../Page'
@@ -18,8 +18,9 @@ const LinkWrapper = styled.div`
   display: flex;
   flex-direction: column;
   min-height: 550px;
-  background: #ffff;
+  background-color: ${({ theme }) => theme.colors.backgroundAlt};
   padding: 0 16px;
+  border-radius: 20px
 `
 
 const LinkInner = styled.div`
@@ -38,11 +39,13 @@ const CurrentProject = styled.div`
   justify-content: space-between;
   padding: 0 12px 0 16px;
   align-items: center;
+  background: ${({ theme }) => theme.colors.backgroundAlt};
 `
 
 const ProjectInfo = styled.div`
   display: flex;
   align-items: center;
+  
 `
 
 const ProjectPrice = styled.div`
@@ -56,7 +59,7 @@ const ProjectPriceValue = styled.div`
   font-weight: 500;
   font-size: 14px;
   line-height: 26px;
-  color: #15141f;
+  // color: #15141f;
   margin-right: 2px;
 `
 
@@ -79,7 +82,6 @@ const ProjectSelect = styled.div`
   font-weight: 500;
   font-size: 16px;
   line-height: 26px;
-  color: #15141f;
   &.loading {
     color: #e6e6e6;
   }
@@ -91,7 +93,6 @@ const ProjectTokenName = styled.div`
   font-weight: 500;
   font-size: 16px;
   line-height: 26px;
-  color: #15141f;
 `
 
 const History = styled.div`
@@ -101,7 +102,6 @@ const History = styled.div`
   font-weight: 400;
   font-size: 14px;
   line-height: 20px;
-  color: #11142d;
 `
 
 const SelectButton = styled(Button)`
@@ -111,7 +111,9 @@ const SelectButton = styled(Button)`
 `
 
 export default function CircleList() {
+
   const router = useRouter()
+  const { t } = useTranslation()
   const [project, setProject] = useState(null)
   const [isShowModal, setShowModal] = useState(false)
   const { projects } = useCircleProject()
@@ -124,8 +126,8 @@ export default function CircleList() {
           <LinkInner>
             <CircleHeader
                 backFn={() => router.push('/circle')}
-                title="Mint"
-                Right={<History onClick={() => router.push('/circle/history')}>History</History>}
+                title={t('Mint')}
+                Right={<History onClick={() => router.push('/circle/history')}>{t('History')}</History>}
             />
             {/* <LinkSwitch /> */}
             <CurrentProject onClick={() => {
@@ -152,7 +154,7 @@ export default function CircleList() {
                     <>
                       <ProjectInfo>
                         <ProjectToken>
-                          <ProjectSelect className={projects ? '' : 'loading'}>Select</ProjectSelect>
+                          <ProjectSelect className={projects ? '' : 'loading'}>{t('Select a Token')}</ProjectSelect>
                         </ProjectToken>
                       </ProjectInfo>
                       <ProjectPrice>
@@ -169,7 +171,7 @@ export default function CircleList() {
                 !project?.token_addr
               }
               onClick={() => router.push(`/circle/share/${project?.token_addr}`)}
-          >Next</SelectButton>
+          >{t('Next Step')}</SelectButton>
         </LinkWrapper>
       </Page>
   )

@@ -1,10 +1,14 @@
 import styled from "styled-components";
 import Image from "next/image";
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRouter } from "next/router";
 import {Button} from '@pancakeswap/uikit'
 import BigNumber from "bignumber.js";
 import { ethers } from 'ethers';
+import useActiveWeb3React from "hooks/useActiveWeb3React";
+import { useTranslation } from "@pancakeswap/localization";
+import useToast from "hooks/useToast";
+import { ToastDescriptionWithTx } from "components/Toast";
 import { useCircleProjectInfo} from "../../hooks/useCircleProject";
 import Page from '../../views/Page'
 import CircleHeader from '../../views/Circle/components/CircleHeader'
@@ -13,6 +17,7 @@ import TokenTransferAbi from '../../config/abi/TokenTransfer_metadata.json'
 const ProjectInfo = styled.div`
   display: flex;
   align-items: center;
+
 `;
 
 const ProjectSelect = styled.div`
@@ -21,18 +26,17 @@ const ProjectSelect = styled.div`
   font-weight: 400;
   font-size: 16px;
   line-height: 26px;
-  color: #15141f;
+  // color: #15141f;
   &.loading {
     color: #e6e6e6;
   }
 `
 
 const CurrentProject = styled.div`
-  cursor: pointer;
   margin-top: 12px;
   width: 100%;
   height: 60px;
-  background: #FFFFFF;
+  background-color: ${({ theme }) => theme.colors.backgroundAlt};
   border: 1px solid #e7e8f3;
   border-radius: 12px;
   display: flex;
@@ -60,7 +64,7 @@ const ProjectPriceValue = styled.div`
   font-weight: 500;
   font-size: 14px;
   line-height: 26px;
-  color: #15141f;
+  // color: #15141f;
   margin-right: 2px;
 `;
 
@@ -76,8 +80,9 @@ const LinkWrapper = styled.div`
   display: flex;
   flex-direction: column;
   min-height: 550px;
-  background: #ffff;
+  background-color: ${({ theme }) => theme.colors.backgroundAlt};
   padding: 0 16px;
+  border-radius: 20px
 `
 
 const ProjectTokenName = styled.div`
@@ -86,7 +91,7 @@ const ProjectTokenName = styled.div`
   font-weight: 500;
   font-size: 16px;
   line-height: 26px;
-  color: #15141f;
+  // color: #15141f;
   margin-left: 5px;
 `
 
@@ -102,7 +107,7 @@ font-weight: 500;
 margin-top: 12px;
 width: 100%;
 height: 60px;
-background: #FFFFFF;
+background: ${({ theme }) => theme.colors.backgroundAlt};
 border: 1px solid #e7e8f3;
 border-radius: 12px;
 display: flex;
@@ -110,7 +115,7 @@ justify-content: space-between;
 padding: 0 12px 0 16px;
 align-items: center;
 text-align: right;
-font-size: 15px
+font-size: 16px
 `;
 
 const SelectButton = styled(Button)`
@@ -128,10 +133,13 @@ const InputLabel = styled.span`
 `;
 
 const CircleShare: React.FC<React.PropsWithChildren<{ projectAddress: string }>> = ({ projectAddress }) => {
+  const { t } = useTranslation()
+  const { toastError, toastSuccess } = useToast()
   const router = useRouter()
-  const [value, setValue] = useState('');
+  const [amount, setAmount] = useState('');  
+  const [minting, isMinting] = useState<boolean>(false);
   const [isDisabled, setIsDisabled] = useState<boolean>(true);
-    
+  const { library,chainId, account } = useActiveWeb3React()
 
   // const handleInput = (event: React.FormEvent<HTMLInputElement>) => {
   //   const inputValue = event.currentTarget.value;
@@ -144,21 +152,21 @@ const CircleShare: React.FC<React.PropsWithChildren<{ projectAddress: string }>>
   const handleInputChange = (event) => {
     // eslint-disable-next-line @typescript-eslint/no-shadow
     let {value} = event.target;
-    if (value === '' || (Number(value) >= 0 && Number(value) <= 200)) {
-      setValue(value);
+    if (value === '' || (Number(value) >= 0 && Number(value) <= 500)) {
+      setAmount(value);
     }else {
       value = Number(value);
-      if (value > 200) {
-        value = 200;
+      if (value > 500) {
+        value = 500;
       }
-      setValue(value.toString());
+      setAmount(value.toString());
     }
   };
   
 
   useEffect(() => {
-    setIsDisabled(value === '' || parseInt(value, 10) === 0);
-  }, [value]);
+    setIsDisabled(amount === '' || parseInt(amount, 10) === 0);
+  }, [amount]);
 
 
   const { project } = useCircleProjectInfo(projectAddress)
@@ -167,34 +175,96 @@ const CircleShare: React.FC<React.PropsWithChildren<{ projectAddress: string }>>
     event.preventDefault(); 
   };
 
+  const updateToServerMintInfo = async () => {
+    
+    try {
+      const body = JSON.stringify({
+        addr: account,
+        amount: parseInt(amount, 10),
+        net: account ? `evm--${Number(chainId)}` : `evm--97`,
+      });
+      console.info(body)
+      const response = await fetch("https://www.equityswap.club/app/user/mint_nft", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body,
+    });
+      console.info(response)
+    } catch (error) {
+      console.info(error);
+    }
+  };
+
   const handleMint = async () => {
-    const accounts = await window.ethereum.request({ method: "eth_requestAccounts" });
+    setIsDisabled(true)    
+
+    const mintPrice = 0.00022
+    const nftContract = '0xc2452DB583AFB353cB44Ac6edC2f61Da7C23A8bB'
+    const tokenAddr = '0xd4FEc4cEf94F97d79Ec8E7C83445887833fC4d28'
+
+
+    const accounts = await library.provider.request({ method: "eth_requestAccounts" });
     const accountAddress = accounts[0];
-    const provider = new ethers.providers.Web3Provider(window.ethereum);
-    const signer = provider.getSigner();
-    const contract = new ethers.Contract("0xecB698B980ab2279Fb179a9E54Afbf79B21DF0a3", TokenTransferAbi, signer);
-    const tx = await contract.mintNfts("0x45a938E690709B8c9C34D18487Aa56251d088E2a","0xD6e8024e4572d954371c9f95acf33c65947233C9",accountAddress,ethers.BigNumber.from(value));
-    const receipt1 = await tx.wait();
+    const signer = library.getSigner();
+    const overrides = {
+      value:  ethers.utils.parseUnits(( Number(amount)* mintPrice).toString(), 'ether')
+    }
+    const contract = new ethers.Contract("0x6E6CFb3A5b93367495D52aF339835739258b9295", TokenTransferAbi, signer);
+    // const tx = await contract.mintNfts("0x522338F22de2687c2f488627E0Bd750d40090254","0x237585E5583894C04B16413b10525DcC4604f2Be",accountAddress,amount,overrides);
+    
+    try{
+      isMinting(true)
+      const tx = await contract.mintNfts(nftContract,tokenAddr,accountAddress,amount,overrides);
+        const receipt = await tx.wait();
+        console.info(receipt)
+        if (receipt?.status){
+          await updateToServerMintInfo();
+          toastSuccess(
+            `${t('Mint_success')}!`,
+            <ToastDescriptionWithTx txHash={receipt.transactionHash}>
+              {t('Your nft was minted successfully')}
+            </ToastDescriptionWithTx>,
+          )
+          isMinting(false)
+          setIsDisabled(false) 
+          router.push(`/circle/share-link/${projectAddress.toLowerCase()}/${account.toLowerCase()}`)
+      }
+    }catch(error){
+      setIsDisabled(false) 
+      isMinting(false)
+
+      if (error.data && error.data.message) {
+        if (error.data.message.includes("insufficient funds for gas")) {
+          toastError(t('failed_to_mint'), t('insuff_fund_gas'));
+        }
+      } else if (error.message && error.message.includes("User denied transaction signature")) {
+        toastError(t('failed_to_mint'), t('User denied transaction signature'));
+      } else {
+        toastError(t('failed_to_mint'), t('Unknown error'));
+      }
+    }
   }
+
   return (
     <>     
        <Page>
         <LinkWrapper>
           <LinkInner>
             <CircleHeader
-              // width = 
               backFn={() => router.push('/circle/link')}
-              title="Mint NFT 分享" Right={undefined}
+              title = {t('Mint')} Right={undefined}
             />
-              <InputLabel>人数</InputLabel>
+              <InputLabel>{t('people')}</InputLabel>
              <Input
               type="number"
-              value={value}
+              value={amount}
               onChange={handleInputChange}
               min={0}
-              max={200}
+              max={500}
               onWheel={handleWheel}
-              placeholder="0个起步, 最多200"
+              placeholder= {t('mint_limit_text')}
       />
     
             {/* <LinkSwitch /> */}
@@ -227,7 +297,8 @@ const CircleShare: React.FC<React.PropsWithChildren<{ projectAddress: string }>>
             <SelectButton
               disabled={isDisabled}
               onClick={handleMint}
-          >Mint</SelectButton>
+          >{minting ? t('Minting...') : t('Mint')}
+          </SelectButton>
           </LinkInner>
         </LinkWrapper>
       </Page>
@@ -236,3 +307,4 @@ const CircleShare: React.FC<React.PropsWithChildren<{ projectAddress: string }>>
 }
 
 export default CircleShare
+

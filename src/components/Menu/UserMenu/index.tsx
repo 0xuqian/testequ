@@ -11,7 +11,6 @@ import {
   UserMenuVariant,
   Box,
 } from '@pancakeswap/uikit'
-import { ethers } from 'ethers';
 import Trans from 'components/Trans'
 import useAuth from 'hooks/useAuth'
 import { useRouter } from 'next/router'
@@ -40,33 +39,6 @@ const UserMenu = () => {
   const [userMenuVariable, setUserMenuVariable] = useState<UserMenuVariant>('default')
   const isWrongNetwork: boolean = error && error instanceof UnsupportedChainIdError
 
-  const verifySignature= async (): Promise<boolean>  => {
-
-    const provider = new ethers.providers.Web3Provider(window.ethereum);
-    const network = await provider.getNetwork();
-    const signer = provider.getSigner();
-    const address = await signer.getAddress();
-
-    console.log('Connected wallet address:', address);
-    console.log('Connected network:', network);
-
-    const message = `para.space wants you to sign in with your Ethereum account.
-      URL: https://app.para.space/user-info/profile
-      Web3 Token Version: 2
-      Nonce: 68911247
-      Issued At: 2023-07-06T14:33:16.101Z
-      Expiration Time: 2023-07-13T14:33:16.101Z`;
-
-    const signature = await signer.signMessage(message)
-
-    // console.log(ethers.utils.verifyMessage(message,signature))
-    if (ethers.utils.verifyMessage(message,signature) === address){
-      console.log("zhuzhu")
-      return true
-    }
-    return false
-  }
-
   useEffect(() => {
     if (hasPendingTransactions) {
       setUserMenuText(t('%num% Pending', { num: pendingNumber }))
@@ -85,9 +57,7 @@ const UserMenu = () => {
     }
   }
   const handleSignClick = async (): Promise<void> => {
-    if (await verifySignature()) {
-      router.push(`/profile`);
-    }
+    router.push(`/profile`);
   }
 
   const UserMenuItems = () => {

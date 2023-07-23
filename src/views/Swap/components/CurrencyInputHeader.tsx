@@ -13,6 +13,7 @@ import { GlobalSettings } from 'components/Menu/GlobalSettings'
 import { useExpertModeManager } from 'state/user/hooks'
 import RefreshIcon from 'components/Svg/RefreshIcon'
 import { useCallback } from 'react'
+import { useRouter } from 'next/router'
 import { SettingsMode } from '../../../components/Menu/GlobalSettings/types'
 
 interface Props {
@@ -24,6 +25,12 @@ interface Props {
   hasAmount: boolean
   onRefreshPrice: () => void
 }
+
+const ChartImg = styled.img`
+  width: 32px;
+  height:30px;
+  cursor: pointer;
+`
 
 const CurrencyInputContainer = styled(Flex)`
   flex-direction: column;
@@ -51,7 +58,7 @@ const CurrencyInputHeader: React.FC<React.PropsWithChildren<Props>> = ({
   }
   const [onPresentTransactionsModal] = useModal(<TransactionsModal />)
   const handleOnClick = useCallback(() => onRefreshPrice?.(), [onRefreshPrice])
-
+  const router = useRouter()
   return (
     <CurrencyInputContainer>
       <Flex width="100%" alignItems="center" justifyContent="space-between">
@@ -67,6 +74,8 @@ const CurrencyInputHeader: React.FC<React.PropsWithChildren<Props>> = ({
           </Text>
         </Flex>
         <Flex>
+          <></>
+          <div><ChartImg  onClick={() =>router.push('/trading-view')} src='/images/kchart.png' alt='gg' /></div>
           <NotificationDot show={expertMode}>
             <GlobalSettings mr="0" mode={SettingsMode.SWAP_LIQUIDITY} />
           </NotificationDot>
@@ -74,7 +83,7 @@ const CurrencyInputHeader: React.FC<React.PropsWithChildren<Props>> = ({
             <HistoryIcon width="20px" />
           </IconButton>
           <IconButton variant="text" scale="sm" onClick={handleOnClick}>
-            <RefreshIcon disabled={!hasAmount} width="20px" />
+            <RefreshIcon disabled={!hasAmount} width="22px"  />
           </IconButton>
         </Flex>
       </Flex>

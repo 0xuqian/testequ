@@ -8,7 +8,6 @@ import CopyToClipboard from 'react-copy-to-clipboard'
 import {useMatchBreakpointsContext, useOnClickOutside} from "@pancakeswap/uikit";
 import useRankingInfo from "../../../hooks/useRankingInfo";
 import PageBtnList from "./PageBtnList";
-import {PredictionsChartView} from "../../../state/types";
 
 const TopBar = styled.div`
   margin: 14px 0;
@@ -701,7 +700,7 @@ export default function CurrenciesList({type, setIsShowMenu}) {
                             list.map((item, i) => (
                                 <ListItem style={item?.wallet ? {cursor: 'pointer'} : {}} key={item?.index} onClick={() => {
                                   if (item?.wallet) {
-                                    window.open(`/dcs/${item.wallet}`)
+                                    window.open(`/rank/${item.wallet}`)
                                   }
                                 }}>
                                   <InfoWrapper2>

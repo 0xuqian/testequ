@@ -12,7 +12,7 @@ const Config = {
     /* node_url: 'https://data-seed-prebsc-1-s3.binance.org:8545', */
   },
   '56': {
-    factory_address: '',
+    factory_address: '0x84c189d8B52Be28AD4C4c9427aBd304268b2FCBA',
     setter_address: '',
     setter_private_key: '',
     gas_price: 5,

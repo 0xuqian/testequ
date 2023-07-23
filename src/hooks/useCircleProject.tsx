@@ -1,10 +1,7 @@
-import {useCallback, useEffect, useState, useRef, useMemo} from 'react'
-import {CurrencyAmount, ETHER, TokenAmount} from "@pancakeswap/sdk";
-import {useWeb3React} from "@web3-react/core";
+import {useCallback, useEffect, useState } from 'react'
 import {useTranslation} from "@pancakeswap/localization";
 import useActiveWeb3React from "./useActiveWeb3React";
 import {useCallWithGasPrice} from "./useCallWithGasPrice";
-
 import useToast from "./useToast";
 import { MINT_ADDRESS, HAND_NFT_ADDRESS } from "../config/constants/exchange";
 import useCatchTxError from "./useCatchTxError";
@@ -12,7 +9,6 @@ import { useMintContract, useNFTHandContract } from './useContract';
 
 export const useCircleProject = () => {
   const { chainId, account } = useActiveWeb3React()
-
   const [projects, setProjects] = useState(null)
 
   const fetchProjects = useCallback(async () => {

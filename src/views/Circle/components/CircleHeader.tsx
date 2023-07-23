@@ -1,4 +1,4 @@
-import styled, {  } from 'styled-components'
+import styled from 'styled-components'
 import { Image } from '@pancakeswap/uikit'
 
 const Header = styled.div`
@@ -13,14 +13,13 @@ const HeaderLeft = styled.div`
 `
 
 const HeaderCenter = styled.div`
-  font-family: 'PingFang SC';
+  // font-family: 'PingFang SC';
   font-style: normal;
-  font-weight: 500;
+  font-weight: 900;
   font-size: 16px;
   display: flex;
   align-items: center;
   text-align: center;
-  color: #11142d;
   justify-content: center;
   flex: 1;
 `

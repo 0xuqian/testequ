@@ -68,18 +68,21 @@ export default function LinkInfo({inv}) {
           inv ?
               <>
                 {
-                  inv?.addr !== '0x0000000000000000000000000000000000000000' ?
-                  <LinkUserInfoWrapper>
-                    <CheckTitle>
-                      核对你对应的分享人
-                    </CheckTitle>
-                    <UserCard>
-                      <UserAvatar width={24} height={24} src={inv?.icon} />
-                      <UserName>{inv?.name}</UserName>
-                    </UserCard>
-                    <UserAddress>{inv?.addr}</UserAddress>
-                  </LinkUserInfoWrapper> :
-                  <WraningInfo>未检测到你对应的项目节点，必须要有项目节点之后才能批量转账，否则会造成数据混乱和资产损失</WraningInfo>
+                  // inv?.addr !== '0x0000000000000000000000000000000000000000' 
+                  // ?
+                  // <LinkUserInfoWrapper>
+                  //   <CheckTitle>
+                  //     核对你对应的分享人
+                  //   </CheckTitle>
+                  //   <UserCard>
+                  //     <UserAvatar width={24} height={24} src={inv?.icon} />
+                  //     <UserName>{inv?.name}</UserName>
+                  //   </UserCard>
+                  //   <UserAddress>{inv?.addr}</UserAddress>
+                  // </LinkUserInfoWrapper> 
+                  // :
+                  <></> 
+                  // <WraningInfo>未检测到你对应的项目节点，必须要有项目节点之后才能批量转账，否则会造成数据混乱和资产损失</WraningInfo>
                 }
               </> : null
         }

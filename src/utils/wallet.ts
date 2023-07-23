@@ -101,3 +101,5 @@ export const canRegisterToken = () =>
     window?.ethereum?.isTrust ||
     window?.ethereum?.isCoinbaseWallet ||
     window?.ethereum?.isTokenPocket)
+
+export { NETWORK_CONFIG }

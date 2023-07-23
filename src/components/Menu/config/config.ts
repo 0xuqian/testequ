@@ -55,8 +55,8 @@ const config: (
           href: '/liquidity',
         },
         {
-          label: t('DCS'),
-          href: '/dcs',
+          label: t('rank'),
+          href: '/rank',
         },
         {
           label: t('circle'),
@@ -95,8 +95,8 @@ const config: (
           href: '/add',
         },
         {
-          label: t('DCS'),
-          href: '/dcs',
+          label: t('rank'),
+          href: '/rank',
         },
         {
           label: t('circle'),
@@ -124,8 +124,8 @@ const config: (
           href: '/add',
         },
         {
-          label: t('DCS'),
-          href: '/dcs',
+          label: t('rank'),
+          href: '/rank',
         },
         {
           label: t('circle'),
@@ -153,8 +153,8 @@ const config: (
           href: '/add',
         },
         {
-          label: t('DCS'),
-          href: '/dcs',
+          label: t('rank'),
+          href: '/rank',
         },
         {
           label: t('circle'),
