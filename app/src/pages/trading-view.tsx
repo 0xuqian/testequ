@@ -337,8 +337,8 @@ const Tocao: FC<{data1:any | null}> = ({data1}) => {
         <PriceDate price = {mousePosition?.y ||  dataPoints[price.length - 1].price } date={mousePosition?.x || formatDate(dataPoints[price.length - 1].time) } />
         <ChartContainer>
 
-            {isDesktop? <svg width="768" height="450"><LinePlot width= {768} height ={450}  data={dataPoints} isDesktop = {isDesktop}onMousePositionChange={setMousePosition} /></svg>
-            :<svg width="350" height="450"><LinePlot width= {350} height ={450}  data={dataPoints} onMousePositionChange={setMousePosition} /></svg>}
+            {isDesktop? <LinePlot width= {768} height ={450}  data={dataPoints} isDesktop = {isDesktop}onMousePositionChange={setMousePosition} />
+            :<LinePlot width= {350} height ={450}  data={dataPoints} onMousePositionChange={setMousePosition} />}
             
         </ChartContainer>
         </AllCartContainer>
