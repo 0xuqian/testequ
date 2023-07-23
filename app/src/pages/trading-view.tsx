@@ -259,7 +259,7 @@ const LinePlot: FC<LinePlotProps> = ({
   const handleMouseMove = (event) => {
     const { clientX, clientY } = event;
     const { left, top } = svgRef.current.getBoundingClientRect();
-    const x1: number = clientX - left + 12;
+    const x1: number = clientX - left ;
     const y1: number = clientY - top;
 
     if  (x1 >= marginLeft && x1 <= width - marginRight && y1 >= marginTop && y1 <= height - marginBottom) {
