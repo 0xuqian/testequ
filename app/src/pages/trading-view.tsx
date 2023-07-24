@@ -65,7 +65,7 @@ const Tocao: FC<{ data: any | null }> = ({ data }) => {
   let price = [];
   let time = [];
 
-  if (data) {
+  if (data?.data.x_axis[0] && data?.data.y_axis[0]) {
     price = data.data.y_axis;
     time = data.data.x_axis.map(parseTime);
     const sortedData = time.map((timeValue, index) => ({

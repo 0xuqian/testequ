@@ -60,7 +60,7 @@ const LineChart: FC<LinePlotProps> = ({
     .range([0, data.length - 1]);
 
   const line = d3.line<DataPoint>()
-    .x((_, i) => x(i))
+    // .x((_, i) => x(i))
     .y((d) => y(d.price))
     .curve(d3.curveMonotoneX);
 

@@ -141,14 +141,6 @@ const CircleShare: React.FC<React.PropsWithChildren<{ projectAddress: string }>>
   const [isDisabled, setIsDisabled] = useState<boolean>(true);
   const { library,chainId, account } = useActiveWeb3React()
 
-  // const handleInput = (event: React.FormEvent<HTMLInputElement>) => {
-  //   const inputValue = event.currentTarget.value;
-  //   const parsedValue = parseInt(inputValue, 10);
-  //   if (!isNaN(parsedValue) && parsedValue >= 0 && parsedValue <= 100) {
-  //     setValue(inputValue);
-  //   }
-  // };
-
   const handleInputChange = (event) => {
     // eslint-disable-next-line @typescript-eslint/no-shadow
     let {value} = event.target;

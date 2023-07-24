@@ -27,9 +27,11 @@ interface Props {
 }
 
 const ChartImg = styled.img`
-  width: 32px;
-  height:30px;
+  width: 28px;
+  height: 30px;
   cursor: pointer;
+  position: relative;
+  bottom: 1px;
 `
 
 const CurrencyInputContainer = styled(Flex)`
@@ -67,7 +69,7 @@ const CurrencyInputHeader: React.FC<React.PropsWithChildren<Props>> = ({
             {isChartDisplayed ? <ChartDisableIcon color="textSubtle" /> : <ChartIcon width="24px" color="textSubtle" />}
           </ColoredIconButton>
         )} */}
-        <Flex flexDirection="column" alignItems="flex-start" width="100%" mr={18}>
+        <Flex flexDirection="column" alignItems="flex-start" width="100%" mr={0}>
           <Heading as="h2">{title}</Heading>
           <Text color="textSubtle" fontSize="14px">
             {subtitle}
@@ -75,7 +77,9 @@ const CurrencyInputHeader: React.FC<React.PropsWithChildren<Props>> = ({
         </Flex>
         <Flex>
           <></>
-          <div><ChartImg  onClick={() =>router.push('/trading-view')} src='/images/kchart.png' alt='gg' /></div>
+          <IconButton variant="text" scale="sm">
+            <ChartImg onClick={() => router.push('/trading-view')} src='/images/kchart.png' alt='gg' />
+          </IconButton>
           <NotificationDot show={expertMode}>
             <GlobalSettings mr="0" mode={SettingsMode.SWAP_LIQUIDITY} />
           </NotificationDot>
@@ -83,7 +87,7 @@ const CurrencyInputHeader: React.FC<React.PropsWithChildren<Props>> = ({
             <HistoryIcon width="20px" />
           </IconButton>
           <IconButton variant="text" scale="sm" onClick={handleOnClick}>
-            <RefreshIcon disabled={!hasAmount} width="22px"  />
+            <RefreshIcon disabled={!hasAmount} width="22px" />
           </IconButton>
         </Flex>
       </Flex>
@@ -92,7 +96,7 @@ const CurrencyInputHeader: React.FC<React.PropsWithChildren<Props>> = ({
           {subtitle}
         </Text>
       </Flex> */}
-    </CurrencyInputContainer>
+    </CurrencyInputContainer >
   )
 }
 
