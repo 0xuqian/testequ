@@ -15,3 +15,11 @@ export interface LinePlotProps {
   isDesktop?: boolean;
   onMousePositionChange?: (position: { x: string; y: number }) => void;
 }
+
+export interface PriceDateProps {
+  price: number;
+  date: string;
+  projectIcon?: string;
+  tokenName?: string;
+
+}

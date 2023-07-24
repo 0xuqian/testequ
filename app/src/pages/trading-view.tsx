@@ -4,7 +4,7 @@ import { FC, useState } from 'react';
 import PriceDate from 'views/TradingView/component/TokenInfo'
 import { LineChartLoader } from 'views/Info/components/ChartLoaders'
 import Page from "views/Page";
-import LineChart from "views/TradingView/component/LineChart";
+import LineChart from "views/TradingView";
 import styled from "styled-components";
 import { useMatchBreakpointsContext } from "@pancakeswap/uikit";
 
