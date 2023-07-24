@@ -203,8 +203,9 @@ const CircleShare: React.FC<React.PropsWithChildren<{ projectAddress: string }>>
 
     try {
       isMinting(true)
-      const tx = await contract.mintNfts(NFTsInfo.NFTsContract, NFTsInfo.TokenAddress, accountAddress, amount, overrides);
+      const tx = await contract.mintNfts(NFTsInfo.NFTsContract, projectAddress, accountAddress, amount, overrides);
       const receipt = await tx.wait();
+
 
       if (receipt?.status) {
         await updateToServerMintInfo();

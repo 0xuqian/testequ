@@ -1,14 +1,14 @@
 import styled, { useTheme } from 'styled-components'
 import BigNumber from "bignumber.js";
-import {useEffect, useState} from 'react'
-import {useRouter} from "next/router";
-import {BoxProps, Button, Image, useModal} from '@pancakeswap/uikit'
+import { useEffect, useState } from 'react'
+import { useRouter } from "next/router";
+import { BoxProps, Button, Image, useModal } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization';
 import CircleHeader from './components/CircleHeader'
 import LinkInfo from './components/LinkInfo'
 import Page from '../Page'
 import SelectModal from './components/SelectModal'
-import {useCircleInv, useCircleProject} from "../../hooks/useCircleProject"
+import { useCircleInv, useCircleProject } from "../../hooks/useCircleProject"
 
 
 const LinkWrapper = styled.div`
@@ -121,58 +121,58 @@ export default function CircleList() {
   const inv = useCircleInv(project?.token_addr)
 
   return (
-      <Page>
-        <LinkWrapper>
-          <LinkInner>
-            <CircleHeader
-                backFn={() => router.push('/circle')}
-                title={t('Mint')}
-                Right={<History onClick={() => router.push('/circle/history')}>{t('History')}</History>}
-            />
-            {/* <LinkSwitch /> */}
-            <CurrentProject onClick={() => {
-              if (!projects) {
-                return
-              }
-              onSelectModal()
-              setShowModal(!isShowModal)
-            }}>
-              {
-                project ?
-                    <>
-                      <ProjectInfo>
-                        <ProjectAvatar width={32} height={32} src={project?.icon} />
-                        <ProjectToken>
-                          <ProjectTokenName>{project?.symbol}</ProjectTokenName>
-                        </ProjectToken>
-                      </ProjectInfo>
-                      <ProjectPrice>
-                        <ProjectPriceValue>{new BigNumber(project?.price).toFixed(2)}</ProjectPriceValue>
-                        <ToArrow width={16} height={16} src='/images/circle/arrow.png'/>
-                      </ProjectPrice>
-                    </> :
-                    <>
-                      <ProjectInfo>
-                        <ProjectToken>
-                          <ProjectSelect className={projects ? '' : 'loading'}>{t('Select a Token')}</ProjectSelect>
-                        </ProjectToken>
-                      </ProjectInfo>
-                      <ProjectPrice>
-                        <ToArrow width={16} height={16} src='/images/circle/arrow.png'/>
-                      </ProjectPrice>
-                    </>
-              }
-            </CurrentProject>
-            <LinkInfo inv={inv} />
-          </LinkInner>
-          <SelectButton
-              disabled={
-                !inv ||
-                !project?.token_addr
-              }
-              onClick={() => router.push(`/circle/share/${project?.token_addr}`)}
-          >{t('Next Step')}</SelectButton>
-        </LinkWrapper>
-      </Page>
+    <Page>
+      <LinkWrapper>
+        <LinkInner>
+          <CircleHeader
+            backFn={() => router.push('/circle')}
+            title={t('Mint')}
+            Right={<History onClick={() => router.push('/circle/history')}>{t('History')}</History>}
+          />
+          {/* <LinkSwitch /> */}
+          <CurrentProject onClick={() => {
+            if (!projects) {
+              return
+            }
+            onSelectModal()
+            setShowModal(!isShowModal)
+          }}>
+            {
+              project ?
+                <>
+                  <ProjectInfo>
+                    <ProjectAvatar width={32} height={32} src={project?.icon} />
+                    <ProjectToken>
+                      <ProjectTokenName>{project?.symbol}</ProjectTokenName>
+                    </ProjectToken>
+                  </ProjectInfo>
+                  <ProjectPrice>
+                    <ProjectPriceValue>{new BigNumber(project?.price).toFixed(2)}</ProjectPriceValue>
+                    <ToArrow width={16} height={16} src='/images/circle/arrow.png' />
+                  </ProjectPrice>
+                </> :
+                <>
+                  <ProjectInfo>
+                    <ProjectToken>
+                      <ProjectSelect className={projects ? '' : 'loading'}>{t('Select a Token')}</ProjectSelect>
+                    </ProjectToken>
+                  </ProjectInfo>
+                  <ProjectPrice>
+                    <ToArrow width={16} height={16} src='/images/circle/arrow.png' />
+                  </ProjectPrice>
+                </>
+            }
+          </CurrentProject>
+          <LinkInfo inv={inv} />
+        </LinkInner>
+        <SelectButton
+          disabled={
+            !inv ||
+            !project?.token_addr
+          }
+          onClick={() => router.push(`/circle/share/${project?.token_addr}`)}
+        >{t('Next Step')}</SelectButton>
+      </LinkWrapper>
+    </Page>
   )
 }
