@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { PriceDateProps } from "../interfaces/interfaces";
+import { PriceDateProps } from "../types";
 
 const PriceInfo = styled.div`
   font-weight: 600;

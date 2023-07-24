@@ -1,6 +1,6 @@
 import * as d3 from "d3";
 import { FC, useRef, useEffect, useState } from 'react';
-import { LinePlotProps, DataPoint } from "./interfaces/interfaces"
+import { LinePlotProps, DataPoint } from "./types"
 
 
 function formatDate(date: Date) {
