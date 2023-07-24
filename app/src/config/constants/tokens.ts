@@ -76,7 +76,7 @@ export const USDT = {
   [ChainId.BSC]: new Token(
     ChainId.BSC,
     '0x4213d363294660BF94f6ADA813D7a36d5f33EBAe',
-    18,
+    6,
     'USDT',
     'USDT',
     'https://www.binance.com/en/trade/BNB_USDT',

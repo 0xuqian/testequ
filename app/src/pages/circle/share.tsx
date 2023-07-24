@@ -9,6 +9,7 @@ import useActiveWeb3React from "hooks/useActiveWeb3React";
 import { useTranslation } from "@pancakeswap/localization";
 import useToast from "hooks/useToast";
 import { ToastDescriptionWithTx } from "components/Toast";
+import { NFTsInfo } from "config/constants/equityNFTs"
 import { useCircleProjectInfo } from "../../hooks/useCircleProject";
 import Page from '../../views/Page'
 import CircleHeader from '../../views/Circle/components/CircleHeader'
@@ -192,25 +193,19 @@ const CircleShare: React.FC<React.PropsWithChildren<{ projectAddress: string }>>
   const handleMint = async () => {
     setIsDisabled(true)
 
-    const mintPrice = 0.00022
-    const nftContract = '0xc2452DB583AFB353cB44Ac6edC2f61Da7C23A8bB'
-    const tokenAddr = '0xd4FEc4cEf94F97d79Ec8E7C83445887833fC4d28'
-
-
     const accounts = await library.provider.request({ method: "eth_requestAccounts" });
     const accountAddress = accounts[0];
     const signer = library.getSigner();
     const overrides = {
-      value: ethers.utils.parseUnits((Number(amount) * mintPrice).toString(), 'ether')
+      value: ethers.utils.parseUnits((Number(amount) * NFTsInfo.MintPrice).toString(), 'ether')
     }
-    const contract = new ethers.Contract("0x6E6CFb3A5b93367495D52aF339835739258b9295", TokenTransferAbi, signer);
-    // const tx = await contract.mintNfts("0x522338F22de2687c2f488627E0Bd750d40090254","0x237585E5583894C04B16413b10525DcC4604f2Be",accountAddress,amount,overrides);
+    const contract = new ethers.Contract(NFTsInfo.BatchMintContract, TokenTransferAbi, signer);
 
     try {
       isMinting(true)
-      const tx = await contract.mintNfts(nftContract, tokenAddr, accountAddress, amount, overrides);
+      const tx = await contract.mintNfts(NFTsInfo.NFTsContract, NFTsInfo.TokenAddress, accountAddress, amount, overrides);
       const receipt = await tx.wait();
-      console.info(receipt)
+
       if (receipt?.status) {
         await updateToServerMintInfo();
         toastSuccess(
