@@ -65,8 +65,6 @@ const CircleShare: React.FC<React.PropsWithChildren<{ projectAddress: string, le
     toastSuccess(t('Share link has been copied to clipboard'))
   };
 
-
-
   return (
     <Page>
       <ListWrapper>

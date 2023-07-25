@@ -1,4 +1,3 @@
-import * as d3 from "d3";
 import { useKLine } from "hooks/useHistoryNftInfo";
 import { FC, useState } from 'react';
 import PriceDate from 'views/TradingView/component/TokenInfo'

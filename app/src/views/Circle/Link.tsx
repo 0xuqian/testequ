@@ -1,8 +1,8 @@
-import styled, { useTheme } from 'styled-components'
+import styled from 'styled-components'
 import BigNumber from "bignumber.js";
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { useRouter } from "next/router";
-import { BoxProps, Button, Image, useModal } from '@pancakeswap/uikit'
+import { Button, Image, useModal } from '@pancakeswap/uikit'
 import { useTranslation } from '@pancakeswap/localization';
 import CircleHeader from './components/CircleHeader'
 import LinkInfo from './components/LinkInfo'
