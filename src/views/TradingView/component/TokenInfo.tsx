@@ -1,12 +1,5 @@
 import styled from "styled-components";
-
-interface PriceDateProps {
-  price: number;
-  date: string;
-  projectIcon?: string;
-  tokenName?: string;
-  
-}
+import { PriceDateProps } from "../types";
 
 const PriceInfo = styled.div`
   font-weight: 600;

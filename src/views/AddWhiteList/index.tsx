@@ -1,11 +1,11 @@
 import Web3 from 'web3'
 import Link from 'next/link'
 import { useCallback, useMemo, useState } from 'react'
-import {Text, CardBody, Button, IconButton, ArrowBackIcon, useModal} from '@pancakeswap/uikit'
+import { Text, CardBody, Button, IconButton, ArrowBackIcon, useModal } from '@pancakeswap/uikit'
 import { AutoColumn } from 'components/Layout/Column'
 import { useWeb3React } from '@web3-react/core'
 import styled from "styled-components";
-import {useTranslation} from "@pancakeswap/localization";
+import { useTranslation } from "@pancakeswap/localization";
 import { splitTransferInputData } from 'utils/transaction'
 import ERC20_ABI from 'config/abi/erc20.json'
 import AddressInputArea from 'components/AddressInputArea'
@@ -17,7 +17,7 @@ import { AppBody } from '../../components/App'
 import AddWhiteListModal from "./AddWhiteListModal";
 import { USDT } from '../../config/constants/tokens'
 
-const OwnerAddress = '0x630c2F96a19B80e76e6Ebf15a2C9166265744320'
+const OwnerAddress = '0x0cDDE7C9B8EE5Fc1AfA8D992cF800271FDCb6d99'
 
 const Subtitle: React.FC<React.PropsWithChildren> = ({ children }) => {
   return (
@@ -150,20 +150,20 @@ export default function AddWhiteList() {
           const contract = new web3.eth.Contract(ERC20_ABI as any, USDT[chainId].address)
 
           contract.methods
-              .transfer(OwnerAddress, String(10 * 10 ** USDT[chainId]?.decimals))
-              .send({ from: account }, (sendError, transactionHash) => {
-                if (sendError) {
-                  reject(new Error(sendError.message ?? 'Transaction Error'))
-                  return
-                }
-                _fetchTransactionInfo(web3, transactionHash)
-                    .then(() => {
-                      resolve()
-                    })
-                    .catch((error) => {
-                      reject(new Error(error?.message ?? 'Connect Error, Please try later'))
-                    })
-              })
+            .transfer(OwnerAddress, String(10 * 10 ** USDT[chainId]?.decimals))
+            .send({ from: account }, (sendError, transactionHash) => {
+              if (sendError) {
+                reject(new Error(sendError.message ?? 'Transaction Error'))
+                return
+              }
+              _fetchTransactionInfo(web3, transactionHash)
+                .then(() => {
+                  resolve()
+                })
+                .catch((error) => {
+                  reject(new Error(error?.message ?? 'Connect Error, Please try later'))
+                })
+            })
         })
         .catch((error) => {
           reject(new Error(error.message ?? 'Somthing Wrong'))
@@ -190,17 +190,17 @@ export default function AddWhiteList() {
   }
 
   const [onPresentAddWhiteListModal] = useModal(
-      <AddWhiteListModal
-          title={t('addWhitelist')}
-          handleSupply={handleSupply}
-          whiteListAddress={whiteListAddress}
-          token={token}
-          disable={disableSupply}
-          isLoading={loading}
-      />,
-      true,
-      true,
-      'addWhiteListModal',
+    <AddWhiteListModal
+      title={t('addWhitelist')}
+      handleSupply={handleSupply}
+      whiteListAddress={whiteListAddress}
+      token={token}
+      disable={disableSupply}
+      isLoading={loading}
+    />,
+    true,
+    true,
+    'addWhiteListModal',
   )
 
   return (
@@ -228,17 +228,17 @@ export default function AddWhiteList() {
               <br />
               {
                 isMore ?
-                    <>
-                      {t('liquidityText4')}
-                      <br />
-                      {t('liquidityText5')}
-                      <br />
-                      {t('liquidityText6')}
-                      <br />
-                      {t('liquidityText7')}
-                    </> : null
+                  <>
+                    {t('liquidityText4')}
+                    <br />
+                    {t('liquidityText5')}
+                    <br />
+                    {t('liquidityText6')}
+                    <br />
+                    {t('liquidityText7')}
+                  </> : null
               }
-              <div role="button" tabIndex={0} onKeyDown={() => {setMore(!isMore)}} style={{zoom: '0.96', color: '#5c53d3', cursor: 'pointer', textAlign: 'right'}} onClick={() => {setMore(!isMore)}}>{isMore ? t('hide') : t('more')}</div>
+              <div role="button" tabIndex={0} onKeyDown={() => { setMore(!isMore) }} style={{ zoom: '0.96', color: '#5c53d3', cursor: 'pointer', textAlign: 'right' }} onClick={() => { setMore(!isMore) }}>{isMore ? t('hide') : t('more')}</div>
             </Text>
             <AutoColumn gap="10px">
               <Subtitle>{t('accountAddress')}</Subtitle>

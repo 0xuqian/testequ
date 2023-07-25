@@ -21,7 +21,7 @@ const config = {
     WETH: '0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c',
     gas_price: 5,
     node_url: '',
-    reg: /Creator Address'>(.*?)</
+    reg: /Creator Address">(.*?)</
   },
   '97': {
     pre_url: 'https://testnet.bscscan.com/address/',
@@ -121,8 +121,8 @@ async function creatorAddress(req: NextApiRequest): Promise<{ creatorAddress: st
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   let rst
   try {
-     rst = await creatorAddress(req)
-  } catch (error){
+    rst = await creatorAddress(req)
+  } catch (error) {
     console.log('error', error)
   }
 

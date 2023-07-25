@@ -8,7 +8,7 @@ import urllib.request
 config = {
     '56': { # BSCMAIN
         'pre_url': 'https://bscscan.com/address/{}',
-        'factory_address': '',
+        'factory_address': '0x84c189d8B52Be28AD4C4c9427aBd304268b2FCBA',
         'setter_address': '',
         'setter_private_key': '',
         'WETH': '0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c',

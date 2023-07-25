@@ -129,8 +129,8 @@ export default function RemoveLiquidity() {
     [Field.LIQUIDITY_PERCENT]: parsedAmounts[Field.LIQUIDITY_PERCENT].equalTo('0')
       ? '0'
       : parsedAmounts[Field.LIQUIDITY_PERCENT].lessThan(new Percent('1', '100'))
-      ? '<1'
-      : parsedAmounts[Field.LIQUIDITY_PERCENT].toFixed(0),
+        ? '<1'
+        : parsedAmounts[Field.LIQUIDITY_PERCENT].toFixed(0),
     [Field.LIQUIDITY]:
       independentField === Field.LIQUIDITY ? typedValue : parsedAmounts[Field.LIQUIDITY]?.toSignificant(6) ?? '',
     [Field.CURRENCY_A]:
@@ -436,9 +436,8 @@ export default function RemoveLiquidity() {
         .then((response: TransactionResponse) => {
           setLiquidityState({ attemptingTxn: false, liquidityErrorMessage: undefined, txHash: response.hash })
           addTransaction(response, {
-            summary: `Remove ${parsedAmounts[Field.CURRENCY_A]?.toSignificant(3)} ${
-              currencyA?.symbol
-            } and ${parsedAmounts[Field.CURRENCY_B]?.toSignificant(3)} ${currencyB?.symbol}`,
+            summary: `Remove ${parsedAmounts[Field.CURRENCY_A]?.toSignificant(3)} ${currencyA?.symbol
+              } and ${parsedAmounts[Field.CURRENCY_B]?.toSignificant(3)} ${currencyB?.symbol}`,
             type: 'remove-liquidity',
           })
         })
@@ -476,8 +475,8 @@ export default function RemoveLiquidity() {
   const oneCurrencyIsBNB = currencyA === ETHER || currencyB === ETHER
   const oneCurrencyIsWBNB = Boolean(
     chainId &&
-      ((currencyA && currencyEquals(WNATIVE[chainId], currencyA)) ||
-        (currencyB && currencyEquals(WNATIVE[chainId], currencyB))),
+    ((currencyA && currencyEquals(WNATIVE[chainId], currencyA)) ||
+      (currencyB && currencyEquals(WNATIVE[chainId], currencyB))),
   )
 
   const handleSelectCurrencyA = useCallback(
@@ -633,7 +632,7 @@ export default function RemoveLiquidity() {
                         {formattedAmounts[Field.CURRENCY_A] || '0'}
                       </Text>
                       <Text small ml="4px">
-                        ({isZapOutA ? '100' : !isZap ? '50' : '0'}%)
+                        {/* ({isZapOutA ? '100' : !isZap ? '50' : '0'}%) */}
                       </Text>
                     </Flex>
                   </Flex>
@@ -659,7 +658,7 @@ export default function RemoveLiquidity() {
                         {formattedAmounts[Field.CURRENCY_B] || '0'}
                       </Text>
                       <Text small ml="4px">
-                        ({isZapOutB ? '100' : !isZap ? '50' : '0'}%)
+                        {/* ({isZapOutB ? '100' : !isZap ? '50' : '0'}%) */}
                       </Text>
                     </Flex>
                   </Flex>
@@ -667,19 +666,17 @@ export default function RemoveLiquidity() {
                     <RowBetween style={{ justifyContent: 'flex-end', fontSize: '14px' }}>
                       {oneCurrencyIsBNB ? (
                         <StyledInternalLink
-                          href={`/remove/${currencyA === ETHER ? WNATIVE[chainId].address : currencyIdA}/${
-                            currencyB === ETHER ? WNATIVE[chainId].address : currencyIdB
-                          }`}
+                          href={`/remove/${currencyA === ETHER ? WNATIVE[chainId].address : currencyIdA}/${currencyB === ETHER ? WNATIVE[chainId].address : currencyIdB
+                            }`}
                         >
-                          {t('Receive %WBNB%', {WBNB: WNATIVE[chainId].symbol})}
+                          {t('Receive %WBNB%', { WBNB: WNATIVE[chainId].symbol })}
                         </StyledInternalLink>
                       ) : oneCurrencyIsWBNB ? (
                         <StyledInternalLink
-                          href={`/remove/${
-                            currencyA && currencyEquals(currencyA, WNATIVE[chainId]) ? ETHER.symbol : currencyIdA
-                          }/${currencyB && currencyEquals(currencyB, WNATIVE[chainId]) ? ETHER.symbol : currencyIdB}`}
+                          href={`/remove/${currencyA && currencyEquals(currencyA, WNATIVE[chainId]) ? ETHER.symbol : currencyIdA
+                            }/${currencyB && currencyEquals(currencyB, WNATIVE[chainId]) ? ETHER.symbol : currencyIdB}`}
                         >
-                          {t('Receive %BNB%', {BNB: ETHER.symbol})}
+                          {t('Receive %BNB%', { BNB: ETHER.symbol })}
                         </StyledInternalLink>
                       ) : null}
                     </RowBetween>

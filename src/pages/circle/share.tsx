@@ -2,14 +2,15 @@ import styled from "styled-components";
 import Image from "next/image";
 import React, { useState, useEffect } from 'react';
 import { useRouter } from "next/router";
-import {Button} from '@pancakeswap/uikit'
+import { Button } from '@pancakeswap/uikit'
 import BigNumber from "bignumber.js";
 import { ethers } from 'ethers';
 import useActiveWeb3React from "hooks/useActiveWeb3React";
 import { useTranslation } from "@pancakeswap/localization";
 import useToast from "hooks/useToast";
 import { ToastDescriptionWithTx } from "components/Toast";
-import { useCircleProjectInfo} from "../../hooks/useCircleProject";
+import { NFTsInfo } from "config/constants/equityNFTs"
+import { useCircleProjectInfo } from "../../hooks/useCircleProject";
 import Page from '../../views/Page'
 import CircleHeader from '../../views/Circle/components/CircleHeader'
 import TokenTransferAbi from '../../config/abi/TokenTransfer_metadata.json'
@@ -136,25 +137,17 @@ const CircleShare: React.FC<React.PropsWithChildren<{ projectAddress: string }>>
   const { t } = useTranslation()
   const { toastError, toastSuccess } = useToast()
   const router = useRouter()
-  const [amount, setAmount] = useState('');  
+  const [amount, setAmount] = useState('');
   const [minting, isMinting] = useState<boolean>(false);
   const [isDisabled, setIsDisabled] = useState<boolean>(true);
-  const { library,chainId, account } = useActiveWeb3React()
-
-  // const handleInput = (event: React.FormEvent<HTMLInputElement>) => {
-  //   const inputValue = event.currentTarget.value;
-  //   const parsedValue = parseInt(inputValue, 10);
-  //   if (!isNaN(parsedValue) && parsedValue >= 0 && parsedValue <= 100) {
-  //     setValue(inputValue);
-  //   }
-  // };
+  const { library, chainId, account } = useActiveWeb3React()
 
   const handleInputChange = (event) => {
     // eslint-disable-next-line @typescript-eslint/no-shadow
-    let {value} = event.target;
+    let { value } = event.target;
     if (value === '' || (Number(value) >= 0 && Number(value) <= 500)) {
       setAmount(value);
-    }else {
+    } else {
       value = Number(value);
       if (value > 500) {
         value = 500;
@@ -162,7 +155,7 @@ const CircleShare: React.FC<React.PropsWithChildren<{ projectAddress: string }>>
       setAmount(value.toString());
     }
   };
-  
+
 
   useEffect(() => {
     setIsDisabled(amount === '' || parseInt(amount, 10) === 0);
@@ -170,27 +163,27 @@ const CircleShare: React.FC<React.PropsWithChildren<{ projectAddress: string }>>
 
 
   const { project } = useCircleProjectInfo(projectAddress)
-  
+
   const handleWheel = (event) => {
-    event.preventDefault(); 
+    event.preventDefault();
   };
 
   const updateToServerMintInfo = async () => {
-    
+
     try {
       const body = JSON.stringify({
         addr: account,
         amount: parseInt(amount, 10),
         net: account ? `evm--${Number(chainId)}` : `evm--97`,
       });
-      console.info(body)
+
       const response = await fetch("https://www.equityswap.club/app/user/mint_nft", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body,
-    });
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body,
+      });
       console.info(response)
     } catch (error) {
       console.info(error);
@@ -198,41 +191,36 @@ const CircleShare: React.FC<React.PropsWithChildren<{ projectAddress: string }>>
   };
 
   const handleMint = async () => {
-    setIsDisabled(true)    
-
-    const mintPrice = 0.00022
-    const nftContract = '0xc2452DB583AFB353cB44Ac6edC2f61Da7C23A8bB'
-    const tokenAddr = '0xd4FEc4cEf94F97d79Ec8E7C83445887833fC4d28'
-
+    setIsDisabled(true)
 
     const accounts = await library.provider.request({ method: "eth_requestAccounts" });
     const accountAddress = accounts[0];
     const signer = library.getSigner();
     const overrides = {
-      value:  ethers.utils.parseUnits(( Number(amount)* mintPrice).toString(), 'ether')
+      value: ethers.utils.parseUnits((Number(amount) * NFTsInfo.MintPrice).toString(), 'ether')
     }
-    const contract = new ethers.Contract("0x6E6CFb3A5b93367495D52aF339835739258b9295", TokenTransferAbi, signer);
-    // const tx = await contract.mintNfts("0x522338F22de2687c2f488627E0Bd750d40090254","0x237585E5583894C04B16413b10525DcC4604f2Be",accountAddress,amount,overrides);
-    
-    try{
+    const contract = new ethers.Contract(NFTsInfo.BatchMintContract, TokenTransferAbi, signer);
+
+    try {
       isMinting(true)
-      const tx = await contract.mintNfts(nftContract,tokenAddr,accountAddress,amount,overrides);
-        const receipt = await tx.wait();
-        console.info(receipt)
-        if (receipt?.status){
-          await updateToServerMintInfo();
-          toastSuccess(
-            `${t('Mint_success')}!`,
-            <ToastDescriptionWithTx txHash={receipt.transactionHash}>
-              {t('Your nft was minted successfully')}
-            </ToastDescriptionWithTx>,
-          )
-          isMinting(false)
-          setIsDisabled(false) 
-          router.push(`/circle/share-link/${projectAddress.toLowerCase()}/${account.toLowerCase()}`)
+      const tx = await contract.mintNfts(NFTsInfo.NFTsContract, projectAddress, accountAddress, amount, overrides);
+      const receipt = await tx.wait();
+
+
+      if (receipt?.status) {
+        await updateToServerMintInfo();
+        toastSuccess(
+          `${t('Mint_success')}!`,
+          <ToastDescriptionWithTx txHash={receipt.transactionHash}>
+            {t('Your nft was minted successfully')}
+          </ToastDescriptionWithTx>,
+        )
+        isMinting(false)
+        setIsDisabled(false)
+        router.push(`/circle/share-link/${projectAddress.toLowerCase()}/${account.toLowerCase()}`)
       }
-    }catch(error){
-      setIsDisabled(false) 
+    } catch (error) {
+      setIsDisabled(false)
       isMinting(false)
 
       if (error.data && error.data.message) {
@@ -248,57 +236,57 @@ const CircleShare: React.FC<React.PropsWithChildren<{ projectAddress: string }>>
   }
 
   return (
-    <>     
-       <Page>
+    <>
+      <Page>
         <LinkWrapper>
           <LinkInner>
             <CircleHeader
               backFn={() => router.push('/circle/link')}
-              title = {t('Mint')} Right={undefined}
+              title={t('Mint')} Right={undefined}
             />
-              <InputLabel>{t('people')}</InputLabel>
-             <Input
+            <InputLabel>{t('people')}</InputLabel>
+            <Input
               type="number"
               value={amount}
               onChange={handleInputChange}
               min={0}
               max={500}
               onWheel={handleWheel}
-              placeholder= {t('mint_limit_text')}
-      />
-    
+              placeholder={t('mint_limit_text')}
+            />
+
             {/* <LinkSwitch /> */}
             <CurrentProject >
               {
                 project ?
-                    <>
-                      <ProjectInfo>
+                  <>
+                    <ProjectInfo>
                       <ProjectAvatar width={32} height={32} src={project?.icon} />
-                        <ProjectToken>
-                          <ProjectTokenName>{project?.symbol}</ProjectTokenName>
-                        </ProjectToken>
-                      </ProjectInfo>
-                      <ProjectPrice>
-                        <ProjectPriceValue>{new BigNumber(project?.price).toFixed(2)}</ProjectPriceValue>
-                      </ProjectPrice>
-                    </> :
-                    <>
-                      <ProjectInfo>
-                        <ProjectToken>
-                          <ProjectSelect> </ProjectSelect>
-                        </ProjectToken>
-                      </ProjectInfo>
-                      <ProjectPrice>
-                        <ToArrow width={16} height={16} src='/images/circle/arrow.png'/>
-                      </ProjectPrice>
-                    </>
+                      <ProjectToken>
+                        <ProjectTokenName>{project?.symbol}</ProjectTokenName>
+                      </ProjectToken>
+                    </ProjectInfo>
+                    <ProjectPrice>
+                      <ProjectPriceValue>{new BigNumber(project?.price).toFixed(2)}</ProjectPriceValue>
+                    </ProjectPrice>
+                  </> :
+                  <>
+                    <ProjectInfo>
+                      <ProjectToken>
+                        <ProjectSelect> </ProjectSelect>
+                      </ProjectToken>
+                    </ProjectInfo>
+                    <ProjectPrice>
+                      <ToArrow width={16} height={16} src='/images/circle/arrow.png' />
+                    </ProjectPrice>
+                  </>
               }
             </CurrentProject>
             <SelectButton
               disabled={isDisabled}
               onClick={handleMint}
-          >{minting ? t('Minting...') : t('Mint')}
-          </SelectButton>
+            >{minting ? t('Minting...') : t('Mint')}
+            </SelectButton>
           </LinkInner>
         </LinkWrapper>
       </Page>
