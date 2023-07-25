@@ -154,7 +154,7 @@ const CircleClaim: React.FC<React.PropsWithChildren<{ projectAddr: string, leade
       setIsClaiming(false)
       setIsDisabled(false)
 
-      router.push(`/circle/claimed/${nftContract}/${nftId}`)
+      router.push(`/circle/claimed/${NFTsInfo.NFTsContract}/${nftId}`)
       console.log(receipt1);
 
     } catch (error: any) {

@@ -2,7 +2,7 @@ import router from "next/router"
 import styled from "styled-components"
 import CircleHeader from "views/Circle/components/CircleHeader"
 import Page from "views/Page"
-import {Button} from '@pancakeswap/uikit'
+import { Button } from '@pancakeswap/uikit'
 import useToast from "hooks/useToast";
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { useTranslation } from "@pancakeswap/localization"
@@ -25,20 +25,6 @@ const SelectButton = styled(Button)`
   max-width: 350px;
 `
 
-const List = styled.div`
-  width: 100%;
-  display: flex;
-  height: 60px;
-  flex-direction: column;
-  flex-wrap: no-wrap;
-  justify-content: space-between;
-  align-items: center;
-  // border-radius: 8px;
-  // padding: 0 8px;
-  &:hover {
-    background: #e8e8e8;  
-  }
-`
 
 const Image = styled.img`
   width: 40%;
@@ -64,12 +50,14 @@ const MintSucText = styled.text`
 font-size: 20px;
 padding-top: 40px;
 font-weight: 800;
+position: relative;
+left : 7px;
 text-align: center;
 color: blue;
 `
-const CircleShare: React.FC<React.PropsWithChildren<{ projectAddress: string, leaderAddress:string }>> = ({ projectAddress,leaderAddress }) => {
+const CircleShare: React.FC<React.PropsWithChildren<{ projectAddress: string, leaderAddress: string }>> = ({ projectAddress, leaderAddress }) => {
   const { t } = useTranslation()
-  const {  toastSuccess } = useToast()
+  const { toastSuccess } = useToast()
 
   const handleCopy = () => {
     // setCopied(true);
@@ -79,40 +67,32 @@ const CircleShare: React.FC<React.PropsWithChildren<{ projectAddress: string, le
 
 
 
-  return(
+  return (
     <Page>
-    <ListWrapper>
-      <LinkInner>
-        <CircleHeader
+      <ListWrapper>
+        <LinkInner>
+          <CircleHeader
             backFn={() => router.push('/circle/')}
             title={t('share_link')}
             Right={undefined}
-        />
-      <SuccessDiv>
-        <Image src="/images/circle/checked.png" />
-        <MintSucText>{t('Mint_success')}</MintSucText>
-      </SuccessDiv>
-      {/* <CopyToClipboard text="gg" onCopy={() => {
-                                              setCopied(`https://www.equityswap.club/circle/claim/${projectAddress}/${leaderAddress}`)
-                                              setTimeout(() => setCopied(null), 2000)
-                                            }} />
-      <SelectButton
-              // disabled={isDisabled}
-              // onClick={}
-          >分享链接</SelectButton> */}
-           <>
-      <CopyToClipboard
-        text={`https://www.equityswap.club/circle/claim/${projectAddress}/${leaderAddress}`}
-        onCopy={handleCopy}
-      >
+          />
+          <SuccessDiv>
+            <Image src="/images/circle/checked.png" />
+            <MintSucText>{t('Mint_success')}</MintSucText>
+          </SuccessDiv>
+          <>
+            <CopyToClipboard
+              text={`https://www.equityswap.club/circle/claim/${projectAddress}/${leaderAddress}`}
+              onCopy={handleCopy}
+            >
               <SelectButton
               // disabled={isDisabled}
               // onClick={}
-          >{t('share_link')}</SelectButton> 
-      </CopyToClipboard>
-    </>
+              >{t('share_link')}</SelectButton>
+            </CopyToClipboard>
+          </>
 
-      </LinkInner>
+        </LinkInner>
       </ListWrapper>
     </Page>
   )

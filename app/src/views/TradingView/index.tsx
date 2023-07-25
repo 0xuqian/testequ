@@ -3,17 +3,22 @@ import { FC, useRef, useEffect, useState } from 'react';
 import { LinePlotProps, DataPoint } from "./types"
 
 
-function formatDate(date: Date) {
-  const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
-    "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
-  ];
+// function formatDate(date: Date) {
+//   const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
+//     "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+//   ];
 
-  const day = date.getDate();
-  const monthIndex = date.getMonth();
-  const hours = date.getHours();
-  const minutes = date.getMinutes();
+//   const day = date.getDate();
+//   const monthIndex = date.getMonth();
+//   const hours = date.getHours();
+//   const minutes = date.getMinutes();
 
-  return `${monthNames[monthIndex]} ${day}, ${hours}:${minutes < 10 ? '0' : ''}${minutes}`;
+//   return `${monthNames[monthIndex]} ${day}, ${hours}:${minutes < 10 ? '0' : ''}${minutes}`;
+// }
+
+function sliceData(date: string) {
+  const index = date.indexOf(" ") + 1
+  return date.slice(index)
 }
 
 
@@ -47,7 +52,7 @@ const LineChart: FC<LinePlotProps> = ({
     .tickSize(5)
     .tickFormat((i) => {
       return (
-        formatDate(data[Number(i)].time)
+        data[Number(i)].time.toString()
       );
     });
 
@@ -60,7 +65,7 @@ const LineChart: FC<LinePlotProps> = ({
     .range([0, data.length - 1]);
 
   const line = d3.line<DataPoint>()
-    // .x((_, i) => x(i))
+    .x((_, i) => x(i))
     .y((d) => y(d.price))
     .curve(d3.curveMonotoneX);
 
@@ -78,12 +83,12 @@ const LineChart: FC<LinePlotProps> = ({
       } else {
         setCurrentData(data.slice(0, currentData.length + 1));
       }
-    }, 5);
+    }, 500 / data.length);
+
     return () => {
       clearInterval(timer);
     };
   }, [data, currentData]);
-
 
   useEffect(() => {
     if (!isDrawing || !svgRef.current) return;
@@ -194,7 +199,8 @@ const LineChart: FC<LinePlotProps> = ({
 
 
   const handleMouseOut = () => {
-    onMousePositionChange({ x: formatDate(data[data.length - 1].time), y: data[data.length - 1].price });
+    // onMousePositionChange({ x: formatDate(data[data.length - 1].time), y: data[data.length - 1].price });
+    onMousePositionChange({ x: data[data.length - 1].time.toString(), y: data[data.length - 1].price });
     setCrosshairX(null);
     setCrosshairY(null);
 
@@ -218,25 +224,29 @@ const LineChart: FC<LinePlotProps> = ({
 
       const xValue = xReverse(x1);
       const dataPointIndex = Math.round(xValue);
+      const xCoordinate = x(dataPointIndex);
 
       if (tooltipRef.current) {
-        const gg = x1 - 45
-        tooltipRef.current.setAttribute('x', gg.toString());
+        const offSet = x1 - 25
+        tooltipRef.current.setAttribute('x', offSet.toString());
         tooltipRef.current.setAttribute('y', "420");
-        tooltipRef.current.textContent = formatDate(data[dataPointIndex].time);
+        // tooltipRef.current.textContent = formatDate(data[dataPointIndex].time)
+        tooltipRef.current.textContent = sliceData(data[dataPointIndex].time.toString());
       }
 
       if (dataPointIndex >= 0 && dataPointIndex < data.length) {
         const dataPoint = data[dataPointIndex];
 
         if (onMousePositionChange) {
-          const formattedDate = formatDate(dataPoint.time);
+          // const formattedDate = formatDate(dataPoint.time);
+          const formattedDate = dataPoint.time.toString();
           onMousePositionChange({ x: formattedDate, y: dataPoint.price });
           const pixelY = y(dataPoint.price)
 
           d3.select(tooltipRef.current).style("display", "");
           setCrosshairX(x1);
           setCrosshairY(pixelY);
+
           d3.select(".crosshairX")
             .attr("x1", marginLeft)
             .attr("x2", width - marginRight)
@@ -245,20 +255,21 @@ const LineChart: FC<LinePlotProps> = ({
             .style("display", "");
 
           d3.select(".crosshairY")
-            .attr("x1", x1)
-            .attr("x2", x1)
+            .attr("x1", xCoordinate)
+            .attr("x2", xCoordinate)
             .attr("y1", marginTop)
             .attr("y2", height - marginBottom)
             .style("display", "");
 
           d3.select(".crosshairCircle")
             .style("display", "")
-            .attr("cx", x1)
+            .attr("cx", xCoordinate)
             .attr("cy", pixelY);
         }
       }
     } else {
-      onMousePositionChange({ x: formatDate(data[data.length - 1].time), y: data[data.length - 1].price });
+      // onMousePositionChange({ x: formatDate(data[data.length - 1].time), y: data[data.length - 1].price });
+      onMousePositionChange({ x: data[data.length - 1].time.toString(), y: data[data.length - 1].price });
       setCrosshairX(null);
       setCrosshairY(null);
 

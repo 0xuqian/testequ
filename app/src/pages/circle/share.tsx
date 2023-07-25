@@ -176,7 +176,7 @@ const CircleShare: React.FC<React.PropsWithChildren<{ projectAddress: string }>>
         amount: parseInt(amount, 10),
         net: account ? `evm--${Number(chainId)}` : `evm--97`,
       });
-      console.info(body)
+
       const response = await fetch("https://www.equityswap.club/app/user/mint_nft", {
         method: "POST",
         headers: {
