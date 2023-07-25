@@ -68,10 +68,8 @@ const ProjectInfo = ({ projectInfo }: { projectInfo: NftHistory }) => {
   const { account } = useWeb3React()
 
   useEffect(() => {
-    if (projectInfo.claim_number / projectInfo.mint_number < 1) {
-      setFull(true)
-    }
-  }, [projectInfo])
+    setFull(projectInfo.claim_number / projectInfo.mint_number < 1);
+  }, [projectInfo, account])
 
   return (
     <List>

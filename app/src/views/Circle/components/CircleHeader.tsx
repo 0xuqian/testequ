@@ -45,7 +45,6 @@ const Line = styled.div`
 `
 
 export default function CircleHeader({ backFn, title, Right }) {
-
   return (
     <div>
       <Header>

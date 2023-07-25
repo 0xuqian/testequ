@@ -16,13 +16,12 @@ interface ShareBtnProps {
 const ShareBtn = styled.img<ShareBtnProps>` 
   filter: ${props => (props.claimRatio ? 'grayscale(0)' : 'grayscale(1)')};
   margin-left: 12px;
-  cursor: pointer;
+  cursor: ${props => (props.claimRatio ? 'pointer' : '')};
 `
 
 export const ShareIcon: React.FC<LinkInfo> = ({ projectAddr, leaderAddr, claimRatio }) => {
   const { toastSuccess } = useToast()
   const { t } = useTranslation()
-
   const handleCopy = () => {
     // setCopied(true);
     setTimeout(() => "", 2000);
@@ -30,12 +29,17 @@ export const ShareIcon: React.FC<LinkInfo> = ({ projectAddr, leaderAddr, claimRa
   };
 
   return (
-    <CopyToClipboard
-      text={`https://www.equityswap.club/circle/claim/${projectAddr}/${leaderAddr}`}
-      onCopy={handleCopy}
-    >
-      <ShareBtn claimRatio={claimRatio} src="/images/sharelink.png" />
-      {/* <Tooltip isTooltipDisplayed>{t('copied')}</Tooltip> */}
-    </CopyToClipboard>
+    <>
+      {claimRatio ? (
+        <CopyToClipboard
+          text={`https://www.equityswap.club/circle/claim/${projectAddr}/${leaderAddr}`}
+          onCopy={handleCopy}
+        >
+          <ShareBtn claimRatio={claimRatio} src="/images/sharelink.png" />
+        </CopyToClipboard>
+      ) : (
+        <ShareBtn claimRatio={claimRatio} src="/images/sharelink.png" />
+      )}
+    </>
   )
 }
