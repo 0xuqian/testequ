@@ -2,7 +2,7 @@ import styled from 'styled-components'
 import { useRouter } from "next/router";
 import { useTranslation } from '@pancakeswap/localization';
 import { useHistoryNftInfo } from 'hooks/useHistoryNftInfo';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import CircleHeader from './components/CircleHeader'
 import Page from '../Page'
 import ProjectInfo from './components/ProjectsInfo';
@@ -46,8 +46,10 @@ export default function CircleHistory() {
       <LinkWrapper>
         <CircleHeader backFn={() => router.push('/circle/link')} title={t('History')} Right={null} />
         {data !== null || network === false ? (data?.data.all_nft_his.map((item) => (
-          <><ProjectInfo key={item.pro_addr} projectInfo={item} />
-            <Line /></>
+          <React.Fragment key={item.pro_addr}>
+            <ProjectInfo projectInfo={item} />
+            <Line />
+          </React.Fragment>
         ))) : <SkeletonP />}
       </LinkWrapper>
     </Page>

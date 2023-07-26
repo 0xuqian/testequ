@@ -1,7 +1,7 @@
 import * as d3 from "d3";
 import { FC, useRef, useEffect, useState } from 'react';
+import { formatNumber } from "pages/trading-view";
 import { LinePlotProps, DataPoint } from "./types"
-
 
 // function formatDate(date: Date) {
 //   const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
@@ -29,7 +29,7 @@ const LineChart: FC<LinePlotProps> = ({
   marginTop = 20,
   marginRight = 35,
   marginBottom = 50,
-  marginLeft = 60,
+  marginLeft = 90,
   isDesktop = false,
   onMousePositionChange
 }) => {
@@ -57,7 +57,7 @@ const LineChart: FC<LinePlotProps> = ({
     });
 
   const y = d3.scaleLinear()
-    .domain([0, d3.extent(data.map((d) => d.price))[1]])
+    .domain([0, d3.extent(data.map((d) => (d.price)))[1]])
     .range([height - marginBottom, marginTop]);
 
   const xReverse = d3.scaleLinear()
@@ -98,7 +98,7 @@ const LineChart: FC<LinePlotProps> = ({
     svg.selectAll("*").remove();
 
     svg.append("rect")
-      .attr("x", 60)
+      .attr("x", marginLeft)
       .attr("y", 0)
       .attr("width", width - marginLeft - marginRight)
       .attr("height", height - marginBottom)
@@ -109,10 +109,15 @@ const LineChart: FC<LinePlotProps> = ({
       .attr("transform", `translate(0, ${height - marginBottom})`)
       .selectAll(".domain, .tick line").remove();
 
+    const yAxis = d3.axisLeft(y)
+      .tickFormat(d => {
+        return formatNumber(d)
+      });
+
     svg
       .append("g")
       .attr("transform", `translate(${marginLeft}, 0)`)
-      .call(d3.axisLeft(y))
+      .call(yAxis)
       .selectAll(".domain, .tick line")
       .attr("stroke-width", 50)
       .remove()
@@ -200,7 +205,7 @@ const LineChart: FC<LinePlotProps> = ({
 
   const handleMouseOut = () => {
     // onMousePositionChange({ x: formatDate(data[data.length - 1].time), y: data[data.length - 1].price });
-    onMousePositionChange({ x: data[data.length - 1].time.toString(), y: data[data.length - 1].price });
+    onMousePositionChange({ x: data[data.length - 1].time.toString(), y: data[data.length - 1].stringPrice });
     setCrosshairX(null);
     setCrosshairY(null);
 
@@ -227,7 +232,7 @@ const LineChart: FC<LinePlotProps> = ({
       const xCoordinate = x(dataPointIndex);
 
       if (tooltipRef.current) {
-        const offSet = x1 - 25
+        const offSet = xCoordinate - 25
         tooltipRef.current.setAttribute('x', offSet.toString());
         tooltipRef.current.setAttribute('y', "420");
         // tooltipRef.current.textContent = formatDate(data[dataPointIndex].time)
@@ -240,7 +245,7 @@ const LineChart: FC<LinePlotProps> = ({
         if (onMousePositionChange) {
           // const formattedDate = formatDate(dataPoint.time);
           const formattedDate = dataPoint.time.toString();
-          onMousePositionChange({ x: formattedDate, y: dataPoint.price });
+          onMousePositionChange({ x: formattedDate, y: dataPoint.stringPrice });
           const pixelY = y(dataPoint.price)
 
           d3.select(tooltipRef.current).style("display", "");
@@ -269,7 +274,7 @@ const LineChart: FC<LinePlotProps> = ({
       }
     } else {
       // onMousePositionChange({ x: formatDate(data[data.length - 1].time), y: data[data.length - 1].price });
-      onMousePositionChange({ x: data[data.length - 1].time.toString(), y: data[data.length - 1].price });
+      onMousePositionChange({ x: data[data.length - 1].time.toString(), y: data[data.length - 1].stringPrice });
       setCrosshairX(null);
       setCrosshairY(null);
 

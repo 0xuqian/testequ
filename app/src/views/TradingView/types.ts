@@ -2,6 +2,7 @@
 export interface DataPoint {
   price: number;
   time: Date;
+  stringPrice: string;
 }
 
 export interface LinePlotProps {
@@ -13,11 +14,11 @@ export interface LinePlotProps {
   marginBottom?: number;
   marginLeft?: number;
   isDesktop?: boolean;
-  onMousePositionChange?: (position: { x: string; y: number }) => void;
+  onMousePositionChange?: (position: { x: string; y: string }) => void;
 }
 
 export interface PriceDateProps {
-  price: number;
+  price: string;
   date: string;
   projectIcon?: string;
   tokenName?: string;

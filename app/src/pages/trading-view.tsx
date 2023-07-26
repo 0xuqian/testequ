@@ -5,12 +5,8 @@ import { LineChartLoader } from 'views/Info/components/ChartLoaders'
 import Page from "views/Page";
 import LineChart from "views/TradingView";
 import styled from "styled-components";
+import { DataPoint } from "views/TradingView/types";
 import { useMatchBreakpointsContext } from "@pancakeswap/uikit";
-
-interface DataPoint {
-  price: number;
-  time: Date;
-}
 
 // function formatDate(date: Date) {
 //   const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
@@ -55,32 +51,58 @@ const ChartContainer = styled.div`
   align-items:center;
 `
 
+const countTrailingZeros = (input) => {
+  const match = input.match(/\.0+/);
+  return match ? match[0].length - 1 : 0;
+};
+
+export const formatNumber = (number) => {
+  const stringValue = number.toString();
+
+  if (/[+-]?\d+(\.\d+)?[eE][+-]?\d+/.test(stringValue)) {
+    const str = parseFloat(number).toFixed(20).replace(/\.?0+$/, '');
+    const demail = countTrailingZeros(str)
+    if (demail >= 6) {
+      const match = str.match(/\.0+/);
+      const count = match[0].length - 1;
+      const formattedNumber = str.replace(/\.0+/, `.{${count}}`);
+      return formattedNumber
+
+    }
+    return str;
+  }
+
+  return stringValue;
+};
+
+
 const Tocao: FC<{ data: any | null }> = ({ data }) => {
 
-  const [mousePosition, setMousePosition] = useState<{ x: string; y: number }>({ x: "", y: 0 });
+  const [mousePosition, setMousePosition] = useState<{ x: string; y: string }>({ x: "", y: "" });
   const { isDesktop } = useMatchBreakpointsContext()
 
   // const parseTime = d3.utcParse("%Y-%m-%dT%H:%M:%SZ");
   let price = [];
   let time = [];
 
+
   if (data?.data.x_axis[0] && data?.data.y_axis[0]) {
     price = data.data.y_axis;
     // time = data.data.x_axis.map(parseTime);
     time = data.data.x_axis
-    const sortedData = time.map((timeValue, index) => ({
+    const sortedData: DataPoint[] = time.map((timeValue, index) => ({
+      stringPrice: formatNumber(price[index]),
       price: price[index],
       time: timeValue,
     }));
 
-    const dataPoints: DataPoint[] = sortedData;
     return (
       <Page>
         <AllCartContainer>
-          <PriceDate price={mousePosition?.y || dataPoints[price.length - 1].price} date={mousePosition?.x || time[time.length - 1].toString()} />
+          <PriceDate price={mousePosition?.y.toString() || sortedData[price.length - 1].price.toString()} date={mousePosition?.x || time[time.length - 1].toString()} />
           <ChartContainer>
-            {isDesktop ? <LineChart width={768} height={450} data={dataPoints} isDesktop={isDesktop} onMousePositionChange={setMousePosition} />
-              : <LineChart width={350} height={450} data={dataPoints} onMousePositionChange={setMousePosition} />}
+            {isDesktop ? <LineChart width={768} height={450} data={sortedData} isDesktop={isDesktop} onMousePositionChange={setMousePosition} />
+              : <LineChart width={350} height={450} data={sortedData} onMousePositionChange={setMousePosition} />}
           </ChartContainer>
         </AllCartContainer>
       </Page>
@@ -97,6 +119,7 @@ const Tocao: FC<{ data: any | null }> = ({ data }) => {
 
 const TradingView: FC = () => {
   const data = useKLine();
+
   return (
     <Tocao data={data} />
   );

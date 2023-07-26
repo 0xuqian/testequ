@@ -49,11 +49,13 @@ export const useHistoryNftInfo = (setNetwork): AllHistory | null => {
       setNetwork(false);
       console.error(`Failed to fetch list`, error)
     }
-  }, [chainId, account])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [account, chainId])
 
   useEffect(() => {
     fetchData()
-  }, [chainId, account, fetchData])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
   return projects;
 }
 
@@ -69,7 +71,7 @@ export const useKLine = (): AllHistory | null => {
         {
           method: 'post',
           body: JSON.stringify({
-            token_addr: "0xd4FEc4cEf94F97d79Ec8E7C83445887833fC4d28",
+            token_addr: "0x08784c14c2a77fBC6Bc44259c517cf11dB82d139",
             net: `evm--${Number(chainId)}`
           }),
           headers: new Headers({
@@ -83,11 +85,14 @@ export const useKLine = (): AllHistory | null => {
     } catch (error) {
       console.error(`Failed to fetch list`, error)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [chainId, account])
 
   useEffect(() => {
     fetchData()
-  }, [chainId, account, fetchData])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
+  console.info(KData)
   return KData;
 }
