@@ -1,11 +1,12 @@
 import { useKLine } from "hooks/useHistoryNftInfo";
-import { FC, useState } from 'react';
+import { FC, useLayoutEffect, useRef, useState } from 'react';
 import PriceDate from 'views/TradingView/component/TokenInfo'
 import { LineChartLoader } from 'views/Info/components/ChartLoaders'
 import Page from "views/Page";
 import LineChart from "views/TradingView";
 import styled from "styled-components";
 import { DataPoint } from "views/TradingView/types";
+import ResizeDetector from 'react-resize-detector';
 import { useMatchBreakpointsContext } from "@pancakeswap/uikit";
 
 // function formatDate(date: Date) {
@@ -32,7 +33,7 @@ const LineChartLoader11 = styled(LineChartLoader)`
 const AllCartContainer = styled.div`
   font-family: 'Inter', sans-serif;
   width: 100%;
-  max-width: 800px;
+  max-width: 1200px;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
@@ -51,23 +52,22 @@ const ChartContainer = styled.div`
   align-items:center;
 `
 
-const countTrailingZeros = (input) => {
-  const match = input.match(/\.0+/);
-  return match ? match[0].length - 1 : 0;
-};
-
 export const formatNumber = (number) => {
   const stringValue = number.toString();
 
+  const countTrailingZeros = (input) => {
+    const match = input.match(/\.0+/);
+    return match ? match[0].length - 1 : 0;
+  };
+
   if (/[+-]?\d+(\.\d+)?[eE][+-]?\d+/.test(stringValue)) {
     const str = parseFloat(number).toFixed(20).replace(/\.?0+$/, '');
-    const demail = countTrailingZeros(str)
-    if (demail >= 6) {
+    const demail = countTrailingZeros(str);
+    if (demail >= 7) {
       const match = str.match(/\.0+/);
-      const count = match[0].length - 1;
-      const formattedNumber = str.replace(/\.0+/, `.{${count}}`);
-      return formattedNumber
-
+      const count = match[0].length - 2;
+      const formattedNumber = str.replace(/\.0+/, `.0{${count}}`);
+      return formattedNumber;
     }
     return str;
   }
@@ -80,46 +80,71 @@ const Tocao: FC<{ data: any | null }> = ({ data }) => {
 
   const [mousePosition, setMousePosition] = useState<{ x: string; y: string }>({ x: "", y: "" });
   const { isDesktop } = useMatchBreakpointsContext()
+  const [parentWidth, setParentWidth] = useState<number>(0);
 
   // const parseTime = d3.utcParse("%Y-%m-%dT%H:%M:%SZ");
-  let price = [];
-  let time = [];
-
-
-  if (data?.data.x_axis[0] && data?.data.y_axis[0]) {
-    price = data.data.y_axis;
-    // time = data.data.x_axis.map(parseTime);
-    time = data.data.x_axis
-    const sortedData: DataPoint[] = time.map((timeValue, index) => ({
-      stringPrice: formatNumber(price[index]),
-      price: price[index],
-      time: timeValue,
-    }));
-
+  if (!data) {
     return (
-      <Page>
+      <PageC>
         <AllCartContainer>
-          <PriceDate price={mousePosition?.y.toString() || sortedData[price.length - 1].price.toString()} date={mousePosition?.x || time[time.length - 1].toString()} />
-          <ChartContainer>
-            {isDesktop ? <LineChart width={768} height={450} data={sortedData} isDesktop={isDesktop} onMousePositionChange={setMousePosition} />
-              : <LineChart width={350} height={450} data={sortedData} onMousePositionChange={setMousePosition} />}
-          </ChartContainer>
+          <LineChartLoader11 />
         </AllCartContainer>
-      </Page>
+      </PageC>
     );
   }
+  if (!data?.data.x_axis?.length || !data.data.y_axis?.length) {
+    return (
+      <PageC>
+        <AllCartContainer>
+          <div>No Data</div>
+        </AllCartContainer>
+      </PageC>
+    );
+  }
+
+  const price = data.data.y_axis;
+  const time = data.data.x_axis;
+  const sortedData: DataPoint[] = time.map((timeValue, index) => ({
+    stringPrice: formatNumber(price[index]),
+    price: price[index],
+    time: timeValue,
+  }));
+
   return (
-    <PageC>
+    <Page>
       <AllCartContainer>
-        <LineChartLoader11 />
+        <PriceDate price={mousePosition?.y.toString() || formatNumber(sortedData[price.length - 1].price)} date={mousePosition?.x || time[time.length - 1].toString()} />
+        <ChartContainer>
+          <ResizeDetector handleWidth onResize={setParentWidth} />
+          <LineChart
+            width={isDesktop ? (parentWidth !== 0 ? parentWidth : undefined) : parentWidth}
+            height={450}
+            data={sortedData}
+            isDesktop={isDesktop}
+            onMousePositionChange={setMousePosition}
+          />
+        </ChartContainer>
       </AllCartContainer>
-    </PageC>
+    </Page>
   );
+
 };
 
 const TradingView: FC = () => {
   const data = useKLine();
+  // console.log(data)
 
+  const object = {
+    "code": 0,
+    "data": {
+      "x_axis": [
+      ],
+      "y_axis": [
+      ]
+    },
+    "msg": "success",
+    "other": {}
+  }
   return (
     <Tocao data={data} />
   );

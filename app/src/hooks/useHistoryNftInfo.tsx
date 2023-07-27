@@ -93,6 +93,5 @@ export const useKLine = (): AllHistory | null => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  console.info(KData)
   return KData;
 }

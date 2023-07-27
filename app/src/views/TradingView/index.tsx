@@ -186,14 +186,40 @@ const LineChart: FC<LinePlotProps> = ({
       .style("display", "none");
 
     const tooltip = d3.select(svgRef.current).append('g').style('display', '');
-    const text = tooltip
+
+    tooltip.append('rect')
+      .style('fill', 'yellow') // Or any color you prefer
+      .style('opacity', 0.8)
+      .attr('width', 10)
+      .attr('height', 10)
+
+    tooltip
       .append('text')
-      .attr('x', 5)
-      .attr('y', 15)
       .attr('alignment-baseline', 'middle')
       .attr('font-size', '12px');
-    tooltipRef.current = text.node();
 
+    // tooltip.attr('transform', function () {
+    //   const bbox = text.node().getBBox();
+    //   bg.attr('x', bbox.x - 2) // Add some padding
+    //     .attr('y', bbox.y - 2) // Add some padding
+    //     .attr('width', bbox.width + 4) // Add some padding
+    //     .attr('height', bbox.height + 4); // Add some padding
+    // });
+
+    // tooltip.each(function () {
+    //   const bbox = text.node().getBBox();
+    //   bc.attr('x', bbox.x)
+    //     .attr('y', bbox.y)
+    //     .attr('width', bbox.width + 10) // add some padding
+    //     .attr('height', bbox.height + 10); // add some padding
+    // });
+    // const bbox = tooltipRef.current.getBBox();
+    // bg.attr('x', bbox.x - 2) // Add some padding
+    //   .attr('y', bbox.y - 2) // Add some padding
+    //   .attr('width', bbox.width + 4) // Add some padding
+    //   .attr('height', bbox.height + 4); // Add some padding
+
+    tooltipRef.current = tooltip.node();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data, width, height, marginTop, marginRight, marginBottom, marginLeft, line, area, x, y, xAxis, isDrawing, crosshairX, crosshairY, isDesktop]);
 
@@ -233,10 +259,20 @@ const LineChart: FC<LinePlotProps> = ({
 
       if (tooltipRef.current) {
         const offSet = xCoordinate - 25
-        tooltipRef.current.setAttribute('x', offSet.toString());
-        tooltipRef.current.setAttribute('y', "420");
-        // tooltipRef.current.textContent = formatDate(data[dataPointIndex].time)
-        tooltipRef.current.textContent = sliceData(data[dataPointIndex].time.toString());
+        const allChildNodes = d3.select(tooltipRef.current).selectAll('*');
+
+        allChildNodes.attr('x', offSet.toString());
+        allChildNodes.attr('y', "420");
+
+        const tipText = d3.select(tooltipRef.current).select('text');
+        const tipBg = d3.select(tooltipRef.current).select('rect')
+
+        tipText
+          .text(sliceData(data[dataPointIndex].time.toString()));
+
+        tipBg
+          .style("background-color", "black")
+          .style()
       }
 
       if (dataPointIndex >= 0 && dataPointIndex < data.length) {
