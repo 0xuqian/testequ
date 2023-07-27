@@ -271,7 +271,7 @@ export default function AddWhiteList() {
             </StyledButton>
             {/* {
               Number(chainId) === 97 ?
-              <StyledA href='https://t.me/PeopleEquity' target="_blank">{t('claimTestUSDCHere')}</StyledA> : null
+              <StyledA href='https://t.me/PeopleEquityGlobal' target="_blank">{t('claimTestUSDCHere')}</StyledA> : null
             } */}
           </AutoColumn>
         </CardBody>

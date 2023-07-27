@@ -73,7 +73,7 @@ function MyApp(props: AppProps) {
           content="The first 3 in 1 DEX driven by the new production relationship has come to the Web3 realm! Get more bonuses as a user, or start unlimited growth as an enterprise."
         />
         <meta name="theme-color" content="#1FC7D4" />
-         <meta name="twitter:image" content="https://p.ipic.vip/ugwv30.png" />
+        <meta name="twitter:image" content="https://p.ipic.vip/ugwv30.png" />
         <meta
           name="twitter:description"
           content="Based on a more equitable allocation of value, define the true essence of decentralized transactions."
