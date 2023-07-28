@@ -272,7 +272,6 @@ const LineChart: FC<LinePlotProps> = ({
 
         tipBg
           .style("background-color", "black")
-          .style()
       }
 
       if (dataPointIndex >= 0 && dataPointIndex < data.length) {

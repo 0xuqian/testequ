@@ -27,7 +27,7 @@ const Wrapper = styled(Column)`
   height: 100%;
 `
 
-const RowWrapper = styled(Row)<{ active: boolean }>`
+const RowWrapper = styled(Row) <{ active: boolean }>`
   background-color: ${({ active, theme }) => (active ? `${theme.colors.success}19` : 'transparent')};
   border: solid 1px;
   border-color: ${({ active, theme }) => (active ? theme.colors.success : theme.colors.tertiary)};
@@ -194,8 +194,8 @@ function ManageLists({
           return l1.name.toLowerCase() < l2.name.toLowerCase()
             ? -1
             : l1.name.toLowerCase() === l2.name.toLowerCase()
-            ? 0
-            : 1
+              ? 0
+              : 1
         }
         if (l1) return -1
         if (l2) return 1

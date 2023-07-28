@@ -29,10 +29,6 @@ export const useHistoryNftInfo = (setNetwork): AllHistory | null => {
   const [projects, setProjects] = useState<AllHistory | null>(null)
 
   const fetchData = useCallback(async () => {
-    console.log(JSON.stringify({
-      net: account ? `evm--${Number(chainId)}` : `evm--97`,
-      miner: account
-    }),)
     try {
       const res: any = await fetch(`https://www.equityswap.club/app/user/nft_his`,
         {
