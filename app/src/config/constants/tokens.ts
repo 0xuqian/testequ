@@ -2543,3 +2543,7 @@ export const PE = {
   [ChainId.BSC_TESTNET]: PE_TESTNET,
   [ChainId.ARB_TESTNET]: arbTestnetTokens.pe,
 }
+
+export const PV = {
+  [ChainId.BSC]: PV_MAINNET
+}

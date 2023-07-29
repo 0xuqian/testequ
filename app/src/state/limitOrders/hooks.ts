@@ -403,8 +403,8 @@ export const useDerivedOrderInfo = (): DerivedOrderInfo => {
       independentField === Field.PRICE
         ? typedValue
         : rateType === Rate.MUL
-        ? price?.toSignificant(6) ?? ''
-        : price?.invert().toSignificant(6) ?? '',
+          ? price?.toSignificant(6) ?? ''
+          : price?.invert().toSignificant(6) ?? '',
   }
 
   // Get raw amounts that will be used in smart contract call
@@ -416,8 +416,8 @@ export const useDerivedOrderInfo = (): DerivedOrderInfo => {
 
       output: outputCurrency
         ? parsedAmounts.output
-            ?.multiply(JSBI.exponentiate(BIG_INT_TEN, JSBI.BigInt(outputCurrency.decimals)))
-            .toFixed(0)
+          ?.multiply(JSBI.exponentiate(BIG_INT_TEN, JSBI.BigInt(outputCurrency.decimals)))
+          .toFixed(0)
         : undefined,
     }),
     [inputCurrency, outputCurrency, parsedAmounts],
