@@ -84,7 +84,7 @@ export const formatNumber = (number) => {
     const demail = countTrailingZeros(str);
     if (demail >= 7) {
       const match = str.match(/\.0+/);
-      const count = match[0].length - 2;
+      const count = match[0].length - 1;
       const formattedNumber = str.replace(/\.0+/, `.0{${count}}`);
       return formattedNumber;
     }

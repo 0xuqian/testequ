@@ -168,7 +168,6 @@ function CurrencySearch({
   };
 
   const sortedTokens = filteredSortedTokens.sort(customSort);
-  console.log(sortedTokens)
   const handleEnter = useCallback(
     (e: KeyboardEvent<HTMLInputElement>) => {
       if (e.key === 'Enter') {
