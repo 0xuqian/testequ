@@ -117,7 +117,6 @@ function CurrencySearch({
   }, [allTokens, debouncedQuery])
 
   const filteredQueryTokens = useSortedTokensByQuery(filteredTokens, debouncedQuery)
-
   const tokenComparator = useTokenComparator(invertSearchOrder)
 
   const filteredSortedTokens: Token[] = useMemo(() => {
@@ -169,7 +168,6 @@ function CurrencySearch({
 
   // if no results on main list, show option to expand into inactive
   const filteredInactiveTokens = useSearchInactiveTokenLists(debouncedQuery)
-
   const hasFilteredInactiveTokens = Boolean(filteredInactiveTokens?.length)
   const { isMobile } = useMatchBreakpointsContext()
   const getCurrencyListRows = useCallback(() => {

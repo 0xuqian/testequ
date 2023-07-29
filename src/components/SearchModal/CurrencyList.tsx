@@ -42,7 +42,7 @@ function Balance({ balance }: { balance: CurrencyAmount }) {
   return <StyledBalanceText title={balance.toExact()}>{balance.toSignificant(4)}</StyledBalanceText>
 }
 
-const MenuItem = styled(RowBetween)<{ disabled: boolean; selected: boolean }>`
+const MenuItem = styled(RowBetween) <{ disabled: boolean; selected: boolean }>`
   padding: 4px 20px;
   height: 56px;
   display: grid;

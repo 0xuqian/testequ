@@ -38,7 +38,7 @@ const ClaimSuccDetail = styled.div`
   text-align: center;
   line-height: 35px; 
 `
-  
+
 
 const Image = styled.img`
   width: 30%;
@@ -59,8 +59,8 @@ align-items: center;
 text-align: center;
 `;
 
-const MintSucText = styled.text`
-font-size: 20px;
+const MintSucText = styled.p`
+font-size: 20px;c
 margin-top: 30px;
 font-weight: 800;
 text-align: center;
@@ -118,79 +118,79 @@ const Tooltip = styled.div<{
 `
 
 
-const Claimed: React.FC<React.PropsWithChildren<{ projectAddress: string,nftId: string  }>> = ({ projectAddress = '0xc2452DB583AFB353cB44Ac6edC2f61Da7C23A8bB', nftId="0" }) => {
+const Claimed: React.FC<React.PropsWithChildren<{ projectAddress: string, nftId: string }>> = ({ projectAddress = '0xc2452DB583AFB353cB44Ac6edC2f61Da7C23A8bB', nftId = "0" }) => {
 
   const { t } = useTranslation()
   const [copy, setCopied] = useState("")
-  const [shortAddress,setShortAddress] = useState("")
+  const [shortAddress, setShortAddress] = useState("")
 
   useEffect(() => {
     const simplifyAddress = () => {
-      const prefix = projectAddress.substring(0,6);
-      const suffix = projectAddress.substring(projectAddress.length -6);
+      const prefix = projectAddress.substring(0, 6);
+      const suffix = projectAddress.substring(projectAddress.length - 6);
       setShortAddress(`${prefix}...${suffix}`);
     }
-      simplifyAddress();
-  },[projectAddress]) 
+    simplifyAddress();
+  }, [projectAddress])
 
-  return(
+  return (
     <Page>
-    <ListWrapper>
-      <LinkInner>
-        <CircleHeader
+      <ListWrapper>
+        <LinkInner>
+          <CircleHeader
             backFn={() => router.push('/circle/')}
             title={t('NFT Details')}
             Right={undefined}
-        />
-      <SuccessDiv>
-        <Image src="/images/circle/checked.png" />
-        <MintSucText>{t('Claim_success')}</MintSucText>
-        <ClaimSuccCapWrapper>
-        <ClaimSuccInfo>
-          <ClaimSuccDetail>
-            <ContracDetails>
-              {t('contract address')}
-            </ContracDetails>
-            <ContractPasteDiv>
-              {shortAddress}
-              <CopyToClipboard text={projectAddress} onCopy={() => {
-                setCopied(projectAddress)
-                setTimeout(() => setCopied(null), 2000)
-                  }}>
-                  <CopyWrapper onClick={(e) => {
-                    e.stopPropagation()
+          />
+          <SuccessDiv>
+            <Image src="/images/circle/checked.png" />
+            <MintSucText>{t('Claim_success')}</MintSucText>
+            <ClaimSuccCapWrapper>
+              <ClaimSuccInfo>
+                <ClaimSuccDetail>
+                  <ContracDetails>
+                    {t('contract address')}
+                  </ContracDetails>
+                  <ContractPasteDiv>
+                    {shortAddress}
+                    <CopyToClipboard text={projectAddress} onCopy={() => {
+                      setCopied(projectAddress)
+                      setTimeout(() => setCopied(null), 2000)
                     }}>
-                  <CopyButton />
-                  <Tooltip isTooltipDisplayed={copy === projectAddress}>{t('Copied')}</Tooltip>
-                  </CopyWrapper>
-               </CopyToClipboard>
-              </ContractPasteDiv>
-          </ClaimSuccDetail>
-          <ClaimSuccDetail>
-            <ContracDetails>
-              Token ID
-            </ContracDetails>
-            <ContractPasteDiv>
-              {nftId}
-              <CopyToClipboard text={nftId} onCopy={() => {
-                setCopied(nftId)
-                setTimeout(() => setCopied(null), 2000)
-                  }}>
-                  <CopyWrapper onClick={(e) => {
-                    e.stopPropagation()
+                      <CopyWrapper onClick={(e) => {
+                        e.stopPropagation()
+                      }}>
+                        <CopyButton />
+                        <Tooltip isTooltipDisplayed={copy === projectAddress}>{t('Copied')}</Tooltip>
+                      </CopyWrapper>
+                    </CopyToClipboard>
+                  </ContractPasteDiv>
+                </ClaimSuccDetail>
+                <ClaimSuccDetail>
+                  <ContracDetails>
+                    Token ID
+                  </ContracDetails>
+                  <ContractPasteDiv>
+                    {nftId}
+                    <CopyToClipboard text={nftId} onCopy={() => {
+                      setCopied(nftId)
+                      setTimeout(() => setCopied(null), 2000)
                     }}>
-                  <CopyButton />
-                  <Tooltip isTooltipDisplayed={copy === nftId}>{t('Copied')}</Tooltip>
-                  </CopyWrapper>
-               </CopyToClipboard>
-              </ContractPasteDiv>
-          </ClaimSuccDetail>
-        </ClaimSuccInfo>
-        </ClaimSuccCapWrapper>
-      </SuccessDiv>
-           <>
-    </>
-      </LinkInner>
+                      <CopyWrapper onClick={(e) => {
+                        e.stopPropagation()
+                      }}>
+                        <CopyButton />
+                        <Tooltip isTooltipDisplayed={copy === nftId}>{t('Copied')}</Tooltip>
+                      </CopyWrapper>
+                    </CopyToClipboard>
+                  </ContractPasteDiv>
+                </ClaimSuccDetail>
+              </ClaimSuccInfo>
+            </ClaimSuccCapWrapper>
+          </SuccessDiv>
+          <>
+          </>
+        </LinkInner>
       </ListWrapper>
     </Page>
   )

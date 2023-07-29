@@ -36,15 +36,25 @@ const BackImg = styled(Image)`
   cursor: pointer;
 `
 
-export default function CircleHeader({ backFn, title, Right }) {
+const Line = styled.div`
+  width: 100%;
+  height: 1px;
+  background: #efefef;
+  transform: scaleY(0.5);
+  margin-left: 8px;
+`
 
+export default function CircleHeader({ backFn, title, Right }) {
   return (
+    <div>
       <Header>
         <HeaderLeft>
-          { backFn ? <BackImg onClick={backFn} width={40} height={40} src='/images/circle/back.png' /> : null}
+          {backFn ? <BackImg onClick={backFn} width={40} height={40} src='/images/circle/back.png' /> : null}
         </HeaderLeft>
         <HeaderCenter>{title}</HeaderCenter>
         <HeaderRight>{Right}</HeaderRight>
       </Header>
+      <Line />
+    </div>
   )
 }

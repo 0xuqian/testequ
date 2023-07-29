@@ -1,8 +1,8 @@
-import styled, { useTheme } from 'styled-components'
-import {useRouter} from "next/router";
+import styled from 'styled-components'
+import { useRouter } from "next/router";
 import { useTranslation } from '@pancakeswap/localization';
 import { useHistoryNftInfo } from 'hooks/useHistoryNftInfo';
-import { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import CircleHeader from './components/CircleHeader'
 import Page from '../Page'
 import ProjectInfo from './components/ProjectsInfo';
@@ -36,20 +36,22 @@ const Line = styled.div`
 
 export default function CircleHistory() {
 
-  const [network,setNetwork] = useState(true)
+  const [network, setNetwork] = useState(true)
   const router = useRouter()
   const { t } = useTranslation()
   const data = useHistoryNftInfo(setNetwork)
 
   return (
-      <Page>
-        <LinkWrapper>
-          <CircleHeader backFn={() => router.push('/circle/link')} title={t('History')} Right={null} />
-          {data !== null || network === false ? (data?.data.all_nft_his.map((item) => (
-          <ProjectInfo key={item.pro_addr} projectInfo={item}/>
-        ))) : <SkeletonP/>}
-          <Line />
-        </LinkWrapper>
-      </Page>
+    <Page>
+      <LinkWrapper>
+        <CircleHeader backFn={() => router.push('/circle/link')} title={t('History')} Right={null} />
+        {data !== null || network === false ? (data?.data.all_nft_his.map((item) => (
+          <React.Fragment key={item.pro_addr}>
+            <ProjectInfo projectInfo={item} />
+            <Line />
+          </React.Fragment>
+        ))) : <SkeletonP />}
+      </LinkWrapper>
+    </Page>
   )
 }

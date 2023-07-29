@@ -18,7 +18,7 @@ import { NEVER_RELOAD, useSingleCallResult } from '../state/multicall/hooks'
 import useUserAddedTokens, { userAddedTokenSelector } from '../state/user/hooks/useUserAddedTokens'
 import { isAddress } from '../utils'
 import { useBytes32TokenContract, useTokenContract } from './useContract'
-import {PE} from "../config/constants/tokens";
+import { PE } from "../config/constants/tokens";
 
 const mapWithoutUrls = (tokenMap: TokenAddressMap, chainId: number) =>
   Object.keys(tokenMap[chainId]).reduce<{ [address: string]: Token }>((newMap, address) => {
@@ -27,6 +27,7 @@ const mapWithoutUrls = (tokenMap: TokenAddressMap, chainId: number) =>
   }, {})
 
 const allTokenSelector = (chainId: number) =>
+
   createSelector(
     [combinedTokenMapFromActiveUrlsSelector, userAddedTokenSelector(chainId)],
     (tokenMap, userAddedTokens) => {
@@ -71,7 +72,6 @@ const allOfficialsAndUserAddedTokensSelector = (chainId: number) =>
  */
 export function useAllTokens(): { [address: string]: Token } {
   const { chainId } = useActiveWeb3React()
-
   return useSelector(allTokenSelector(chainId))
 }
 
@@ -124,8 +124,8 @@ function parseStringOrBytes32(str: string | undefined, bytes32: string | undefin
     ? str
     : // need to check for proper bytes string and valid terminator
     bytes32 && BYTES32_REGEX.test(bytes32) && arrayify(bytes32)[31] === 0
-    ? parseBytes32String(bytes32)
-    : defaultValue
+      ? parseBytes32String(bytes32)
+      : defaultValue
 }
 
 // undefined if invalid or does not exist

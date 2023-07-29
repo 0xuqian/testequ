@@ -7,7 +7,7 @@ import { WrappedTokenInfo } from 'state/types'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useBUSDCurrencyAmount } from 'hooks/useBUSDPrice'
 import { formatNumber } from 'utils/formatBalance'
-import {background, border} from "styled-system";
+import { background, border } from "styled-system";
 import { useCurrencyBalance } from '../../state/wallet/hooks'
 import CurrencySearchModal from '../SearchModal/CurrencySearchModal'
 import { CurrencyLogo, DoubleCurrencyLogo } from '../Logo'
@@ -24,7 +24,7 @@ const InputRow = styled.div<{ selected: boolean }>`
   padding: ${({ selected }) => (selected ? '0.75rem 0.5rem 0.75rem 1rem' : '0.75rem 0.75rem 0.75rem 1rem')};
   padding-top: 8px;
 `
-const CurrencySelectButton = styled(Button).attrs({ variant: 'text', scale: 'sm' })<{ zapStyle?: ZapStyle }>`
+const CurrencySelectButton = styled(Button).attrs({ variant: 'text', scale: 'sm' }) <{ zapStyle?: ZapStyle }>`
   padding: 0 0.5rem;
 
   ${({ zapStyle, theme }) =>
@@ -54,12 +54,12 @@ const InputPanel = styled.div`
   background-color: ${({ theme }) => theme.colors.backgroundAlt};
   z-index: 1;
 `
-const Container = styled.div<{ zapStyle?: ZapStyle; error?: boolean; isDark?: boolean  }>`
+const Container = styled.div<{ zapStyle?: ZapStyle; error?: boolean; isDark?: boolean }>`
   /*border: 1px solid ${({ theme }) => theme.colors.inputCat};*/
   border-radius: ${({ theme }) => theme.radii.default};
   /*background-color: ${({ theme }) => theme.colors.input};*/
-  border: ${({isDark}) => isDark ? '1px solid #372F47' : '1px solid #f6f5fe' };
-  background-color: ${({isDark}) => isDark ? '#372F47' : '#f6f5fe' };
+  border: ${({ isDark }) => isDark ? '1px solid #372F47' : '1px solid #f6f5fe'};
+  background-color: ${({ isDark }) => isDark ? '#372F47' : '#f6f5fe'};
   box-shadow: ${({ theme, error }) => theme.shadows[error ? 'warning' : 'inset']};
 `
 
@@ -158,9 +158,9 @@ export default function CurrencyInputPanel({
           {label === 'X' ? t('tokensIssued') : label === 'Y' ? t('tokensRaised') : ''}
         </StyledText>
       ) :
-          <StyledText style={{ fontSize: '12px', marginBottom: '2px' }}>
-            {' '}
-          </StyledText>
+        <StyledText style={{ fontSize: '12px', marginBottom: '2px' }}>
+          {' '}
+        </StyledText>
       }
       <Flex alignItems="center" justifyContent="space-between" style={{ display: 'none' }}>
         {account && (
@@ -187,8 +187,8 @@ export default function CurrencyInputPanel({
                   color="textSubtle"
                   fontSize="14px"
                   title={!hideBalance && !!currency
-                      ? t('Balance: %balance%', { balance: selectedCurrencyBalance?.toSignificant(6) ?? t('Loading') })
-                      : ' -'}
+                    ? t('Balance: %balance%', { balance: selectedCurrencyBalance?.toSignificant(6) ?? t('Loading') })
+                    : ' -'}
                   style={{ display: 'inline', cursor: 'pointer', maxWidth: '50%', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}
                 >
                   {!hideBalance && !!currency
@@ -207,8 +207,8 @@ export default function CurrencyInputPanel({
                   color="textSubtle"
                   fontSize="14px"
                   title={!hideBalance && !!currency
-                      ? t('Balance: %balance%', { balance: selectedCurrencyBalance?.toSignificant(6) ?? t('Loading') })
-                      : ' -'}
+                    ? t('Balance: %balance%', { balance: selectedCurrencyBalance?.toSignificant(6) ?? t('Loading') })
+                    : ' -'}
                   style={{ display: 'inline', cursor: 'pointer', maxWidth: '50%', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}
                 >
                   {!hideBalance && !!currency
@@ -227,8 +227,8 @@ export default function CurrencyInputPanel({
                   color="textSubtle"
                   fontSize="14px"
                   title={!hideBalance && !!currency
-                      ? t('Balance: %balance%', { balance: selectedCurrencyBalance?.toSignificant(6) ?? t('Loading') })
-                      : ' -'}
+                    ? t('Balance: %balance%', { balance: selectedCurrencyBalance?.toSignificant(6) ?? t('Loading') })
+                    : ' -'}
                   style={{ display: 'inline', cursor: 'pointer', maxWidth: '50%', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}
                 >
                   {!hideBalance && !!currency
@@ -290,9 +290,9 @@ export default function CurrencyInputPanel({
                     <Text id="pair" bold style={{ fontSize: '12px' }}>
                       {(currency && currency.symbol && currency.symbol.length > 20
                         ? `${currency.symbol.slice(0, 4)}...${currency.symbol.slice(
-                            currency.symbol.length - 5,
-                            currency.symbol.length,
-                          )}`
+                          currency.symbol.length - 5,
+                          currency.symbol.length,
+                        )}`
                         : currency?.symbol) || t('Select a currency')}
                     </Text>
                   )}

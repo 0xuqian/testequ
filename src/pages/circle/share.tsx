@@ -219,7 +219,7 @@ const CircleShare: React.FC<React.PropsWithChildren<{ projectAddress: string }>>
         setIsDisabled(false)
         router.push(`/circle/share-link/${projectAddress.toLowerCase()}/${account.toLowerCase()}`)
       }
-    } catch (error) {
+    } catch (error: any) {
       setIsDisabled(false)
       isMinting(false)
 

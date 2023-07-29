@@ -1,7 +1,7 @@
 import * as d3 from "d3";
 import { FC, useRef, useEffect, useState } from 'react';
+import { formatNumber } from "pages/trading-view";
 import { LinePlotProps, DataPoint } from "./types"
-
 
 // function formatDate(date: Date) {
 //   const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
@@ -29,7 +29,7 @@ const LineChart: FC<LinePlotProps> = ({
   marginTop = 20,
   marginRight = 35,
   marginBottom = 50,
-  marginLeft = 60,
+  marginLeft = 90,
   isDesktop = false,
   onMousePositionChange
 }) => {
@@ -39,6 +39,17 @@ const LineChart: FC<LinePlotProps> = ({
   const [crosshairX, setCrosshairX] = useState<number | null>(null);
   const [crosshairY, setCrosshairY] = useState<number | null>(null);
   const tooltipRef = useRef<SVGGElement | null>(null);
+
+  const [prevData, setPrevData] = useState(null);
+
+  useEffect(() => {
+    if (prevData !== null && JSON.stringify(prevData) !== JSON.stringify(data)) {
+      setIsDrawing(true)
+      setCurrentData([])
+      // Execute your logic when data changes here...
+    }
+    setPrevData(data);
+  }, [data]);
 
   const x = d3.scaleLinear()
     .domain([0, data.length - 1])
@@ -57,7 +68,7 @@ const LineChart: FC<LinePlotProps> = ({
     });
 
   const y = d3.scaleLinear()
-    .domain([0, d3.extent(data.map((d) => d.price))[1]])
+    .domain([0, d3.extent(data.map((d) => (d.price)))[1]])
     .range([height - marginBottom, marginTop]);
 
   const xReverse = d3.scaleLinear()
@@ -98,7 +109,7 @@ const LineChart: FC<LinePlotProps> = ({
     svg.selectAll("*").remove();
 
     svg.append("rect")
-      .attr("x", 60)
+      .attr("x", marginLeft)
       .attr("y", 0)
       .attr("width", width - marginLeft - marginRight)
       .attr("height", height - marginBottom)
@@ -109,13 +120,29 @@ const LineChart: FC<LinePlotProps> = ({
       .attr("transform", `translate(0, ${height - marginBottom})`)
       .selectAll(".domain, .tick line").remove();
 
+    const yAxis = d3.axisLeft(y)
+      .tickFormat(d => {
+        return formatNumber(d)
+      });
+
     svg
       .append("g")
       .attr("transform", `translate(${marginLeft}, 0)`)
-      .call(d3.axisLeft(y))
+      .call(yAxis)
       .selectAll(".domain, .tick line")
       .attr("stroke-width", 50)
       .remove()
+
+    // svg
+    //   .append("line")
+    //   .attr("stroke", "grey")
+    //   .attr("stroke-dasharray", "3.3")
+    //   .attr("opacity", 1)
+    //   .attr("x1", 0)
+    //   .attr("x2", 1000)
+    //   .attr("y1", 0)
+    //   .attr("y2", 0)
+
 
     svg.on("mousemove", handleMouseMove)
     svg.on('mouseleave', handleMouseOut);
@@ -180,15 +207,24 @@ const LineChart: FC<LinePlotProps> = ({
       .attr("y2", height - marginBottom)
       .style("display", "none");
 
-    const tooltip = d3.select(svgRef.current).append('g').style('display', '');
-    const text = tooltip
+    const tooltip = d3.select(svgRef.current).append('g').style('display', 'none');
+
+    tooltip
+      .append('rect')
+      .style('fill', 'gray')
+      .attr('width', "55px")
+      .attr('height', "20px")
+      .attr('transform', 'translate(-2.5, -12)')
+      .attr('rx', '5px')
+      .attr('ry', '5px')
+      .style('fill-opacity', 0.5)
+
+    tooltip
       .append('text')
-      .attr('x', 5)
-      .attr('y', 15)
       .attr('alignment-baseline', 'middle')
       .attr('font-size', '12px');
-    tooltipRef.current = text.node();
 
+    tooltipRef.current = tooltip.node();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data, width, height, marginTop, marginRight, marginBottom, marginLeft, line, area, x, y, xAxis, isDrawing, crosshairX, crosshairY, isDesktop]);
 
@@ -200,7 +236,7 @@ const LineChart: FC<LinePlotProps> = ({
 
   const handleMouseOut = () => {
     // onMousePositionChange({ x: formatDate(data[data.length - 1].time), y: data[data.length - 1].price });
-    onMousePositionChange({ x: data[data.length - 1].time.toString(), y: data[data.length - 1].price });
+    onMousePositionChange({ x: data[data.length - 1].time.toString(), y: data[data.length - 1].stringPrice });
     setCrosshairX(null);
     setCrosshairY(null);
 
@@ -215,6 +251,7 @@ const LineChart: FC<LinePlotProps> = ({
   }
 
   const handleMouseMove = (event) => {
+
     const { clientX, clientY } = event;
     const { left, top } = svgRef.current.getBoundingClientRect();
     const x1: number = clientX - left;
@@ -227,11 +264,20 @@ const LineChart: FC<LinePlotProps> = ({
       const xCoordinate = x(dataPointIndex);
 
       if (tooltipRef.current) {
-        const offSet = x1 - 25
-        tooltipRef.current.setAttribute('x', offSet.toString());
-        tooltipRef.current.setAttribute('y', "420");
-        // tooltipRef.current.textContent = formatDate(data[dataPointIndex].time)
-        tooltipRef.current.textContent = sliceData(data[dataPointIndex].time.toString());
+        const offSet = xCoordinate - 25
+        const allChildNodes = d3.select(tooltipRef.current).selectAll('*');
+
+        allChildNodes.attr('x', offSet.toString());
+        allChildNodes.attr('y', "420");
+
+        const tipText = d3.select(tooltipRef.current).select('text');
+        const tipBg = d3.select(tooltipRef.current).select('rect')
+
+        tipText
+          .text(sliceData(data[dataPointIndex].time.toString()));
+
+        tipBg
+          .style("background-color", "black")
       }
 
       if (dataPointIndex >= 0 && dataPointIndex < data.length) {
@@ -240,7 +286,8 @@ const LineChart: FC<LinePlotProps> = ({
         if (onMousePositionChange) {
           // const formattedDate = formatDate(dataPoint.time);
           const formattedDate = dataPoint.time.toString();
-          onMousePositionChange({ x: formattedDate, y: dataPoint.price });
+
+          onMousePositionChange({ x: formattedDate, y: dataPoint.stringPrice });
           const pixelY = y(dataPoint.price)
 
           d3.select(tooltipRef.current).style("display", "");
@@ -269,7 +316,7 @@ const LineChart: FC<LinePlotProps> = ({
       }
     } else {
       // onMousePositionChange({ x: formatDate(data[data.length - 1].time), y: data[data.length - 1].price });
-      onMousePositionChange({ x: data[data.length - 1].time.toString(), y: data[data.length - 1].price });
+      onMousePositionChange({ x: data[data.length - 1].time.toString(), y: data[data.length - 1].stringPrice });
       setCrosshairX(null);
       setCrosshairY(null);
 

@@ -8,7 +8,10 @@
   },
   "tags": {},
   "logoURI": "https://pancakeswap.finance/logo.png",
-  "keywords": ["pancake", "default"],
+  "keywords": [
+    "pancake",
+    "default"
+  ],
   "tokens": [
     {
       "name": "WBNB Token",
@@ -56,6 +59,14 @@
       "address": "0x9411A8a8757F08591594333306fe115927C072E4",
       "chainId": 56,
       "decimals": 9,
+      "logoURI": "/images/tokens/0x9411A8a8757F08591594333306fe115927C072E4.png"
+    },
+    {
+      "name": "PV Token",
+      "symbol": "PV",
+      "address": "0xd4FEc4cEf94F97d79Ec8E7C83445887833fC4d28",
+      "chainId": 56,
+      "decimals": 18,
       "logoURI": "/images/tokens/0x9411A8a8757F08591594333306fe115927C072E4.png"
     },
     {

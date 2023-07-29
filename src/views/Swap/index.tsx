@@ -119,7 +119,6 @@ export default function Swap() {
     () => [loadedInputCurrency, loadedOutputCurrency]?.filter((c): c is Token => c instanceof Token) ?? [],
     [loadedInputCurrency, loadedOutputCurrency],
   )
-
   // dismiss warning if all imported tokens are in active lists
   const defaultTokens = useAllTokens()
   const importTokensNotInDefault =
@@ -164,13 +163,13 @@ export default function Swap() {
 
   const parsedAmounts = showWrap
     ? {
-        [Field.INPUT]: parsedAmount,
-        [Field.OUTPUT]: parsedAmount,
-      }
+      [Field.INPUT]: parsedAmount,
+      [Field.OUTPUT]: parsedAmount,
+    }
     : {
-        [Field.INPUT]: independentField === Field.INPUT ? parsedAmount : trade?.inputAmount,
-        [Field.OUTPUT]: independentField === Field.OUTPUT ? parsedAmount : trade?.outputAmount,
-      }
+      [Field.INPUT]: independentField === Field.INPUT ? parsedAmount : trade?.inputAmount,
+      [Field.OUTPUT]: independentField === Field.OUTPUT ? parsedAmount : trade?.outputAmount,
+    }
 
   const { onSwitchTokens, onCurrencySelection, onUserInput, onChangeRecipient } = useSwapActionHandlers()
   const isValid = !swapInputError
@@ -414,69 +413,69 @@ export default function Swap() {
                   <AutoColumn gap="sm">
                     {
                       ammType ?
-                          (
-                              <div style={{ display: 'flex', justifyContent: 'center', marginTop: '0px', marginBottom: '-16px' }}>
-                                <Text style={{ marginRight: '20px' }}>{swapFormulaList[ammType - 1].label}</Text>
-                                <Text>{swapFormulaList[ammType - 1].alias}</Text>
-                              </div>
-                          ) : null
+                        (
+                          <div style={{ display: 'flex', justifyContent: 'center', marginTop: '0px', marginBottom: '-16px' }}>
+                            <Text style={{ marginRight: '20px' }}>{swapFormulaList[ammType - 1].label}</Text>
+                            <Text>{swapFormulaList[ammType - 1].alias}</Text>
+                          </div>
+                        ) : null
                     }
                     <div>
                       <CurrencyInputPanel
-                          label={
-                            independentField === Field.OUTPUT && !showWrap && trade ? t('From (estimated)') : t('From')
-                          }
-                          labelType="swap"
-                          value={formattedAmounts[Field.INPUT]}
-                          showMaxButton={!atMaxAmountInput}
-                          currency={currencies[Field.INPUT]}
-                          onUserInput={handleTypeInput}
-                          onMax={handleMaxInput}
-                          onCurrencySelect={handleInputSelect}
-                          otherCurrency={currencies[Field.OUTPUT]}
-                          id="swap-currency-input"
-                          showCommonBases
-                          commonBasesType={CommonBasesType.SWAP_LIMITORDER}
+                        label={
+                          independentField === Field.OUTPUT && !showWrap && trade ? t('From (estimated)') : t('From')
+                        }
+                        labelType="swap"
+                        value={formattedAmounts[Field.INPUT]}
+                        showMaxButton={!atMaxAmountInput}
+                        currency={currencies[Field.INPUT]}
+                        onUserInput={handleTypeInput}
+                        onMax={handleMaxInput}
+                        onCurrencySelect={handleInputSelect}
+                        otherCurrency={currencies[Field.OUTPUT]}
+                        id="swap-currency-input"
+                        showCommonBases
+                        commonBasesType={CommonBasesType.SWAP_LIMITORDER}
                       />
 
                       <StyledAutoColumn justify="space-between">
                         <AutoRow justify={isExpertMode ? 'space-between' : 'center'} style={{ padding: '0 1rem' }}>
                           <SwitchIconButton
-                              variant="light"
-                              scale="sm"
-                              onClick={() => {
-                                setApprovalSubmitted(false) // reset 2 step UI for approvals
-                                onSwitchTokens()
-                              }}
+                            variant="light"
+                            scale="sm"
+                            onClick={() => {
+                              setApprovalSubmitted(false) // reset 2 step UI for approvals
+                              onSwitchTokens()
+                            }}
                           >
                             <ArrowDownIcon
-                                className="icon-down"
-                                color={currencies[Field.INPUT] && currencies[Field.OUTPUT] ? '#b03cf7' : 'text'}
+                              className="icon-down"
+                              color={currencies[Field.INPUT] && currencies[Field.OUTPUT] ? '#b03cf7' : 'text'}
                             />
                             <ArrowUpDownIcon
-                                className="icon-up-down"
-                                color={currencies[Field.INPUT] && currencies[Field.OUTPUT] ? '#b03cf7' : 'text'}
+                              className="icon-up-down"
+                              color={currencies[Field.INPUT] && currencies[Field.OUTPUT] ? '#b03cf7' : 'text'}
                             />
                           </SwitchIconButton>
                           {recipient === null && !showWrap && isExpertMode ? (
-                              <Button variant="text" id="add-recipient-button" onClick={() => onChangeRecipient('')}>
-                                {t('+ Add a send (optional)')}
-                              </Button>
+                            <Button variant="text" id="add-recipient-button" onClick={() => onChangeRecipient('')}>
+                              {t('+ Add a send (optional)')}
+                            </Button>
                           ) : null}
                         </AutoRow>
                       </StyledAutoColumn>
                       <CurrencyInputPanel
-                          value={formattedAmounts[Field.OUTPUT]}
-                          onUserInput={handleTypeOutput}
-                          label={independentField === Field.INPUT && !showWrap && trade ? t('To (estimated)') : t('To')}
-                          labelType="swap-balance"
-                          showMaxButton={false}
-                          currency={currencies[Field.OUTPUT]}
-                          onCurrencySelect={handleOutputSelect}
-                          otherCurrency={currencies[Field.INPUT]}
-                          id="swap-currency-output"
-                          showCommonBases
-                          commonBasesType={CommonBasesType.SWAP_LIMITORDER}
+                        value={formattedAmounts[Field.OUTPUT]}
+                        onUserInput={handleTypeOutput}
+                        label={independentField === Field.INPUT && !showWrap && trade ? t('To (estimated)') : t('To')}
+                        labelType="swap-balance"
+                        showMaxButton={false}
+                        currency={currencies[Field.OUTPUT]}
+                        onCurrencySelect={handleOutputSelect}
+                        otherCurrency={currencies[Field.INPUT]}
+                        id="swap-currency-output"
+                        showCommonBases
+                        commonBasesType={CommonBasesType.SWAP_LIMITORDER}
                       />
                     </div>
                     {isExpertMode && recipient !== null && !showWrap ? (
@@ -535,12 +534,12 @@ export default function Swap() {
                           (wrapType === WrapType.WRAP ? 'Wrap' : wrapType === WrapType.UNWRAP ? 'Unwrap' : null)}
                       </StyledButton>
                     ) : noRoute && userHasSpecifiedInputOutput ? (
-                      <GreyCard style={{ textAlign: 'center', padding: '0.75rem', background: 'linear-gradient(90deg,#EB3DFF 0%,#5C53D3 100%)', borderRadius: '28px', filter: 'drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25))'}}>
-                        <Text color="textSubtle" style={{ color: 'white', fontWeight: '600'}}>
+                      <GreyCard style={{ textAlign: 'center', padding: '0.75rem', background: 'linear-gradient(90deg,#EB3DFF 0%,#5C53D3 100%)', borderRadius: '28px', filter: 'drop-shadow(0px 4px 4px rgba(0, 0, 0, 0.25))' }}>
+                        <Text color="textSubtle" style={{ color: 'white', fontWeight: '600' }}>
                           {t('Insufficient liquidity for this trade.')}
                         </Text>
                         {singleHopOnly && (
-                          <Text color="textSubtle" style={{ color: 'white', fontWeight: '600'}}>
+                          <Text color="textSubtle" style={{ color: 'white', fontWeight: '600' }}>
                             {t('Try enabling multi-hop trades.')}
                           </Text>
                         )}
@@ -589,8 +588,8 @@ export default function Swap() {
                           {priceImpactSeverity > 3 && !isExpertMode
                             ? t('Price Impact High')
                             : priceImpactSeverity > 2
-                            ? t('Swap Anyway')
-                            : t('Swap')}
+                              ? t('Swap Anyway')
+                              : t('Swap')}
                         </StyledButton>
                       </RowBetween>
                     ) : (
@@ -617,8 +616,8 @@ export default function Swap() {
                           (priceImpactSeverity > 3 && !isExpertMode
                             ? t('Price Impact Too High')
                             : priceImpactSeverity > 2
-                            ? t('Swap Anyway')
-                            : t('Swap'))}
+                              ? t('Swap Anyway')
+                              : t('Swap'))}
                       </StyledButton>
                     )}
                     {showApproveFlow && (

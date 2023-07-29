@@ -45,6 +45,15 @@ const PE_MAINNET = new Token(
   'https://www.peopleequity.club/',
 )
 
+const PV_MAINNET = new Token(
+  ChainId.BSC,
+  '0xd4FEc4cEf94F97d79Ec8E7C83445887833fC4d28',
+  18,
+  'PV',
+  'PV',
+  'https://www.peopleequity.club/',
+)
+
 const PE_TESTNET = new Token(
   ChainId.BSC_TESTNET,
   '0x9411A8a8757F08591594333306fe115927C072E4',
@@ -141,6 +150,7 @@ export const BUSD: Record<ChainId, Token> = {
 export const bscTokens = {
   wbnb: WBNB[ChainId.BSC],
   pe: PE_MAINNET,
+  pv: PV_MAINNET,
   // bnb here points to the wbnb contract. Wherever the currency BNB is required, conditional checks for the symbol 'BNB' can be used
   bnb: new Token(
     ChainId.BSC,

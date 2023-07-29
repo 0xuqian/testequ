@@ -1,5 +1,8 @@
 import styled from "styled-components";
 import { Image } from "@pancakeswap/uikit";
+import { useEffect, useState } from "react";
+import { useWeb3React } from "@web3-react/core";
+import { ShareIcon } from "./ShareIcon";
 import { NftHistory } from "../../../hooks/useHistoryNftInfo";
 
 
@@ -20,7 +23,10 @@ const ListLeft = styled.div`
 
 const ListInfo = styled.div``
 
-const ListRight = styled.div``
+const ListRight = styled.div`
+  display: flex;
+  align-items: center;
+`
 
 const Icon = styled(Image)`
   margin-right: 10px;
@@ -56,20 +62,29 @@ const ListValue = styled.div`
   color: #11142d;
 `
 
-const ProjectInfo = ( {projectInfo}:{projectInfo: NftHistory}) => {
+const ProjectInfo = ({ projectInfo }: { projectInfo: NftHistory }) => {
+
+  const [full, setFull] = useState<boolean>(false);
+  const { account } = useWeb3React()
+
+  useEffect(() => {
+    setFull(projectInfo.claim_number / projectInfo.mint_number < 1);
+  }, [projectInfo, account])
+
   return (
     <List>
-    <ListLeft>
-      <Icon width={32} height={32} src={projectInfo.pro_icon} alt="link" />
-      <ListInfo>
-        <ListTitle>{projectInfo.pro_name}</ListTitle>
-        <ListDesc>{projectInfo.pro_name}</ListDesc>
-      </ListInfo>
-    </ListLeft>
-    <ListRight>
-      <ListValue>{projectInfo.claim_number.toString()} / {projectInfo.mint_number.toString()}</ListValue>
-    </ListRight>
-  </List>
+      <ListLeft>
+        <Icon width={32} height={32} src={projectInfo.pro_icon} alt="link" />
+        <ListInfo>
+          <ListTitle>{projectInfo.pro_name}</ListTitle>
+          <ListDesc>{projectInfo.pro_name}</ListDesc>
+        </ListInfo>
+      </ListLeft>
+      <ListRight>
+        <ListValue>{projectInfo.claim_number.toString()} / {projectInfo.mint_number.toString()}</ListValue>
+        <ShareIcon projectAddr={projectInfo.pro_addr.toLocaleLowerCase()} leaderAddr={account.toLocaleLowerCase()} claimRatio={full} />
+      </ListRight>
+    </List>
   );
 };
 
