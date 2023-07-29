@@ -47,7 +47,7 @@ const PE_MAINNET = new Token(
 
 const PV_MAINNET = new Token(
   ChainId.BSC,
-  '0xd4FEc4cEf94F97d79Ec8E7C83445887833fC4d28',
+  '0x08784c14c2a77fBC6Bc44259c517cf11dB82d139',
   18,
   'PV',
   'PV',

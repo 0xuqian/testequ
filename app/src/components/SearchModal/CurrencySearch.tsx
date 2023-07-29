@@ -89,7 +89,6 @@ function CurrencySearch({
 }: CurrencySearchProps) {
   const { t } = useTranslation()
   const { chainId } = useActiveWeb3React()
-
   // refs for fixed size lists
   const fixedList = useRef<FixedSizeList>()
 
@@ -169,7 +168,7 @@ function CurrencySearch({
   };
 
   const sortedTokens = filteredSortedTokens.sort(customSort);
-
+  console.log(sortedTokens)
   const handleEnter = useCallback(
     (e: KeyboardEvent<HTMLInputElement>) => {
       if (e.key === 'Enter') {
