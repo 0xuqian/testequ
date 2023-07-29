@@ -1,4 +1,4 @@
-import {useCallback, useEffect, useState} from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import useActiveWeb3React from "./useActiveWeb3React";
 
 interface ListData {
@@ -53,17 +53,17 @@ const useRankingInfo = (address) => {
   const fetchListInfo = useCallback(async () => {
     try {
       const res: any = await fetch(
-          `https://www.equityswap.club/app/user/userinfo`,
-          {
-            method: 'post',
-            body: JSON.stringify({
-              net: account ? `evm--${Number(chainId)}` : `evm--97`,
-              targetWallet: address,
-            }),
-            headers: new Headers({
-              'Content-Type': 'application/json'
-            })
-          },
+        `https://www.equityswap.club/app/user/userinfo`,
+        {
+          method: 'post',
+          body: JSON.stringify({
+            net: chainId ? `evm--${Number(chainId)}` : `evm--56`,
+            targetWallet: address,
+          }),
+          headers: new Headers({
+            'Content-Type': 'application/json'
+          })
+        },
       )
       const obj = await res.json()
       if (obj?.code === 0) {
