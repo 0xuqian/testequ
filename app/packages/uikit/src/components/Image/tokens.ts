@@ -1553,7 +1553,7 @@ const tokens = {
   pv: {
     symbol: "PV",
     address: {
-      56: "0xd4FEc4cEf94F97d79Ec8E7C83445887833fC4d28",
+      56: "0x08784c14c2a77fBC6Bc44259c517cf11dB82d139",
     },
     decimals: 18,
     projectLink: "https://www.peopleequity.club/",
