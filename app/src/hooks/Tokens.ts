@@ -27,6 +27,7 @@ const mapWithoutUrls = (tokenMap: TokenAddressMap, chainId: number) =>
   }, {})
 
 const allTokenSelector = (chainId: number) =>
+
   createSelector(
     [combinedTokenMapFromActiveUrlsSelector, userAddedTokenSelector(chainId)],
     (tokenMap, userAddedTokens) => {
@@ -71,7 +72,6 @@ const allOfficialsAndUserAddedTokensSelector = (chainId: number) =>
  */
 export function useAllTokens(): { [address: string]: Token } {
   const { chainId } = useActiveWeb3React()
-
   return useSelector(allTokenSelector(chainId))
 }
 

@@ -57,7 +57,6 @@ export const useHistoryNftInfo = (setNetwork): AllHistory | null => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  console.log(projects)
   return projects;
 }
 
@@ -65,7 +64,6 @@ export const useHistoryNftInfo = (setNetwork): AllHistory | null => {
 export const useKLine = (): AllHistory | null => {
 
   const { chainId, account } = useActiveWeb3React()
-
   const [KData, setKData] = useState<AllHistory | null>(null)
   const fetchData = useCallback(async () => {
     try {
@@ -94,6 +92,6 @@ export const useKLine = (): AllHistory | null => {
     fetchData()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
-  console.log(KData)
+
   return KData;
 }

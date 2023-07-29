@@ -40,6 +40,17 @@ const LineChart: FC<LinePlotProps> = ({
   const [crosshairY, setCrosshairY] = useState<number | null>(null);
   const tooltipRef = useRef<SVGGElement | null>(null);
 
+  const [prevData, setPrevData] = useState(null);
+
+  useEffect(() => {
+    if (prevData !== null && JSON.stringify(prevData) !== JSON.stringify(data)) {
+      setIsDrawing(true)
+      setCurrentData([])
+      // Execute your logic when data changes here...
+    }
+    setPrevData(data);
+  }, [data]);
+
   const x = d3.scaleLinear()
     .domain([0, data.length - 1])
     .range([marginLeft, width - marginRight]);
@@ -122,6 +133,17 @@ const LineChart: FC<LinePlotProps> = ({
       .attr("stroke-width", 50)
       .remove()
 
+    // svg
+    //   .append("line")
+    //   .attr("stroke", "grey")
+    //   .attr("stroke-dasharray", "3.3")
+    //   .attr("opacity", 1)
+    //   .attr("x1", 0)
+    //   .attr("x2", 1000)
+    //   .attr("y1", 0)
+    //   .attr("y2", 0)
+
+
     svg.on("mousemove", handleMouseMove)
     svg.on('mouseleave', handleMouseOut);
 
@@ -185,39 +207,22 @@ const LineChart: FC<LinePlotProps> = ({
       .attr("y2", height - marginBottom)
       .style("display", "none");
 
-    const tooltip = d3.select(svgRef.current).append('g').style('display', '');
+    const tooltip = d3.select(svgRef.current).append('g').style('display', 'none');
 
-    tooltip.append('rect')
-      .style('fill', 'yellow') // Or any color you prefer
-      .style('opacity', 0.8)
-      .attr('width', 10)
-      .attr('height', 10)
+    tooltip
+      .append('rect')
+      .style('fill', 'gray')
+      .attr('width', "55px")
+      .attr('height', "20px")
+      .attr('transform', 'translate(-2.5, -12)')
+      .attr('rx', '5px')
+      .attr('ry', '5px')
+      .style('fill-opacity', 0.5)
 
     tooltip
       .append('text')
       .attr('alignment-baseline', 'middle')
       .attr('font-size', '12px');
-
-    // tooltip.attr('transform', function () {
-    //   const bbox = text.node().getBBox();
-    //   bg.attr('x', bbox.x - 2) // Add some padding
-    //     .attr('y', bbox.y - 2) // Add some padding
-    //     .attr('width', bbox.width + 4) // Add some padding
-    //     .attr('height', bbox.height + 4); // Add some padding
-    // });
-
-    // tooltip.each(function () {
-    //   const bbox = text.node().getBBox();
-    //   bc.attr('x', bbox.x)
-    //     .attr('y', bbox.y)
-    //     .attr('width', bbox.width + 10) // add some padding
-    //     .attr('height', bbox.height + 10); // add some padding
-    // });
-    // const bbox = tooltipRef.current.getBBox();
-    // bg.attr('x', bbox.x - 2) // Add some padding
-    //   .attr('y', bbox.y - 2) // Add some padding
-    //   .attr('width', bbox.width + 4) // Add some padding
-    //   .attr('height', bbox.height + 4); // Add some padding
 
     tooltipRef.current = tooltip.node();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -246,6 +251,7 @@ const LineChart: FC<LinePlotProps> = ({
   }
 
   const handleMouseMove = (event) => {
+
     const { clientX, clientY } = event;
     const { left, top } = svgRef.current.getBoundingClientRect();
     const x1: number = clientX - left;
@@ -280,6 +286,7 @@ const LineChart: FC<LinePlotProps> = ({
         if (onMousePositionChange) {
           // const formattedDate = formatDate(dataPoint.time);
           const formattedDate = dataPoint.time.toString();
+
           onMousePositionChange({ x: formattedDate, y: dataPoint.stringPrice });
           const pixelY = y(dataPoint.price)
 

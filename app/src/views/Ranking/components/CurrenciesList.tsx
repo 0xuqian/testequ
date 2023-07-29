@@ -1,11 +1,11 @@
 import styled from 'styled-components'
-import {useMemo, useRef, useState} from 'react'
+import { useMemo, useRef, useState } from 'react'
 import { useTranslation } from '@pancakeswap/localization'
 import Skeleton from "react-loading-skeleton";
 import 'react-loading-skeleton/dist/skeleton.css'
 import { BigNumber } from "bignumber.js";
 import CopyToClipboard from 'react-copy-to-clipboard'
-import {useMatchBreakpointsContext, useOnClickOutside} from "@pancakeswap/uikit";
+import { useMatchBreakpointsContext, useOnClickOutside } from "@pancakeswap/uikit";
 import useRankingInfo from "../../../hooks/useRankingInfo";
 import PageBtnList from "./PageBtnList";
 
@@ -452,7 +452,7 @@ const TimeMenuItem = styled.div`
   }
 `
 
-export default function CurrenciesList({type, setIsShowMenu}) {
+export default function CurrenciesList({ type, setIsShowMenu }) {
   const { t, currentLanguage } = useTranslation()
   const { isDesktop } = useMatchBreakpointsContext()
   const [copy, setCopied] = useState(false)
@@ -462,7 +462,7 @@ export default function CurrenciesList({type, setIsShowMenu}) {
   const [tokenAddress, setTokenAddress] = useState<string>('0')
   const [isLoading, setLoading] = useState(false)
   const [isPage2Loading, setPage2Loading] = useState(false)
-  const [tokenInfo, setTokenInfo] = useState({icon: undefined, name: undefined})
+  const [tokenInfo, setTokenInfo] = useState({ icon: undefined, name: undefined })
   const [visible, setVisible] = useState(false)
   const timeList = useMemo(() => {
     return [
@@ -499,7 +499,7 @@ export default function CurrenciesList({type, setIsShowMenu}) {
         <Index>
           <Skeleton width={20} />
         </Index>
-        <Skeleton width={48} height={48} circle style={!isDesktop ? {marginLeft: '12px'} : {}}  />
+        <Skeleton width={48} height={48} circle style={!isDesktop ? { marginLeft: '12px' } : {}} />
         <UserWrapper>
           <UserName>
             <Skeleton width={80} count={isDesktop ? 1 : 2} />
@@ -527,22 +527,22 @@ export default function CurrenciesList({type, setIsShowMenu}) {
         <Index>
           <Skeleton width={20} />
         </Index>
-        <Skeleton width={48} height={48} circle style={!isDesktop ? {marginLeft: '12px'} : {}}  />
+        <Skeleton width={48} height={48} circle style={!isDesktop ? { marginLeft: '12px' } : {}} />
         {
           !isDesktop ?
-              <>
-                <UserNameSkeleton>
-                  <Skeleton width={200} count={2} />
-                </UserNameSkeleton>
-              </> :
-              <>
-                <UserNameSkeleton>
-                  <Skeleton width={160} count={1} />
-                </UserNameSkeleton>
-                <Address>
-                  <Skeleton width={136} style={!isDesktop ? {display: 'none'} : {}} />
-                </Address>
-              </>
+            <>
+              <UserNameSkeleton>
+                <Skeleton width={200} count={2} />
+              </UserNameSkeleton>
+            </> :
+            <>
+              <UserNameSkeleton>
+                <Skeleton width={160} count={1} />
+              </UserNameSkeleton>
+              <Address>
+                <Skeleton width={136} style={!isDesktop ? { display: 'none' } : {}} />
+              </Address>
+            </>
         }
       </InfoWrapper2>
       <ValueWrapper2>
@@ -567,179 +567,181 @@ export default function CurrenciesList({type, setIsShowMenu}) {
   }
 
   const node = useRef<HTMLDivElement>()
-  useOnClickOutside(node, setVisible ? () => setVisible(false)  : undefined)
+  useOnClickOutside(node, setVisible ? () => setVisible(false) : undefined)
   const menu = useMemo(() => {
     return (
-        <TimeMenu ref={node as any}>
-          {
-            timeList.map((item, i) => (
-                <TimeMenuItem onClick={() => {
-                  setTimeType(item)
-                  setVisible(false)
-                }}>{item.value}</TimeMenuItem>
-            ))
-          }
-        </TimeMenu>
+      <TimeMenu ref={node as any}>
+        {
+          timeList.map((item, i) => (
+            <TimeMenuItem onClick={() => {
+              setTimeType(item)
+              setVisible(false)
+            }}>{item.value}</TimeMenuItem>
+          ))
+        }
+      </TimeMenu>
     )
   }, [timeList])
 
-    return (
-        <>
-          <TopBar />
+  return (
+    <>
+      <TopBar />
+      {
+        tokenAddress !== '0' ?
+          <>
+            <SecondPageTopBar>
+              <Back onClick={() => {
+                setTokenAddress('0')
+                setPage2CurrentPage(1)
+                setSubType('recommend')
+                setIsShowMenu(true)
+              }} />
+              {
+                tokenInfo?.icon !== null && tokenInfo?.name !== null ?
+                  <TokenWrapper>
+                    <TokenIcon src={tokenInfo?.icon} />
+                    <TokenName title={tokenInfo?.name}>{tokenInfo?.name}</TokenName>
+                  </TokenWrapper> : null
+              }
+              <FilterTimeWrapper onClick={(e) => {
+                e.preventDefault()
+                if (!visible) {
+                  setVisible(true)
+                }
+              }}>
+                <FilterTime>{timeType.value}</FilterTime>
+                <span className={visible ? 'active' : ''} />
+                {
+                  visible ? menu : null
+                }
+              </FilterTimeWrapper>
+            </SecondPageTopBar>
+            <ScrollSubMenu>
+              <SubMenu>
+                <SubMenuInner>
+                  <SubMenuItem className={subType === 'recommend' ? 'active' : ''} onClick={() => {
+                    setSubType('recommend')
+                    setPage2CurrentPage(1)
+                  }}>{t('dcsTotalEarnings')}</SubMenuItem>
+                  <SubMenuItem className={subType === 'team' ? 'active' : ''} onClick={() => {
+                    setSubType('team')
+                    setPage2CurrentPage(1)
+                  }}>{t('dcsCommunityEarnings')}</SubMenuItem>
+                  <SubMenuItem className={subType === 'income' ? 'active' : ''} onClick={() => {
+                    if (isLoading) return
+                    setSubType('income')
+                    setPage2CurrentPage(1)
+                  }}>{t('dcsKOLEarnings')}</SubMenuItem>
+                  <SubMenuItem className={subType === 'people' ? 'active' : ''} onClick={() => {
+                    if (isLoading) return
+                    setSubType('people')
+                    setPage2CurrentPage(1)
+                  }}>{t('dcsCreditLinks')}</SubMenuItem>
+                </SubMenuInner>
+              </SubMenu>
+            </ScrollSubMenu>
+          </> : null
+      }
+      <ListWrapper>
+        <Left className={tokenAddress !== '0' ? 'left' : ''}>
           {
-            tokenAddress !== '0' ?
-                <>
-                  <SecondPageTopBar>
-                    <Back onClick={() => {
-                      setTokenAddress('0')
-                      setPage2CurrentPage(1)
-                      setSubType('recommend')
-                      setIsShowMenu(true)
-                    }} />
-                    {
-                      tokenInfo?.icon !== null && tokenInfo?.name !== null ?
-                      <TokenWrapper>
-                        <TokenIcon src={tokenInfo?.icon} />
-                        <TokenName title={tokenInfo?.name}>{tokenInfo?.name}</TokenName>
-                      </TokenWrapper> : null
-                    }
-                    <FilterTimeWrapper onClick={(e) => {
-                      e.preventDefault()
-                      if (!visible) {
-                        setVisible(true)
-                      }
-                    }}>
-                      <FilterTime>{timeType.value}</FilterTime>
-                      <span className={visible ? 'active' : ''} />
-                      {
-                        visible ? menu : null
-                      }
-                    </FilterTimeWrapper>
-                  </SecondPageTopBar>
-                  <ScrollSubMenu>
-                    <SubMenu>
-                      <SubMenuInner>
-                        <SubMenuItem className={subType === 'recommend' ? 'active' : ''} onClick={() => {
-                          setSubType('recommend')
-                          setPage2CurrentPage(1)
-                        }}>{t('dcsTotalEarnings')}</SubMenuItem>
-                        <SubMenuItem className={subType === 'team' ? 'active' : ''} onClick={() => {
-                          setSubType('team')
-                          setPage2CurrentPage(1)
-                        }}>{t('dcsCommunityEarnings')}</SubMenuItem>
-                        <SubMenuItem className={subType === 'income' ? 'active' : ''} onClick={() => {                  if (isLoading) return
-                          setSubType('income')
-                          setPage2CurrentPage(1)
-                        }}>{t('dcsKOLEarnings')}</SubMenuItem>
-                        <SubMenuItem className={subType === 'people' ? 'active' : ''} onClick={() => {                  if (isLoading) return
-                          setSubType('people')
-                          setPage2CurrentPage(1)
-                        }}>{t('dcsCreditLinks')}</SubMenuItem>
-                      </SubMenuInner>
-                    </SubMenu>
-                  </ScrollSubMenu>
-                </> : null
+            isLoading ?
+              <>
+                {SkeletonWrapper}
+              </> :
+              <>
+                {
+                  tokenList && tokenList?.length > 0 ? (
+                    tokenList.map((item, i) => (
+                      <ListItem style={item?.token_addr ? { cursor: 'pointer' } : {}} key={item?.index} onClick={() => {
+                        if (item?.token_addr) {
+                          setTokenAddress(item?.token_addr)
+                          setTokenInfo({ icon: item?.icon, name: item?.symbol })
+                          setIsShowMenu(false)
+                        }
+                      }}>
+                        <InfoWrapper>
+                          <Index>
+                            {item?.symbol ? String(i + (currentPage - 1) * 10 + 1).length === 1 ? `0${i + (currentPage - 1) * 10 + 1}` : i + (currentPage - 1) * 10 + 1 : ''}
+                          </Index>
+                          {item?.icon ? <Avatar src={item?.icon} /> : null}
+                          <UserWrapper>
+                            <UserName title={item.symbol}>{item.symbol}</UserName>
+                            <Desc>{item.description}</Desc>
+                          </UserWrapper>
+                        </InfoWrapper>
+                        <ValueWrapper>
+                          {
+                            item?.symbol ?
+                              <>
+                                <ValueLeft>
+                                  <Price>{`${toStringAmt(item.price)} ${item.unit}`}</Price>
+                                  <Vol>{`Vol ${toStringAmt(item.vol)}`}</Vol>
+                                </ValueLeft>
+                                {/* <Rate>{`+${item.rate}%`}</Rate> */}
+                              </> : null
+                          }
+                        </ValueWrapper>
+                      </ListItem>
+                    ))
+                  ) : null
+                }
+                <PageBtnList page={page} currentPage={currentPage} setCurrentPage={setCurrentPage} />
+              </>
           }
-          <ListWrapper>
-            <Left className={tokenAddress !== '0' ? 'left' : ''}>
-              {
-                isLoading ?
-                    <>
-                      {SkeletonWrapper}
-                    </> :
-                    <>
-                      {
-                        tokenList && tokenList?.length > 0 ? (
-                            tokenList.map((item, i) => (
-                                <ListItem style={item?.token_addr ? {cursor: 'pointer'} : {}} key={item?.index} onClick={() => {
-                                  if (item?.token_addr) {
-                                    setTokenAddress(item?.token_addr)
-                                    setTokenInfo({icon: item?.icon, name: item?.symbol})
-                                    setIsShowMenu(false)
-                                  }
+        </Left>
+        <Right className={tokenAddress !== '0' ? 'left' : ''}>
+          {
+            isPage2Loading ?
+              <>
+                {SkeletonWrapper2}
+              </> :
+              <>
+                {
+                  list && list?.length > 0 ? (
+                    list.map((item, i) => (
+                      <ListItem style={item?.wallet ? { cursor: 'pointer' } : {}} key={item?.index} onClick={() => {
+                        if (item?.wallet) {
+                          window.open(`/rank/${item.wallet}`)
+                        }
+                      }}>
+                        <InfoWrapper2>
+                          <Index>
+                            {item?.symbol ? (String(i + (currentPage - 1) * 10 + 1).length === 1 ? `0${i + (currentPage - 1) * 10 + 1}` : i + (currentPage - 1) * 10 + 1) : ''}
+                          </Index>
+                          <Avatar src={item?.icon} />
+                          <UserWrapper2>
+                            <UserName title={item.symbol}>{item.symbol}</UserName>
+                            <Address>
+                              {item.shortWallet}
+                              {item?.wallet ? (
+                                <CopyToClipboard text={item.wallet} onCopy={() => {
+                                  setCopied(item.wallet)
+                                  setTimeout(() => setCopied(null), 2000)
                                 }}>
-                                  <InfoWrapper>
-                                    <Index>
-                                      {item?.symbol ? String(i + (currentPage - 1) * 10 + 1).length === 1 ? `0${  i + (currentPage - 1) * 10 + 1}` : i + (currentPage - 1) * 10 + 1 : ''}
-                                    </Index>
-                                    {item?.icon ? <Avatar src={item?.icon} /> : null}
-                                    <UserWrapper>
-                                      <UserName title={item.symbol}>{item.symbol}</UserName>
-                                      <Desc>{item.description}</Desc>
-                                    </UserWrapper>
-                                  </InfoWrapper>
-                                  <ValueWrapper>
-                                    {
-                                      item?.symbol ?
-                                          <>
-                                            <ValueLeft>
-                                              <Price>{`${toStringAmt(item.price)} ${item.unit}`}</Price>
-                                              <Vol>{`Vol ${toStringAmt(item.vol)}`}</Vol>
-                                            </ValueLeft>
-                                            {/* <Rate>{`+${item.rate}%`}</Rate> */}
-                                          </> : null
-                                    }
-                                  </ValueWrapper>
-                                </ListItem>
-                            ))
-                        ) : null
-                      }
-                      <PageBtnList page={page} currentPage={currentPage} setCurrentPage={setCurrentPage} />
-                    </>
-              }
-            </Left>
-            <Right className={tokenAddress !== '0' ? 'left' : ''}>
-              {
-                isPage2Loading ?
-                    <>
-                      {SkeletonWrapper2}
-                    </> :
-                    <>
-                      {
-                        list && list?.length > 0 ? (
-                            list.map((item, i) => (
-                                <ListItem style={item?.wallet ? {cursor: 'pointer'} : {}} key={item?.index} onClick={() => {
-                                  if (item?.wallet) {
-                                    window.open(`/rank/${item.wallet}`)
-                                  }
-                                }}>
-                                  <InfoWrapper2>
-                                    <Index>
-                                      {item?.symbol ? (String(i + (currentPage - 1) * 10 + 1).length === 1 ? `0${  i + (currentPage - 1) * 10 + 1}` : i + (currentPage - 1) * 10 + 1) : ''}
-                                    </Index>
-                                    <Avatar src={item?.icon} />
-                                    <UserWrapper2>
-                                      <UserName title={item.symbol}>{item.symbol}</UserName>
-                                      <Address>
-                                        {item.shortWallet}
-                                        {item?.wallet ? (
-                                            <CopyToClipboard text={item.wallet} onCopy={() => {
-                                              setCopied(item.wallet)
-                                              setTimeout(() => setCopied(null), 2000)
-                                            }}>
-                                              <CopyWrapper onClick={(e) => {
-                                                e.stopPropagation()
-                                              }}>
-                                                <CopyButton/>
-                                                <Tooltip isTooltipDisplayed={copy === item.wallet}>{t('copied')}</Tooltip>
-                                              </CopyWrapper>
-                                            </CopyToClipboard>
-                                        ) : null}
-                                      </Address>
-                                    </UserWrapper2>
-                                  </InfoWrapper2>
-                                  <ValueWrapper2>
-                                    {item?.symbol ? (subType === 'people' ? `${item.amt}` : `${toStringAmt(item.amt)} ${item.unit}`) : ''}
-                                  </ValueWrapper2>
-                                </ListItem>
-                            ))
-                        ) : null
-                      }
-                    </>
-              }
-              <PageBtnList page={secondPage} currentPage={page2CurrentPage} setCurrentPage={setPage2CurrentPage} />
-            </Right>
-          </ListWrapper>
-        </>
-    )
+                                  <CopyWrapper onClick={(e) => {
+                                    e.stopPropagation()
+                                  }}>
+                                    <CopyButton />
+                                    <Tooltip isTooltipDisplayed={copy === item.wallet}>{t('copied')}</Tooltip>
+                                  </CopyWrapper>
+                                </CopyToClipboard>
+                              ) : null}
+                            </Address>
+                          </UserWrapper2>
+                        </InfoWrapper2>
+                        <ValueWrapper2>
+                          {item?.symbol ? (subType === 'people' ? `${item.amt}` : `${toStringAmt(item.amt)} ${item.unit}`) : ''}
+                        </ValueWrapper2>
+                      </ListItem>
+                    ))
+                  ) : null
+                }
+              </>
+          }
+          <PageBtnList page={secondPage} currentPage={page2CurrentPage} setCurrentPage={setPage2CurrentPage} />
+        </Right>
+      </ListWrapper>
+    </>
+  )
 }
