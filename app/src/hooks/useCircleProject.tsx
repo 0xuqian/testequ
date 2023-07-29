@@ -1,7 +1,7 @@
-import {useCallback, useEffect, useState } from 'react'
-import {useTranslation} from "@pancakeswap/localization";
+import { useCallback, useEffect, useState } from 'react'
+import { useTranslation } from "@pancakeswap/localization";
 import useActiveWeb3React from "./useActiveWeb3React";
-import {useCallWithGasPrice} from "./useCallWithGasPrice";
+import { useCallWithGasPrice } from "./useCallWithGasPrice";
 import useToast from "./useToast";
 import { MINT_ADDRESS, HAND_NFT_ADDRESS } from "../config/constants/exchange";
 import useCatchTxError from "./useCatchTxError";
@@ -14,20 +14,20 @@ export const useCircleProject = () => {
   const fetchProjects = useCallback(async () => {
     try {
       const res: any = await fetch(
-          `https://www.equityswap.club/app/index/currencies`,
-          {
-            method: 'post',
-            body: JSON.stringify({
-              net: account ? `evm--${Number(chainId)}` : `evm--97`,
-              page: 1,
-              size: 10000,
-              sortName: '',
-              sortOrder: '',
-            }),
-            headers: new Headers({
-              'Content-Type': 'application/json'
-            })
-          },
+        `https://www.equityswap.club/app/index/currencies`,
+        {
+          method: 'post',
+          body: JSON.stringify({
+            net: account ? `evm--${Number(chainId)}` : `evm--56`,
+            page: 1,
+            size: 10000,
+            sortName: '',
+            sortOrder: '',
+          }),
+          headers: new Headers({
+            'Content-Type': 'application/json'
+          })
+        },
       )
       const obj = await res.json()
       if (obj?.code === 0) {
@@ -61,24 +61,24 @@ export const useCircleProjectInfo = (projectAddress) => {
   const fetchProjects = useCallback(async () => {
     try {
       const res: any = await fetch(
-          `https://www.equityswap.club/app/index/currencies`,
-          {
-            method: 'post',
-            body: JSON.stringify({
-              net: account ? `evm--${Number(chainId)}` : `evm--97`,
-              page: 1,
-              size: 10000,
-              sortName: '',
-              sortOrder: '',
-            }),
-            headers: new Headers({
-              'Content-Type': 'application/json'
-            })
-          },
+        `https://www.equityswap.club/app/index/currencies`,
+        {
+          method: 'post',
+          body: JSON.stringify({
+            net: account ? `evm--${Number(chainId)}` : `evm--56`,
+            page: 1,
+            size: 10000,
+            sortName: '',
+            sortOrder: '',
+          }),
+          headers: new Headers({
+            'Content-Type': 'application/json'
+          })
+        },
       )
       const obj = await res.json()
       if (obj?.code === 0) {
-        setProject(obj?.datas?.list?.find((item) => {return projectAddress === item?.token_addr}))
+        setProject(obj?.datas?.list?.find((item) => { return projectAddress === item?.token_addr }))
       }
     } catch (error) {
       console.error(`Failed to fetch list`, error)
@@ -107,17 +107,17 @@ export const useCircleListInfo = (userAddressList) => {
   const fetchList = useCallback(async () => {
     try {
       const res: any = await fetch(
-          `https://www.equityswap.club/app/user/batch_userinfo`,
-          {
-            method: 'post',
-            body: JSON.stringify({
-              net: account ? `evm--${Number(chainId)}` : `evm--97`,
-              targetWallet: userAddressList
-            }),
-            headers: new Headers({
-              'Content-Type': 'application/json'
-            })
-          },
+        `https://www.equityswap.club/app/user/batch_userinfo`,
+        {
+          method: 'post',
+          body: JSON.stringify({
+            net: account ? `evm--${Number(chainId)}` : `evm--56`,
+            targetWallet: userAddressList
+          }),
+          headers: new Headers({
+            'Content-Type': 'application/json'
+          })
+        },
       )
       const obj = await res.json()
       if (obj?.code === 0) {
@@ -154,18 +154,18 @@ export const useCircleInv = (projectAddress) => {
     setInv(null)
     try {
       const res: any = await fetch(
-          `https://www.equityswap.club/app/user/getinv`,
-          {
-            method: 'post',
-            body: JSON.stringify({
-              net: account ? `evm--${Number(chainId)}` : `evm--97`,
-              target_wallet: account,
-              pro_addr: projectAddress,
-            }),
-            headers: new Headers({
-              'Content-Type': 'application/json'
-            })
-          },
+        `https://www.equityswap.club/app/user/getinv`,
+        {
+          method: 'post',
+          body: JSON.stringify({
+            net: account ? `evm--${Number(chainId)}` : `evm--56`,
+            target_wallet: account,
+            pro_addr: projectAddress,
+          }),
+          headers: new Headers({
+            'Content-Type': 'application/json'
+          })
+        },
       )
       const obj = await res.json()
       if (obj?.code === 0) {
@@ -217,8 +217,8 @@ export const useMint = (projectAddrress) => {
       return
     }
 
-    const list = listCopy.map((item) => {return item.addr})
-    const from = listCopy.map((item) => {return account})
+    const list = listCopy.map((item) => { return item.addr })
+    const from = listCopy.map((item) => { return account })
     const receipt = await fetchWithCatchTxError(() => {
       return callWithGasPrice(mintContract, 'mintNfts', [HAND_NFT_ADDRESS[chainId], projectAddrress, from, list])
     })
@@ -246,17 +246,17 @@ export const useCircleNftInfo = () => {
   const fetchList = useCallback(async () => {
     try {
       const res: any = await fetch(
-          `https://www.equityswap.club/app/index/nft`,
-          {
-            method: 'post',
-            body: JSON.stringify({
-              net: account ? `evm--${Number(chainId)}` : `evm--97`,
-              addr: account.toLowerCase()
-            }),
-            headers: new Headers({
-              'Content-Type': 'application/json'
-            })
-          },
+        `https://www.equityswap.club/app/index/nft`,
+        {
+          method: 'post',
+          body: JSON.stringify({
+            net: account ? `evm--${Number(chainId)}` : `evm--56`,
+            addr: account.toLowerCase()
+          }),
+          headers: new Headers({
+            'Content-Type': 'application/json'
+          })
+        },
       )
       const obj = await res.json()
       if (obj?.code === 0) {
