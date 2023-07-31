@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components'
 import { create } from 'ipfs-http-client';
-import { ethers } from 'ethers';
+import { Button } from '@pancakeswap/uikit'
+import useToast from "hooks/useToast";
 import { useWeb3React } from '@web3-react/core'
+import { useTranslation } from "@pancakeswap/localization";
 import Page from 'views/Page';
 import useRankingInfo from '../../hooks/useRankingDetails'
 
@@ -21,24 +23,13 @@ const ListWrapper = styled.div`
 const List = styled.div`
   width: 100%;
   display: flex;
-  height: 60px;
   flex-direction: column;
   flex-wrap: no-wrap;
   justify-content: space-between;
   align-items: center;
   // border-radius: 8px;
-  &:hover {
-    background: #e8e8e8;  
-  }
 `
 
-const SaveButtion = styled.button`
-  width : 80%;
-  cursor: pointer;
-  height : 50px;
-  line-height: 40px;
-  border-radius: 10px;
-`
 const Avatar1 = styled.img`
   width: 48px;
   height: 48px;
@@ -88,16 +79,26 @@ const AvatarImageDiv = styled.div`
   
 `
 
+const SelectButton = styled(Button)`
+  margin: 40px 8px;
+  width: 100%;
+  max-width: 350px;
+`
+
 const ProfilePage = () => {
 
-  const { account } = useWeb3React()
+  const { account, library, active } = useWeb3React()
+  const { t } = useTranslation()
+
+  const { toastError, toastSuccess } = useToast()
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [isEditing, setIsEditing] = useState(false);
-  const [nickname, setNickname] = useState('Your Nickname');
-  const [userInfoLoaded, setUserInfoLoaded] = useState(false);
+  const [nickname, setNickname] = useState("");
+  const [isInfoMotify, setInfoMotify] = useState<boolean>(true)
+  const [reloadUserInfo, setReloadUserInfo] = useState<boolean>(false);
+  const userInfo = useRankingInfo(account, reloadUserInfo)
 
-  const userInfo = useRankingInfo(account)
   const projectId = '2RxSDjGGChYbDccqxgSHDCGWDGT';
   const projectSecret = '9a0a07cc2c7e8b6a9115b8a8b451391c';
   const ipfs = create({
@@ -110,25 +111,19 @@ const ProfilePage = () => {
   });
 
   useEffect(() => {
-    setUserInfoLoaded(false)
-  }, [account]);
+    setReloadUserInfo(false)
+    setInfoMotify(false)
+    setSelectedImage(null)
+    if (userInfo) {
+      setImagePreview(userInfo?.icon)
+      setNickname(userInfo?.name)
+    }
+  }, [userInfo])
 
   useEffect(() => {
-    if (userInfo && userInfo.user_wallet?.toLowerCase() === account?.toLowerCase() && !userInfoLoaded) {
-
-      setImagePreview(userInfo.icon);
-      setNickname(userInfo.name);
-      setUserInfoLoaded(true);
-    }
-  }, [userInfo, userInfoLoaded, account]);
-
-  useEffect(() => {
-    if (userInfo?.icon !== imagePreview && userInfo?.name !== nickname && userInfoLoaded) {
-
-      setImagePreview(imagePreview);
-      setNickname(nickname);
-    }
-  }, [account, nickname, imagePreview, userInfo]);
+    // eslint-disable-next-line no-unused-expressions
+    selectedImage || (nickname !== userInfo?.name) && nickname ? setInfoMotify(true) : setInfoMotify(false);
+  }, [nickname, userInfo?.name, selectedImage])
 
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -138,79 +133,81 @@ const ProfilePage = () => {
     }
   };
 
-  const handleNicknameBlur = () => {
-    setIsEditing(false);
-  };
-
-  const handleNicknameClick = () => {
-    setIsEditing(true);
-  };
-
-  const handleNicknameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setNickname(event.target.value);
-  };
-
   const verifySignature = async (): Promise<string> => {
 
-    const provider = new ethers.providers.Web3Provider(window.ethereum);
-    const signer = provider.getSigner();
-    const address = await signer.getAddress()
-    const message = `Request to change personal information:
-  address: ${address}
-    `;
+    // const provider = new ethers.providers.Web3Provider(window.ethereum);
+    // const signer = provider.getSigner();
+    // const address = await signer.getAddress()
+    try {
+      await library.provider.request({ method: "eth_requestAccounts" });
 
-    const signature = await signer.signMessage(message)
-    return signature
+      const signer = library.getSigner();
+      const address = await signer.getAddress()
+      setInfoMotify(false)
+      const message = `Request to change personal information:
+    address: ${address}
+      `;
+      const signature = await signer.signMessage(message)
+      return signature
+    } catch {
+      setInfoMotify(true)
+      return null
+    }
   }
 
   const handleSubmit = async () => {
     const signature = await verifySignature()
     let url;
-    try {
-      const added = await ipfs.add(selectedImage);
-      url = `https://ipfs.io/ipfs/${added.path}`;
-    } catch (err) {
-      console.error(err);
-    }
-
-    if (imagePreview && nickname) {
+    if (selectedImage) {
       try {
-        const body = JSON.stringify({
-          new_icon: url,
-          new_name: nickname,
-          wallet: account,
-          sign: signature,
-          new_tg: null,
-          new_twitter: null,
-        });
-        console.log(url, nickname)
-        const response = await fetch('https://www.equityswap.club/app/user/setuserinfo', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body,
-        });
-
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        console.log(body)
-        const data = await response.json();
-        console.log(data);
-      } catch {
-        console.log("上传ipfs失败")
+        const added = await ipfs.add(selectedImage);
+        url = `https://ipfs.io/ipfs/${added.path}`;
+      } catch (err) {
+        console.error(err);
       }
+    } else {
+      url = imagePreview;
+    }
+    try {
+      const body = JSON.stringify({
+        new_icon: url,
+        new_name: nickname,
+        wallet: account,
+        sign: signature,
+        new_tg: null,
+        new_twitter: null,
+      });
+      const response = await fetch('https://www.equityswap.club/app/user/setuserinfo', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body,
+      });
+
+      if (!response.ok) {
+        toastError(`${t('Profile update failed')}`)
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const uploadStatus = await response.json();
+      if (uploadStatus.code === 0) {
+        setReloadUserInfo(!reloadUserInfo);
+        toastSuccess(
+          `${t('Profile updated successfully')}!`,
+        )
+      }
+    } catch {
+      console.info("upload to ipfs failed")
+      setInfoMotify(true)
     }
   };
-
 
   return (
     <Page>
       <ListWrapper>
         <List>
           <ListItem onClick={() => document.getElementById('fileInput')?.click()}>
-            <TitleName>头像</TitleName>
+            <TitleName>头像dcv </TitleName>
             <AvatarImageDiv>
               <Avatar1 src={imagePreview} />
               <Arrow width={16} height={16} src="/images/circle/arrow.png" alt="to link" />
@@ -227,9 +224,9 @@ const ProfilePage = () => {
             <TitleName>昵称</TitleName>
             <NickNameDiv>
               {isEditing ? (
-                <input type='text' value={nickname} onChange={handleNicknameChange} onBlur={handleNicknameBlur} />
+                <input type='text' value={nickname} onChange={(event) => setNickname(event.target.value)} onBlur={() => setIsEditing(false)} />
               ) : (
-                <div onClick={handleNicknameClick} onKeyPress={handleNicknameClick} tabIndex={0} role="button">{nickname}</div>
+                <div onClick={() => setIsEditing(true)} onKeyPress={() => setIsEditing(true)} tabIndex={0} role="button">{nickname}</div>
               )}
               <Arrow width={16} height={16} src="/images/circle/arrow.png" alt="to link" />
             </NickNameDiv>
@@ -242,7 +239,7 @@ const ProfilePage = () => {
               <Arrow width={16} height={16} src="/images/circle/arrow.png" alt="to link" />
             </NickNameDiv>
           </ListItem>
-          <SaveButtion onClick={handleSubmit} style={{ marginTop: '15px' }}>SAVE</SaveButtion>
+          <SelectButton disabled={!isInfoMotify} onClick={active ? handleSubmit : undefined} style={{ marginTop: '15px' }}>{t('save')}</SelectButton>
         </List>
       </ListWrapper>
     </Page>

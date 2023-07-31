@@ -1,5 +1,5 @@
-import { AllHistory, useKLine } from "hooks/useHistoryNftInfo";
-import { FC, useEffect, useState } from 'react';
+import { AllHistory } from "hooks/useHistoryNftInfo";
+import { useEffect, useState } from 'react';
 import PriceDate from 'views/TradingView/component/TokenInfo'
 import { LineChartLoader } from 'views/Info/components/ChartLoaders'
 import Page from "views/Page";

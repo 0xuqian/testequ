@@ -45,7 +45,7 @@ interface ListItem {
   user_wallet: string
 }
 
-const useRankingInfo = (address) => {
+const useRankingInfo = (address, reloadUserInfo) => {
   const { chainId, account } = useActiveWeb3React()
 
   const [info, setInfo] = useState(null)
@@ -82,11 +82,11 @@ const useRankingInfo = (address) => {
 
 
   useEffect(() => {
-    if (!address) return
+    // if (!address) return
     fetchListInfo()
-  }, [chainId, address])
+  }, [chainId, address, reloadUserInfo])
 
-  return { ...info }
+  return info
 }
 
 export default useRankingInfo

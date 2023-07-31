@@ -1879,5 +1879,8 @@
   "received by individuals": "个人获得的交易返佣总额",
   "users brought to each project": "为每个项目带来的平均有效用户数量",
   "brought to the project": "该项目分享的人数",
-  "claim record": "领取记录"
+  "claim record": "领取记录",
+  "save": "保存",
+  "Profile updated successfully": "个人资料更新成功",
+  "Profile update failed": "个人资料更新失败"
 }

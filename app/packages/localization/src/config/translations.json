@@ -1964,5 +1964,8 @@
   "received by individuals": "Total trading rebates received by individuals",
   "users brought to each project": "The average valid number of users brought to each project",
   "brought to the project": "The number of valid users brought to the project",
-  "claim record": "Claim record"
+  "claim record": "Claim record",
+  "Profile updated successfully": "Profile updated successfully",
+  "save": "Save",
+  "Profile update failed": "Profile update failed"
 }

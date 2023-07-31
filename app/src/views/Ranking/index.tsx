@@ -19,10 +19,11 @@ const StyledAppBody = styled(Card)`
   border: none;
   border-radius: 6px;
   overflow: unset;
+  background-color: ${({ theme }) => theme.colors.backgroundAlt};
   max-width: 687px;
   width: 100%;
   z-index: 1;
-  background: #f9f9fa;
+  // background: #f9f9fa;
   text-align: center;
   & > div {
     background: transparent;
@@ -46,7 +47,7 @@ const MenuItem = styled.div`
   font-size: 24px;
   line-height: 26px;
   cursor: pointer;
-  color: #333;
+  // color: #333;
   flex: 1;
   display: flex;
   justify-content: center;
@@ -77,7 +78,8 @@ const SubTab = styled.div`
   width: 360px;
   height: 36px;
   border-radius: 6px;
-  background: #f4f5f8;
+  background-color: ${({ theme }) => theme.colors.backgroundAlt};
+  // background: #f4f5f8;
   padding: 2px;
   display: flex;
   justify-content: space-between;
@@ -163,12 +165,13 @@ const TimeMenuItem = styled.div`
   height: 30px;
   line-height: 30px;
   padding-left: 15px;
+  background-color: ${({ theme }) => theme.colors.backgroundAlt};
   font-family: 'PingFang SC';
   font-style: normal;
   font-weight: 400;
   font-size: 12px;
   text-align: left;
-  color: #15141f;
+  // color: #15141f;
   cursor: pointer;
   :hover {
     background: #f3f4f9;

@@ -109,7 +109,6 @@ const CircleClaim: React.FC<React.PropsWithChildren<{ projectAddr: string, leade
         net: account ? `evm--${Number(chainId)}` : `evm--97`,
         claim_user: account
       });
-      console.log(body)
       const response = await fetch('https://www.equityswap.club/app/user/claim_nft', {
         method: 'POST',
         headers: {

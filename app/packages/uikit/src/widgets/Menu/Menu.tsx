@@ -12,7 +12,7 @@ import { MENU_HEIGHT, MOBILE_MENU_HEIGHT, TOP_BANNER_HEIGHT, TOP_BANNER_HEIGHT_M
 import { NavProps } from "./types";
 import LangSelector from "../../components/LangSelector/LangSelector";
 import { MenuContext } from "./context";
-import {useMatchBreakpointsContext} from "../../contexts";
+import { useMatchBreakpointsContext } from "../../contexts";
 
 const Wrapper = styled.div`
   position: relative;
@@ -126,6 +126,7 @@ const Menu: React.FC<React.PropsWithChildren<NavProps>> = ({
   const homeLink = links.find((link) => link.label === "Home");
 
   const subLinksWithoutMobile = subLinks?.filter((subLink) => !subLink.isMobileOnly);
+
   const subLinksMobileOnly = subLinks?.filter((subLink) => subLink.isMobileOnly);
 
   return (
@@ -155,22 +156,22 @@ const Menu: React.FC<React.PropsWithChildren<NavProps>> = ({
         </FixedContainer>
         {
           !isDesktop ?
-          <>
-            {subLinks && (
+            <>
+              {subLinks && (
                 <Flex justifyContent="space-around">
                   <SubMenuItems items={subLinksWithoutMobile} mt={`${totalTopMenuHeight + 1}px`} activeItem={activeSubItem} />
 
                   {subLinksMobileOnly?.length > 0 && (
-                      <SubMenuItems
-                          items={subLinksMobileOnly}
-                          mt={`${totalTopMenuHeight + 1}px`}
-                          activeItem={activeSubItem}
-                          isMobileOnly
-                      />
+                    <SubMenuItems
+                      items={subLinksMobileOnly}
+                      mt={`${totalTopMenuHeight + 1}px`}
+                      activeItem={activeSubItem}
+                      isMobileOnly
+                    />
                   )}
                 </Flex>
-            )}
-          </> : <StyledWrapper />
+              )}
+            </> : <StyledWrapper />
         }
         <BodyWrapper mt={!subLinks ? `${totalTopMenuHeight + 1}px` : "0"}>
           <Inner isPushed={false} showMenu={showMenu}>
