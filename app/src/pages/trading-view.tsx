@@ -82,7 +82,7 @@ export const formatNumber = (number) => {
   if (/[+-]?\d+(\.\d+)?[eE][+-]?\d+/.test(stringValue)) {
     const str = parseFloat(number).toFixed(20).replace(/\.?0+$/, '');
     const demail = countTrailingZeros(str);
-    if (demail >= 7) {
+    if (demail >= 6) {
       const match = str.match(/\.0+/);
       const count = match[0].length - 1;
       const formattedNumber = str.replace(/\.0+/, `.0{${count}}`);
