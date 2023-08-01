@@ -25,6 +25,7 @@ import ErrorBoundary from '../components/ErrorBoundary'
 import Menu from '../components/Menu'
 import Providers from '../Providers'
 import GlobalStyle from '../style/Global'
+import { useUserSingleHopOnly } from 'state/user/hooks'
 
 const EasterEgg = dynamic(() => import('components/EasterEgg'), { ssr: false })
 
@@ -126,7 +127,8 @@ const ProductionErrorBoundary = process.env.NODE_ENV === 'production' ? ErrorBou
 
 const App = ({ Component, pageProps, ...appProps }: AppPropsWithLayout) => {
   const noNeedLayout = [`/451`].includes(appProps.router.pathname)
-
+  const [_, setSingleHopOnly] = useUserSingleHopOnly()
+  setSingleHopOnly(true)
   if (noNeedLayout) {
     return <Component {...pageProps} />
   }
