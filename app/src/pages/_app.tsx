@@ -20,12 +20,12 @@ import { usePollBlockNumber } from 'state/block/hooks'
 import { usePollCoreFarmData } from 'state/farms/hooks'
 import { NextPage } from 'next'
 import { ResetCSS } from '@pancakeswap/uikit'
+import { useUserSingleHopOnly } from 'state/user/hooks'
 import { Blocklist, Updaters } from '..'
 import ErrorBoundary from '../components/ErrorBoundary'
 import Menu from '../components/Menu'
 import Providers from '../Providers'
 import GlobalStyle from '../style/Global'
-import { useUserSingleHopOnly } from 'state/user/hooks'
 
 const EasterEgg = dynamic(() => import('components/EasterEgg'), { ssr: false })
 
