@@ -1,11 +1,11 @@
 import styled, { useTheme } from 'styled-components'
 import { useTranslation } from '@pancakeswap/localization'
-import {BigNumber} from "bignumber.js";
+import { BigNumber } from "bignumber.js";
 import Skeleton from "react-loading-skeleton";
-import {useEffect, useState} from 'react'
+import { useEffect, useState } from 'react'
 import CopyToClipboard from 'react-copy-to-clipboard'
 import 'react-loading-skeleton/dist/skeleton.css'
-import {useMatchBreakpointsContext} from "@pancakeswap/uikit";
+import { useMatchBreakpointsContext } from "@pancakeswap/uikit";
 import PageBtnList from "./PageBtnList";
 import useRankingInfo from "../../../hooks/useRankingInfo";
 
@@ -20,7 +20,7 @@ const ListItem = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: #fff;
+  // background: #fff;
   @media screen and (max-width: 852px) {
     height: 80px;
   }
@@ -42,7 +42,7 @@ const Index = styled.div`
   font-style: normal;
   font-weight: 600;
   font-size: 16px;
-  color: #15141f;
+  // color: #15141f;
   align-items: center;
   width: 20px;
   @media screen and (max-width: 852px) {
@@ -73,7 +73,7 @@ const UserName = styled.div`
   font-style: normal;
   font-weight: 600;
   font-size: 14px;
-  color: #15141f;
+  // color: #15141f;
   overflow: hidden;
   white-space: pre;
   line-height: 26px;
@@ -103,7 +103,7 @@ const Address = styled.div`
   font-weight: 600;
   font-size: 16px;
   line-height: 16px;
-  color: #15141f;
+  // color: #15141f;
   display: flex;
   @media screen and (max-width: 576px) {
     font-size: 12px;
@@ -160,7 +160,7 @@ const Tooltip = styled.div<{
   width: max-content;
 `
 
-export default function WealthList({timeType, type}) {
+export default function WealthList({ timeType, type }) {
   const { t } = useTranslation()
   const [currentPage, setCurrentPage] = useState(1)
   const { isDesktop } = useMatchBreakpointsContext()
@@ -176,22 +176,22 @@ export default function WealthList({timeType, type}) {
         <Index>
           <Skeleton width={20} />
         </Index>
-        <Skeleton width={48} height={48} circle style={!isDesktop ? {marginLeft: '12px'} : {}}  />
+        <Skeleton width={48} height={48} circle style={!isDesktop ? { marginLeft: '12px' } : {}} />
         {
           !isDesktop ?
-              <>
-                <UserNameSkeleton>
-                  <Skeleton width={200} count={2} />
-                </UserNameSkeleton>
-              </> :
-              <>
-                <UserNameSkeleton>
-                  <Skeleton width={160} count={1} />
-                </UserNameSkeleton>
-                <Address>
-                  <Skeleton width={136} style={!isDesktop ? {display: 'none'} : {}} />
-                </Address>
-              </>
+            <>
+              <UserNameSkeleton>
+                <Skeleton width={200} count={2} />
+              </UserNameSkeleton>
+            </> :
+            <>
+              <UserNameSkeleton>
+                <Skeleton width={160} count={1} />
+              </UserNameSkeleton>
+              <Address>
+                <Skeleton width={136} style={!isDesktop ? { display: 'none' } : {}} />
+              </Address>
+            </>
         }
       </InfoWrapper>
       <ValueWrapper>
@@ -220,58 +220,58 @@ export default function WealthList({timeType, type}) {
   }, [type])
 
   return (
-      <>
-        <ListWrapper>
-          {
-            isLoading ?
-                <>
-                  {SkeletonWrapper}
-                </> :
-                <>
-                  {
-                    list && list?.length > 0 ? (
-                        list.map((item, i) => (
-                            <ListItem style={item?.wallet ? {cursor: 'pointer'} : {}} key={item?.index} onClick={() => {
-                              if (item?.wallet) {
-                                window.open(`/rank/${item.wallet}`)
-                              }
-                            }}>
-                              <InfoWrapper>
-                                <Index>
-                                  {item?.symbol ? (String(i + (currentPage - 1) * 10 + 1).length === 1 ? `0${  i + (currentPage - 1) * 10 + 1}` : i + (currentPage - 1) * 10 + 1) : ''}
-                                </Index>
-                                <Avatar src={item.icon} />
-                                <UserWrapper>
-                                  <UserName title={item.symbol}>{item.symbol}</UserName>
-                                  <Address>
-                                    {item.shortWallet}
-                                    {item?.wallet ? (
-                                        <CopyToClipboard text={item.wallet} onCopy={() => {
-                                          setCopied(item.wallet)
-                                          setTimeout(() => setCopied(null), 2000)
-                                        }}>
-                                          <CopyWrapper onClick={(e) => {
-                                            e.stopPropagation()
-                                          }}>
-                                            <CopyButton />
-                                            <Tooltip isTooltipDisplayed={copy === item.wallet}>Copied</Tooltip>
-                                          </CopyWrapper>
-                                        </CopyToClipboard>
-                                    ) : null}
-                                  </Address>
-                                </UserWrapper>
-                              </InfoWrapper>
-                              <ValueWrapper>
-                                {item?.symbol ? `${toStringAmt(item.amt)} ${item.unit}` : ''}
-                              </ValueWrapper>
-                            </ListItem>
-                        ))
-                    ) : null
-                  }
-                </>
-          }
-          <PageBtnList page={page} currentPage={currentPage} setCurrentPage={setCurrentPage} />
-        </ListWrapper>
-      </>
+    <>
+      <ListWrapper>
+        {
+          isLoading ?
+            <>
+              {SkeletonWrapper}
+            </> :
+            <>
+              {
+                list && list?.length > 0 ? (
+                  list.map((item, i) => (
+                    <ListItem style={item?.wallet ? { cursor: 'pointer' } : {}} key={item?.index} onClick={() => {
+                      if (item?.wallet) {
+                        window.open(`/rank/${item.wallet}`)
+                      }
+                    }}>
+                      <InfoWrapper>
+                        <Index>
+                          {item?.symbol ? (String(i + (currentPage - 1) * 10 + 1).length === 1 ? `0${i + (currentPage - 1) * 10 + 1}` : i + (currentPage - 1) * 10 + 1) : ''}
+                        </Index>
+                        <Avatar src={item.icon} />
+                        <UserWrapper>
+                          <UserName title={item.symbol}>{item.symbol}</UserName>
+                          <Address>
+                            {item.shortWallet}
+                            {item?.wallet ? (
+                              <CopyToClipboard text={item.wallet} onCopy={() => {
+                                setCopied(item.wallet)
+                                setTimeout(() => setCopied(null), 2000)
+                              }}>
+                                <CopyWrapper onClick={(e) => {
+                                  e.stopPropagation()
+                                }}>
+                                  <CopyButton />
+                                  <Tooltip isTooltipDisplayed={copy === item.wallet}>Copied</Tooltip>
+                                </CopyWrapper>
+                              </CopyToClipboard>
+                            ) : null}
+                          </Address>
+                        </UserWrapper>
+                      </InfoWrapper>
+                      <ValueWrapper>
+                        {item?.symbol ? `${toStringAmt(item.amt)} ${item.unit}` : ''}
+                      </ValueWrapper>
+                    </ListItem>
+                  ))
+                ) : null
+              }
+            </>
+        }
+        <PageBtnList page={page} currentPage={currentPage} setCurrentPage={setCurrentPage} />
+      </ListWrapper>
+    </>
   )
 }

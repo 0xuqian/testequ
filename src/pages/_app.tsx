@@ -20,6 +20,7 @@ import { usePollBlockNumber } from 'state/block/hooks'
 import { usePollCoreFarmData } from 'state/farms/hooks'
 import { NextPage } from 'next'
 import { ResetCSS } from '@pancakeswap/uikit'
+import { useUserSingleHopOnly } from 'state/user/hooks'
 import { Blocklist, Updaters } from '..'
 import ErrorBoundary from '../components/ErrorBoundary'
 import Menu from '../components/Menu'
@@ -126,7 +127,8 @@ const ProductionErrorBoundary = process.env.NODE_ENV === 'production' ? ErrorBou
 
 const App = ({ Component, pageProps, ...appProps }: AppPropsWithLayout) => {
   const noNeedLayout = [`/451`].includes(appProps.router.pathname)
-
+  const [_, setSingleHopOnly] = useUserSingleHopOnly()
+  setSingleHopOnly(true)
   if (noNeedLayout) {
     return <Component {...pageProps} />
   }

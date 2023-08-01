@@ -145,6 +145,7 @@ export default function Swap() {
   } = useSwapState()
   const inputCurrency = useCurrency(inputCurrencyId)
   const outputCurrency = useCurrency(outputCurrencyId)
+
   const {
     v2Trade,
     v2TradeOne,

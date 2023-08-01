@@ -15,6 +15,7 @@ import { setupNetwork } from 'utils/wallet'
 import useToast from 'hooks/useToast'
 import { useAppDispatch } from 'state'
 import { useTranslation } from '@pancakeswap/localization'
+import { ChainId } from '@pancakeswap/sdk'
 import { clearUserStates } from '../utils/clearUserStates'
 import useActiveWeb3React from './useActiveWeb3React'
 
@@ -35,7 +36,7 @@ const useAuth = () => {
           if (error instanceof UnsupportedChainIdError) {
             setError(error)
             const provider = await connector.getProvider()
-            const hasSetup = await setupNetwork(97, provider)
+            const hasSetup = await setupNetwork(ChainId.BSC, provider)
             if (hasSetup) {
               activate(connector)
             }

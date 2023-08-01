@@ -28,7 +28,7 @@ const StyledPage = styled.div<{ $removePadding: boolean; $noMinHeight }>`
     min-height: ${({ $noMinHeight }) => ($noMinHeight ? 'initial' : 'calc(100vh - 265px)')};
   }
   @media screen and (max-width: 852px) {
-    background: #fff;
+    // background: #fff;
   }
 `
 
@@ -47,14 +47,14 @@ const Page: React.FC<
   noMinHeight = false,
   ...props
 }) => {
-  return (
-    <>
-      <PageMeta />
-      <StyledPage $removePadding={removePadding} $noMinHeight={noMinHeight} {...props}>
-        {children}
-      </StyledPage>
-    </>
-  )
-}
+    return (
+      <>
+        <PageMeta />
+        <StyledPage $removePadding={removePadding} $noMinHeight={noMinHeight} {...props}>
+          {children}
+        </StyledPage>
+      </>
+    )
+  }
 
 export default Page

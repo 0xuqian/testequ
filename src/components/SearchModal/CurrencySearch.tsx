@@ -89,7 +89,6 @@ function CurrencySearch({
 }: CurrencySearchProps) {
   const { t } = useTranslation()
   const { chainId } = useActiveWeb3React()
-
   // refs for fixed size lists
   const fixedList = useRef<FixedSizeList>()
 
@@ -147,23 +146,45 @@ function CurrencySearch({
     fixedList.current?.scrollTo(0)
   }, [])
 
+  const symbolOrder = ['USDT', 'PV', 'USDC', 'BNB'];
+
+  const customSort = (a, b) => {
+    const aIndex = symbolOrder.indexOf(a.symbol);
+    const bIndex = symbolOrder.indexOf(b.symbol);
+
+    if (aIndex === -1 && bIndex === -1) {
+      return 0;
+    }
+
+    if (aIndex === -1) {
+      return 1;
+    }
+
+    if (bIndex === -1) {
+      return -1;
+    }
+
+    return aIndex - bIndex;
+  };
+
+  const sortedTokens = filteredSortedTokens.sort(customSort);
   const handleEnter = useCallback(
     (e: KeyboardEvent<HTMLInputElement>) => {
       if (e.key === 'Enter') {
         const s = debouncedQuery.toLowerCase().trim()
         if (s === 'bnb' || s === 'eth') {
           handleCurrencySelect(ETHER)
-        } else if (filteredSortedTokens.length > 0) {
+        } else if (sortedTokens.length > 0) {
           if (
-            filteredSortedTokens[0].symbol?.toLowerCase() === debouncedQuery.trim().toLowerCase() ||
-            filteredSortedTokens.length === 1
+            sortedTokens[0].symbol?.toLowerCase() === debouncedQuery.trim().toLowerCase() ||
+            sortedTokens.length === 1
           ) {
-            handleCurrencySelect(filteredSortedTokens[0])
+            handleCurrencySelect(sortedTokens[0])
           }
         }
       }
     },
-    [filteredSortedTokens, handleCurrencySelect, debouncedQuery],
+    [sortedTokens, handleCurrencySelect, debouncedQuery],
   )
 
   // if no results on main list, show option to expand into inactive
@@ -179,15 +200,15 @@ function CurrencySearch({
       )
     }
 
-    return Boolean(filteredSortedTokens?.length) || hasFilteredInactiveTokens ? (
+    return Boolean(sortedTokens?.length) || hasFilteredInactiveTokens ? (
       <Box margin="24px -24px">
         <CurrencyList
           height={isMobile ? (showCommonBases ? 250 : 350) : 390}
+          currencies={sortedTokens}
           showBNB={showBNB}
-          currencies={filteredSortedTokens}
           inactiveCurrencies={filteredInactiveTokens}
           breakIndex={
-            Boolean(filteredInactiveTokens?.length) && filteredSortedTokens ? filteredSortedTokens.length : undefined
+            Boolean(filteredInactiveTokens?.length) && sortedTokens ? sortedTokens.length : undefined
           }
           onCurrencySelect={handleCurrencySelect}
           otherCurrency={otherSelectedCurrency}
@@ -204,22 +225,7 @@ function CurrencySearch({
         </Text>
       </Column>
     )
-  }, [
-    filteredInactiveTokens,
-    filteredSortedTokens,
-    handleCurrencySelect,
-    hasFilteredInactiveTokens,
-    otherSelectedCurrency,
-    searchToken,
-    searchTokenIsAdded,
-    selectedCurrency,
-    setImportToken,
-    showBNB,
-    showImportView,
-    t,
-    showCommonBases,
-    isMobile,
-  ])
+  }, [searchToken, searchTokenIsAdded, hasFilteredInactiveTokens, sortedTokens, isMobile, showCommonBases, showBNB, filteredInactiveTokens, handleCurrencySelect, otherSelectedCurrency, selectedCurrency, showImportView, setImportToken, t])
 
   return (
     <>

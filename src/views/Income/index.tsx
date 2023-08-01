@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import {Card, Image} from '@pancakeswap/uikit'
+import { Card, Image } from '@pancakeswap/uikit'
 
 
 import Page from '../Page'
@@ -30,7 +30,7 @@ export default function Income() {
   return (
     <Page>
       <StyledAppBody>
-        <StyledImage width={390} height={268} src="/images/income/bg.png" />
+        <StyledImage  width={390} height={268} src="/images/income/bg.png" />
         <Telegram />
         <InfoWrapper />
       </StyledAppBody>

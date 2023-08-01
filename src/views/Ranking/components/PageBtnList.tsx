@@ -1,4 +1,4 @@
-import styled  from 'styled-components'
+import styled from 'styled-components'
 import { useMemo, useState } from 'react'
 
 const PageButtonList = styled.div`
@@ -6,7 +6,7 @@ const PageButtonList = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: #fff;
+  background-color: ${({ theme }) => theme.colors.backgroundAlt};
   & > div {
     flex: 1
   }
@@ -25,7 +25,7 @@ const ButtonList = styled.div`
     width: 24px;
     height: 24px;
     border-radius: 4px;
-    color: rgba(0, 0, 0, 0.85);
+    // color: rgba(0, 0, 0, 0.85);
     background: transparent;
     margin: 0 4px;
     cursor: pointer;
@@ -40,6 +40,7 @@ const ButtonList = styled.div`
 const ToPageWrapper = styled.div`
   display: flex;
   justify-content: right;
+  background-color: ${({ theme }) => theme.colors.backgroundAlt};
   & > input {
     width: 44px;
     height: 22px;
@@ -60,7 +61,7 @@ const GoBtn = styled.div`
   width: 24px;
   height: 22px;
   border-radius: 4px;
-  color: rgba(0,0,0,0.85);
+  // color: rgba(0,0,0,0.85);
   background: transparent;
   margin: 0 8px;
   transition: all 0.4s;
@@ -80,7 +81,7 @@ const StyledEllipsis = styled.span`
     line-height: 16px;
   text-align: center;
   letter-spacing: 2px;
-  color: rgba(0, 0, 0, 0.25);
+  // color: rgba(0, 0, 0, 0.25);
   text-align: center;
 `
 
@@ -108,7 +109,7 @@ const escapeRegExp = (string: string) => {
   return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') // $& means the whole matched string
 }
 
-export default function PageBtnList({page, currentPage, setCurrentPage}) {
+export default function PageBtnList({ page, currentPage, setCurrentPage }) {
   const [inputValue, setValue] = useState('')
 
   const buttonList = useMemo(() => {
@@ -122,138 +123,138 @@ export default function PageBtnList({page, currentPage, setCurrentPage}) {
         push.push(i + 1)
       }
       return (
-          <>
-            {
-              push.map((item) => (
-                  <div
-                      role="button"
-                      tabIndex={0}
-                      key={item}
-                      className={currentPage === item ? 'active' : ''}
-                      onClick={() => {
-                        setCurrentPage(item)
-                      }}
-                      onKeyDown={() => {
-                        setCurrentPage(item)
-                      }}
-                  >{item}</div>
-              ))
-            }
-          </>
+        <>
+          {
+            push.map((item) => (
+              <div
+                role="button"
+                tabIndex={0}
+                key={item}
+                className={currentPage === item ? 'active' : ''}
+                onClick={() => {
+                  setCurrentPage(item)
+                }}
+                onKeyDown={() => {
+                  setCurrentPage(item)
+                }}
+              >{item}</div>
+            ))
+          }
+        </>
       )
     }
     if (currentPage <= 2 + maxPage) {
-        for (let i = 0; i < currentPage + maxPage; i++) {
-          push.push(i + 1)
-        }
-        return (
-            <>
-              {
-                push.map((item, i) => (
-                    <div
-                        role="button"
-                        tabIndex={0}
-                        key={item}
-                        className={currentPage === item ? 'active' : ''}
-                        onClick={() => {
-                          setCurrentPage(item)
-                        }}
-                        onKeyDown={() => {
-                          setCurrentPage(item)
-                        }}
-                    >{item}</div>
-                ))
-              }
-              <StyledEllipsis>...</StyledEllipsis>
-              <div
-                  role="button"
-                  tabIndex={0}
-                  onClick={() => {
-                    setCurrentPage(page)
-                  }}
-                  onKeyDown={() => {
-                    setCurrentPage(page)
-                  }}
-              >{page}</div>
-            </>
-        )
+      for (let i = 0; i < currentPage + maxPage; i++) {
+        push.push(i + 1)
       }
+      return (
+        <>
+          {
+            push.map((item, i) => (
+              <div
+                role="button"
+                tabIndex={0}
+                key={item}
+                className={currentPage === item ? 'active' : ''}
+                onClick={() => {
+                  setCurrentPage(item)
+                }}
+                onKeyDown={() => {
+                  setCurrentPage(item)
+                }}
+              >{item}</div>
+            ))
+          }
+          <StyledEllipsis>...</StyledEllipsis>
+          <div
+            role="button"
+            tabIndex={0}
+            onClick={() => {
+              setCurrentPage(page)
+            }}
+            onKeyDown={() => {
+              setCurrentPage(page)
+            }}
+          >{page}</div>
+        </>
+      )
+    }
     if (currentPage + maxPage >= page) {
-        for (let i = currentPage - (1 + maxPage); i < page; i++) {
-          push.push(i + 1)
-        }
-        return (
-            <>
-              <div
-                  role="button"
-                  tabIndex={0}
-                  onClick={() => {setCurrentPage(1)}}
-                  onKeyDown={() => {
-                    setCurrentPage(1)
-                  }}
-              >{1}</div>
-              <StyledEllipsis>...</StyledEllipsis>
-              {
-                push.map((item, i) => (
-                    <div
-                        role="button"
-                        tabIndex={0}
-                        key={item}
-                        className={currentPage === item ? 'active' : ''}
-                        onClick={() => {
-                          setCurrentPage(item)
-                        }}
-                        onKeyDown={() => {
-                          setCurrentPage(item)
-                        }}
-                    >{item}</div>
-                ))
-              }
-            </>
-        )
+      for (let i = currentPage - (1 + maxPage); i < page; i++) {
+        push.push(i + 1)
       }
+      return (
+        <>
+          <div
+            role="button"
+            tabIndex={0}
+            onClick={() => { setCurrentPage(1) }}
+            onKeyDown={() => {
+              setCurrentPage(1)
+            }}
+          >{1}</div>
+          <StyledEllipsis>...</StyledEllipsis>
+          {
+            push.map((item, i) => (
+              <div
+                role="button"
+                tabIndex={0}
+                key={item}
+                className={currentPage === item ? 'active' : ''}
+                onClick={() => {
+                  setCurrentPage(item)
+                }}
+                onKeyDown={() => {
+                  setCurrentPage(item)
+                }}
+              >{item}</div>
+            ))
+          }
+        </>
+      )
+    }
 
     for (let i = currentPage - maxPage - 1; i < currentPage + maxPage; i++) {
       push.push(i + 1)
     }
 
     return (
-        <>
-          <div
+      <>
+        <div
+          role="button"
+          tabIndex={0}
+          onClick={() => { setCurrentPage(1) }}
+          onKeyDown={() => {
+            setCurrentPage(1)
+          }}
+        >{1}</div>
+        <StyledEllipsis>...</StyledEllipsis>
+        {
+          push.map((item) => (
+            <div
               role="button"
               tabIndex={0}
-              onClick={() => {setCurrentPage(1)}}
-              onKeyDown={() => {
-                setCurrentPage(1)
+              key={item}
+              className={currentPage === item ? 'active' : ''}
+              onClick={() => {
+                setCurrentPage(item)
               }}
-          >{1}</div>
-          <StyledEllipsis>...</StyledEllipsis>
-          {
-            push.map((item) => (
-                <div
-                    role="button"
-                    tabIndex={0}
-                    key={item}
-                    className={currentPage === item ? 'active' : ''}
-                    onClick={() => {
-                      setCurrentPage(item)
-                    }}
-                    onKeyDown={() => {
-                      setCurrentPage(item)
-                    }}
-                >{item}</div>
-            ))
-          }
-          <StyledEllipsis>...</StyledEllipsis>
-          <div
-              role="button"
-              tabIndex={0}
-              onClick={() => {setCurrentPage(page)}}
               onKeyDown={() => {
-                setCurrentPage(page)
+                setCurrentPage(item)
               }}
-          >{page}</div>
-        </>
+            >{item}</div>
+          ))
+        }
+        <StyledEllipsis>...</StyledEllipsis>
+        <div
+          role="button"
+          tabIndex={0}
+          onClick={() => { setCurrentPage(page) }}
+          onKeyDown={() => {
+            setCurrentPage(page)
+          }}
+        >{page}</div>
+      </>
     )
 
   }, [currentPage, page])
@@ -265,46 +266,46 @@ export default function PageBtnList({page, currentPage, setCurrentPage}) {
   }
 
   return (
-      <>
-        <PageButtonList>
-          <div />
-          <ButtonList>
-            <LeftBtn onClick={() => {
-              if (currentPage !== 1) {
-                setCurrentPage(currentPage - 1)
-              }
-            }}>{'<'}</LeftBtn>
-            {buttonList}
-            <RightBtn onClick={() => {
-              if (currentPage !== page) {
-                setCurrentPage(currentPage + 1)
-              }
+    <>
+      <PageButtonList>
+        <div />
+        <ButtonList>
+          <LeftBtn onClick={() => {
+            if (currentPage !== 1) {
+              setCurrentPage(currentPage - 1)
+            }
+          }}>{'<'}</LeftBtn>
+          {buttonList}
+          <RightBtn onClick={() => {
+            if (currentPage !== page) {
+              setCurrentPage(currentPage + 1)
+            }
+          }}
+          >{'>'}</RightBtn>
+        </ButtonList>
+        <ToPageWrapper>
+          <input
+            value={inputValue}
+            onChange={event => {
+              // replace commas with periods, because uniswap exclusively uses period as the decimal separator
+              enforcer(event.target.value.replace(/,/g, '.'))
             }}
-            >{'>'}</RightBtn>
-          </ButtonList>
-          <ToPageWrapper>
-            <input
-                value={inputValue}
-                onChange={event => {
-                  // replace commas with periods, because uniswap exclusively uses period as the decimal separator
-                  enforcer(event.target.value.replace(/,/g, '.'))
-                }}
-                autoComplete="off"
-                autoCorrect="off"
-                pattern="^[0-9]*[.,]?[0-9]*$"
-                spellCheck="false"
-                maxLength={String(page).length}
-            />
-            <GoBtn onClick={() => {
-              if (inputValue !== '' && inputValue <= page) {
-                setCurrentPage(parseInt(inputValue))
-                setValue('')
-              } else {
-                setValue('')
-              }
-            }}>Go</GoBtn>
-          </ToPageWrapper>
-        </PageButtonList>
-      </>
+            autoComplete="off"
+            autoCorrect="off"
+            pattern="^[0-9]*[.,]?[0-9]*$"
+            spellCheck="false"
+            maxLength={String(page).length}
+          />
+          <GoBtn onClick={() => {
+            if (inputValue !== '' && inputValue <= page) {
+              setCurrentPage(parseInt(inputValue))
+              setValue('')
+            } else {
+              setValue('')
+            }
+          }}>Go</GoBtn>
+        </ToPageWrapper>
+      </PageButtonList>
+    </>
   )
 }

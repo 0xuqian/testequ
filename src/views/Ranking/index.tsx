@@ -19,16 +19,17 @@ const StyledAppBody = styled(Card)`
   border: none;
   border-radius: 6px;
   overflow: unset;
+  background-color: ${({ theme }) => theme.colors.backgroundAlt};
   max-width: 687px;
   width: 100%;
   z-index: 1;
-  background: #f9f9fa;
+  // background: #f9f9fa;
   text-align: center;
   & > div {
     background: transparent;
   }
   @media screen and (max-width: 852px) {
-    background: #fff;
+    // background: #fff;
   }
 `
 
@@ -46,7 +47,7 @@ const MenuItem = styled.div`
   font-size: 24px;
   line-height: 26px;
   cursor: pointer;
-  color: #333;
+  // color: #333;
   flex: 1;
   display: flex;
   justify-content: center;
@@ -77,7 +78,8 @@ const SubTab = styled.div`
   width: 360px;
   height: 36px;
   border-radius: 6px;
-  background: #f4f5f8;
+  background-color: ${({ theme }) => theme.colors.backgroundAlt};
+  // background: #f4f5f8;
   padding: 2px;
   display: flex;
   justify-content: space-between;
@@ -89,7 +91,7 @@ const SubTab = styled.div`
     font-weight: 400;
     font-size: 14px;
     line-height: 32px;
-    color: #15141F;
+    // color: #15141F;
     text-align: center;
     display: block;
     border-radius: 6px;
@@ -123,7 +125,7 @@ const FilterTime = styled.div`
   align-items: center;
   text-align: right;
   letter-spacing: -0.02em;
-  color: #52525c;
+  // color: #52525c;
 `
 
 const FilterTimeWrapper = styled.div`
@@ -152,7 +154,7 @@ const TimeMenu = styled.div`
   position: absolute;
   right: 0px;
   top: 32px;
-  background: #ffffff;
+  // background: #ffffff;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.1);
   border-radius: 4px;
   z-index: 100;
@@ -163,15 +165,17 @@ const TimeMenuItem = styled.div`
   height: 30px;
   line-height: 30px;
   padding-left: 15px;
+  background-color: ${({ theme }) => theme.colors.backgroundAlt};
   font-family: 'PingFang SC';
   font-style: normal;
   font-weight: 400;
   font-size: 12px;
   text-align: left;
-  color: #15141f;
+  // color: #15141f;
   cursor: pointer;
   :hover {
-    background: #f3f4f9;
+    // background: #f3f4f9;
+    color: #4263eb;
   }
 `
 

@@ -64,10 +64,10 @@
     {
       "name": "PV Token",
       "symbol": "PV",
-      "address": "0xd4FEc4cEf94F97d79Ec8E7C83445887833fC4d28",
+      "address": "0x08784c14c2a77fBC6Bc44259c517cf11dB82d139",
       "chainId": 56,
       "decimals": 18,
-      "logoURI": "/images/tokens/0x9411A8a8757F08591594333306fe115927C072E4.png"
+      "logoURI": "https://p.ipic.vip/48pyx8.jpg"
     },
     {
       "name": "PE Token",

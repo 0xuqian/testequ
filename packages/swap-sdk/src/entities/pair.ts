@@ -248,7 +248,7 @@ export class Pair {
       inputAmount.token.equals(this.token0) ? this.token1 : this.token0,
       JSBI.subtract(JSBI.BigInt(outputReserve.raw), tmp)
     )
-    console.log('result:', JSBI.toNumber(JSBI.subtract(JSBI.BigInt(outputReserve.raw), tmp)))
+    // console.log('result:', JSBI.toNumber(JSBI.subtract(JSBI.BigInt(outputReserve.raw), tmp)))
     return [outputAmount, new Pair(inputReserve.add(inputAmount), outputReserve.subtract(outputAmount))]
   }
 
