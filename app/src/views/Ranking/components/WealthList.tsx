@@ -1,4 +1,4 @@
-import styled, { useTheme } from 'styled-components'
+import styled from 'styled-components'
 import { useTranslation } from '@pancakeswap/localization'
 import { BigNumber } from "bignumber.js";
 import Skeleton from "react-loading-skeleton";
@@ -160,14 +160,14 @@ const Tooltip = styled.div<{
   width: max-content;
 `
 
-export default function WealthList({ timeType, type }) {
+export default function WealthList({ timeType, type, pageName }) {
   const { t } = useTranslation()
   const [currentPage, setCurrentPage] = useState(1)
   const { isDesktop } = useMatchBreakpointsContext()
   const [copy, setCopied] = useState(false)
   const [isLoading, setLoading] = useState(false)
   const size = 10
-  const { list, page } = useRankingInfo('wealth', size, timeType.key, type, currentPage, setLoading)
+  const { list, page } = useRankingInfo(pageName, size, timeType.key, type, currentPage, setLoading)
 
   const SkeletonWrapper = []
   for (let i = 0; i < size; i++) {

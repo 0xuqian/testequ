@@ -4,7 +4,6 @@ import { useTranslation } from '@pancakeswap/localization'
 import { Card, useMatchBreakpointsContext, useOnClickOutside, useTooltip } from '@pancakeswap/uikit'
 import Page from '../Page'
 import WealthList from './components/WealthList'
-import TrendingList from './components/TrendingList'
 import CurrenciesList from './components/CurrenciesList'
 
 const ReferenceElement = styled.div`
@@ -29,7 +28,7 @@ const StyledAppBody = styled(Card)`
     background: transparent;
   }
   @media screen and (max-width: 852px) {
-    background: #fff;
+    // background: #fff;
   }
 `
 
@@ -91,7 +90,7 @@ const SubTab = styled.div`
     font-weight: 400;
     font-size: 14px;
     line-height: 32px;
-    color: #15141F;
+    // color: #15141F;
     text-align: center;
     display: block;
     border-radius: 6px;
@@ -125,7 +124,7 @@ const FilterTime = styled.div`
   align-items: center;
   text-align: right;
   letter-spacing: -0.02em;
-  color: #52525c;
+  // color: #52525c;
 `
 
 const FilterTimeWrapper = styled.div`
@@ -154,7 +153,7 @@ const TimeMenu = styled.div`
   position: absolute;
   right: 0px;
   top: 32px;
-  background: #ffffff;
+  // background: #ffffff;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.1);
   border-radius: 4px;
   z-index: 100;
@@ -174,7 +173,8 @@ const TimeMenuItem = styled.div`
   // color: #15141f;
   cursor: pointer;
   :hover {
-    background: #f3f4f9;
+    // background: #f3f4f9;
+    color: #4263eb;
   }
 `
 
@@ -185,6 +185,7 @@ export default function Ranking() {
 
   const { t, currentLanguage } = useTranslation()
   const [listType, setListType] = useState<'Wealth' | 'Trending' | 'Currencies'>('Wealth')
+  const [type, setType] = useState<'income' | 'people' | 'recommend' | 'team' | ''>('recommend')
   const [visible, setVisible] = useState(false)
   const [isShowMenu, setIsShowMenu] = useState(true)
   const { isDesktop } = useMatchBreakpointsContext()
@@ -197,8 +198,6 @@ export default function Ranking() {
 
   const node = useRef<HTMLDivElement>()
   useOnClickOutside(node, setVisible ? () => setVisible(false) : undefined)
-
-  const [type, setType] = useState<'income' | 'people' | 'recommend' | 'team' | ''>('recommend')
 
   const timeList = useMemo(() => {
     return [
@@ -223,7 +222,7 @@ export default function Ranking() {
         value: t('dcsAll')
       }
     ]
-  }, [currentLanguage.language, t])
+  }, [t])
 
   const [timeType, setTimeType] = useState(timeList[0])
 
@@ -258,6 +257,7 @@ export default function Ranking() {
         break;
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [type, currentLanguage.language])
 
   const List = useMemo(() => {
@@ -266,12 +266,14 @@ export default function Ranking() {
         return <WealthList
           timeType={timeType}
           type={type}
+          pageName="wealth"
         />
       }
       case "Trending": {
-        return <TrendingList
+        return <WealthList
           timeType={timeType}
           type={type}
+          pageName="trending"
         />
       }
       case "Currencies": {
@@ -284,6 +286,7 @@ export default function Ranking() {
         return <WealthList
           timeType={timeType}
           type={type}
+          pageName="wealth"
         />
       }
     }
@@ -293,7 +296,7 @@ export default function Ranking() {
     return (
       <TimeMenu ref={node as any}>
         {
-          timeList.map((item, i) => (
+          timeList.map((item) => (
             <TimeMenuItem onClick={() => {
               setTimeType(item)
               setVisible(false)
@@ -360,6 +363,7 @@ export default function Ranking() {
       </>
     )
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [listType, type, setType, currentLanguage])
 
   return (
