@@ -19,6 +19,8 @@ const getPathList = (t: ContextApi['t']): PathList => {
     paths: {
       '/': { title: t('Home') },
       '/swap': { basePath: true, title: t('Exchange') },
+      '/rank': { basePath: true, title: t('Rank') },
+      '/circle': { basePath: true, title: t('circle') },
       '/limit-orders': { basePath: true, title: t('Limit Orders') },
       '/add': { basePath: true, title: t('Add Liquidity') },
       '/remove': { basePath: true, title: t('Remove Liquidity') },

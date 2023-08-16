@@ -211,6 +211,16 @@ export function queryParametersToSwapState(parsedQs: ParsedUrlQuery, chainId: st
   let inputCurrency = parseCurrencyFromURLParameter(parsedQs.inputCurrency) || chainId.toString() !== "56" ? DEFAULT_INPUT_CURRENCY : USDT[chainId]?.address
   let outputCurrency = parseCurrencyFromURLParameter(parsedQs.outputCurrency) || chainId.toString() !== "56" ? PE[chainId]?.address : PV[chainId]?.address
 
+  switch (chainId.toString()) {
+    case "5611":
+      inputCurrency = parseCurrencyFromURLParameter(parsedQs.inputCurrency) || DEFAULT_INPUT_CURRENCY
+      outputCurrency = parseCurrencyFromURLParameter(parsedQs.inputCurrency) || USDT[chainId]?.address
+      break;
+    default:
+      // console.log();
+      break;
+  }
+
   if (inputCurrency === outputCurrency) {
     if (typeof parsedQs.outputCurrency === 'string') {
       inputCurrency = ''

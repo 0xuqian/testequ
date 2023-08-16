@@ -90,6 +90,14 @@ export const USDT = {
     'USDT',
     'https://www.binance.com/en/trade/BNB_USDT',
   ),
+  [ChainId.opBNB]: new Token(
+    ChainId.opBNB,
+    '0xcf712f20c85421d00eaa1b6f6545aaeeb4492b75',
+    18,
+    'USDT',
+    'USDT',
+    'https://www.binance.com/en/trade/BNB_USDT',
+  ),
   [ChainId.BSC_TESTNET]: new Token(
     ChainId.BSC_TESTNET,
     '0x2314DB6CB675E400eFfe74CCf6f5ea3c7D37AF68',
@@ -130,6 +138,14 @@ export const BUSD: Record<ChainId, Token> = {
   [ChainId.GOERLI]: new Token(
     ChainId.ARB_TESTNET,
     '0x491AD950e6cE33B1c5911Ed091Bc19eF1B257F46',
+    6,
+    'USDT',
+    'USDT',
+    '',
+  ),
+  [ChainId.opBNB]: new Token(
+    ChainId.opBNB,
+    '0xe5e663b43ba66e8d7128b92097d96fe699b005b7',
     6,
     'USDT',
     'USDT',
@@ -2536,6 +2552,17 @@ export const arbTestnetTokens = {
     '',
   ),
 }
+
+export const opBNBTokens = {
+  USDT: new Token(
+    ChainId.opBNB,
+    '0xcf712f20c85421d00eaa1b6f6545aaeeb4492b75',
+    18,
+    'USDT',
+    'USDT',
+  )
+}
+
 
 export const PE = {
   [ChainId.GOERLI]: goerliTokens.pe,

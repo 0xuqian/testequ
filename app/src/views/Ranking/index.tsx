@@ -38,7 +38,11 @@ const Menu = styled.div`
   align-items: center;
   text-align: center;
 `
-
+const MenuContainer = styled.div`
+  width: 90%;
+  margin: 0 auto;
+  padding-top: 10px;
+`
 const MenuItem = styled.div`
   font-family: 'PingFang SC';
   font-style: normal;
@@ -294,7 +298,7 @@ export default function Ranking() {
 
   const menu = useMemo(() => {
     return (
-      <TimeMenu ref={node as any}>
+      <TimeMenu>
         {
           timeList.map((item) => (
             <TimeMenuItem onClick={() => {
@@ -372,34 +376,34 @@ export default function Ranking() {
         {
           isDesktop ?
             <>
-              <Menu>
-                <MenuItem className={listType === 'Wealth' ? 'active left' : 'left'} onClick={() => {
-                  setListType('Wealth')
-                  setType('recommend')
-                  setTimeType(timeList[0])
-                }}>{t('dcsEarnings')}</MenuItem>
-                <MenuItem className={listType === 'Trending' ? 'active' : ''} onClick={() => {
-                  setListType('Trending')
-                  setType('income')
-                  setTimeType(timeList[0])
-                }}>{t('dcsTrendingKOL')}</MenuItem>
-                <MenuItem className={listType === 'Currencies' ? 'active right' : 'right'} onClick={() => {
-                  setListType('Currencies')
-                  setType('')
-                  setTimeType(timeList[0])
-                }}>{t('dcsToken')}</MenuItem>
-              </Menu>
+              <MenuContainer>
+                <Menu>
+                  <MenuItem className={listType === 'Wealth' ? 'active left' : 'left'} onClick={() => {
+                    setListType('Wealth')
+                    setType('recommend')
+                    setTimeType(timeList[0])
+                  }}>{t('dcsEarnings')}</MenuItem>
+                  <MenuItem className={listType === 'Trending' ? 'active' : ''} onClick={() => {
+                    setListType('Trending')
+                    setType('income')
+                    setTimeType(timeList[0])
+                  }}>{t('dcsTrendingKOL')}</MenuItem>
+                  <MenuItem className={listType === 'Currencies' ? 'active right' : 'right'} onClick={() => {
+                    setListType('Currencies')
+                    setType('')
+                    setTimeType(timeList[0])
+                  }}>{t('dcsToken')}</MenuItem>
+                </Menu>
+              </MenuContainer>
               {
                 listType !== 'Currencies' ?
                   <TopBar>
                     <SubTab>
                       {subTab}
                     </SubTab>
-                    <FilterTimeWrapper onClick={(e) => {
+                    <FilterTimeWrapper ref={node as any} onClick={(e) => {
                       e.preventDefault()
-                      if (!visible) {
-                        setVisible(true)
-                      }
+                      setVisible(!visible);
                     }}>
                       <FilterTime>{timeType.value}</FilterTime>
                       <span className={visible ? 'active' : ''} />
@@ -461,6 +465,6 @@ export default function Ranking() {
         <HelpBtn src='/images/questionIcon.png' />
       </ReferenceElement>
       {tooltipVisible && tooltip}
-    </Page>
+    </Page >
   )
 }

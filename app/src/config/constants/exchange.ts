@@ -1,13 +1,14 @@
 import { ChainId, JSBI, Percent, Token } from '@pancakeswap/sdk'
 import { BigNumber } from '@ethersproject/bignumber'
-import { goerliTokens, bscTokens, bscTestnetTokens, arbTestnetTokens } from './tokens'
+import { goerliTokens, bscTokens, bscTestnetTokens, arbTestnetTokens, opBNBTokens } from './tokens'
 import { ChainTokenList } from './types'
 
 export const ROUTER_ADDRESS = {
   [ChainId.GOERLI]: '0x76155E29e441559B7b047d75E079F13b8F9179b9',
   [ChainId.BSC]: '0x85C47Fe0aD03e09E87fe1987b04aff01861e6e04',
   [ChainId.BSC_TESTNET]: '0x59EF9079Aff1da41ef4f20c9B4A770C4232B6a35',
-  [ChainId.ARB_TESTNET]: '0x0B0c953Ac2DB11c469aA90D780594A3B6B87F7e3'
+  [ChainId.ARB_TESTNET]: '0x0B0c953Ac2DB11c469aA90D780594A3B6B87F7e3',
+  [ChainId.opBNB]: '0x85C47Fe0aD03e09E87fe1987b04aff01861e6e04'
 }
 
 export const AIRDOP_ADDRESS = {
@@ -37,7 +38,12 @@ export const BASES_TO_CHECK_TRADES_AGAINST: ChainTokenList = {
     bscTokens.pv
   ],
   [ChainId.BSC_TESTNET]: [bscTestnetTokens.wbnb, bscTestnetTokens.usdt, bscTestnetTokens.es, bscTestnetTokens.ms, bscTestnetTokens.ew],
-  [ChainId.ARB_TESTNET]: [arbTestnetTokens.pe, arbTestnetTokens.usdt]
+  [ChainId.ARB_TESTNET]: [arbTestnetTokens.pe, arbTestnetTokens.usdt],
+  [ChainId.ETHEREUM]: [],
+  [ChainId.opBNB]: [opBNBTokens.USDT],
+  [ChainId.ARB]: [],
+  [ChainId.ZKSYNC]: [],
+  [ChainId.ZKSYNC_TESTNET]: []
 }
 
 /**
@@ -62,7 +68,12 @@ export const SUGGESTED_BASES: ChainTokenList = {
   [ChainId.GOERLI]: [goerliTokens.pe, goerliTokens.usdt],
   [ChainId.BSC]: [bscTokens.usdt, bscTokens.pv, bscTokens.usdc],
   [ChainId.BSC_TESTNET]: [bscTestnetTokens.wbnb, bscTestnetTokens.pe, bscTestnetTokens.usdt, bscTestnetTokens.es, bscTestnetTokens.ms, bscTestnetTokens.ew],
-  [ChainId.ARB_TESTNET]: [arbTestnetTokens.pe, arbTestnetTokens.usdt]
+  [ChainId.ARB_TESTNET]: [arbTestnetTokens.pe, arbTestnetTokens.usdt],
+  [ChainId.ETHEREUM]: [],
+  [ChainId.ARB]: [],
+  [ChainId.ZKSYNC]: [],
+  [ChainId.ZKSYNC_TESTNET]: [],
+  [ChainId.opBNB]: [opBNBTokens.USDT]
 }
 
 // used to construct the list of all pairs we consider by default in the frontend
@@ -70,7 +81,12 @@ export const BASES_TO_TRACK_LIQUIDITY_FOR: ChainTokenList = {
   [ChainId.GOERLI]: [goerliTokens.pe, goerliTokens.usdt],
   [ChainId.BSC]: [bscTokens.wbnb, bscTokens.pe, bscTokens.busd, bscTokens.usdt],
   [ChainId.BSC_TESTNET]: [bscTestnetTokens.wbnb, bscTestnetTokens.usdt, bscTestnetTokens.pe, bscTestnetTokens.es, bscTestnetTokens.ms, bscTestnetTokens.ew],
-  [ChainId.ARB_TESTNET]: [arbTestnetTokens.pe, arbTestnetTokens.usdt]
+  [ChainId.ARB_TESTNET]: [arbTestnetTokens.pe, arbTestnetTokens.usdt],
+  [ChainId.ETHEREUM]: [],
+  [ChainId.ARB]: [],
+  [ChainId.ZKSYNC]: [],
+  [ChainId.ZKSYNC_TESTNET]: [],
+  [ChainId.opBNB]: [opBNBTokens.USDT]
 }
 
 export const PINNED_PAIRS: { readonly [chainId in ChainId]?: [Token, Token][] } = {

@@ -36,9 +36,13 @@ const useRankingInfo = (pathName, size, timeType, type, currentPage, setLoading,
     }
     setLoading(true)
     setList(null)
+    let url = `https://www.equityswap.club/ranks/index/${pathName}`;
+    if (pathName === 'currencies') {
+      url = 'https://www.equityswap.club/app/index/currencies';
+    }
     try {
       const res: any = await fetch(
-        `https://www.equityswap.club/app/index/${pathName}`,
+        url,
         {
           method: 'post',
           body: JSON.stringify({

@@ -4,12 +4,14 @@ import JSBI from 'jsbi'
 export type BigintIsh = JSBI | number | string
 
 export enum ChainId {
-  // ETHEREUM = 1,
+  ETHEREUM = 1,
   // RINKEBY = 4,
   GOERLI = 5,
   BSC = 56,
+  opBNB = 5611,
   BSC_TESTNET = 97,
   ARB_TESTNET = 421613,
+  ARB = 42161,
   ZKSYNC = 324,
   ZKSYNC_TESTNET = 280,
 }
@@ -30,7 +32,8 @@ export const FACTORY_ADDRESS_MAP = {
   [ChainId.BSC]: '0x84c189d8B52Be28AD4C4c9427aBd304268b2FCBA',
   [ChainId.BSC_TESTNET]: '0xe177E3249cb88565eaF8Ff30A03798AB05f5B0aD',
   [ChainId.ARB_TESTNET]: '0x6941CD0d6EF3E4c1294b85fe6EF275AA6C4691fb',
-  [ChainId.ZKSYNC]: ''
+  [ChainId.ZKSYNC]: '',
+  [ChainId.opBNB]: '0x84c189d8B52Be28AD4C4c9427aBd304268b2FCBA'
 }
 
 export const INIT_CODE_HASH_MAP = {
@@ -38,6 +41,7 @@ export const INIT_CODE_HASH_MAP = {
   [ChainId.BSC]: '0x03835b706f9d113189195657a879689bd6bd25bcb39e55b463074e777ab96aa9',
   [ChainId.BSC_TESTNET]: '0x36c213bfc4903e805f10edf4b52cd1beea3ec333f78e9887fe73f3d05a06cf3a',
   [ChainId.ARB_TESTNET]: '0xddb43bdccbba1a5f8ed99fdaccbafbcb4292989533b27066454dccc7f50ff467',
+  [ChainId.opBNB]: '0x364e712331e2e8ae67fbfd21b90a45f2153b85b8432aa31601b7b41b80d6e941'
 }
 
 export const MINIMUM_LIQUIDITY = JSBI.BigInt(1000)

@@ -3,7 +3,7 @@ import { useTranslation } from '@pancakeswap/localization'
 import { Card } from '@pancakeswap/uikit'
 import { useRouter } from "next/router"
 import CopyToClipboard from 'react-copy-to-clipboard'
-import {useEffect, useState} from "react";
+import { useEffect, useState } from "react";
 import { useWeb3React } from '@web3-react/core'
 import useRankingDetails from "../../hooks/useRankingDetails";
 import Page from '../Page'
@@ -20,6 +20,7 @@ const StyledAppBody = styled(Card)`
   & > div {
     background: transparent;
   }
+  background-color: ${({ theme }) => theme.colors.backgroundAlt};
   @media screen and (max-width: 852px) {
     background: #fff;
   }
@@ -30,6 +31,7 @@ const TopBar = styled.div`
   display: flex;
   justify-content: space-between;
   max-width: 616px;
+  margin-top:20px;
 `
 
 const TopBarLeft = styled.div`
@@ -65,7 +67,7 @@ const NickName = styled.div`
   line-height: 39px;
   display: flex;
   align-items: center;
-  color: #15141f;
+  // color: #15141f;
   @media screen and (max-width: 576px) {
     font-size: 16px;
     line-height: 26px;
@@ -117,7 +119,7 @@ const TradeTitle = styled.div`
   font-weight: 600;
   font-size: 24px;
   line-height: 34px;
-  color: #15141f;
+  // color: #15141f;
   @media screen and (max-width: 576px) {
     font-size: 16px;
     line-height: 28px;
@@ -136,7 +138,7 @@ const TradeIcon = styled.img`
   }
 `
 
-const ListTitle= styled.div`
+const ListTitle = styled.div`
   display: flex;
   align-items: center;
   height: 34px;
@@ -145,7 +147,7 @@ const ListTitle= styled.div`
   font-weight: 500;
   font-size: 24px;
   line-height: 34px;
-  color: #FFFFFF;
+  // color: #FFFFFF;
   @media screen and (max-width: 576px) {
     font-size: 16px;
     line-height: 28px;
@@ -405,42 +407,41 @@ const DetailsPage: React.FC<React.PropsWithChildren<{ address: string }>> = ({ a
   }, [address])
 
   return (
-    <Page style={{padding: '12px'}}>
+    <Page style={{ padding: '12px' }}>
       <StyledAppBody>
         <TopBar>
           <TopBarLeft>
+            <Avatar
+              src={info?.icon}
 
-          <Avatar
-            src={info?.icon}
-            
-    />
+            />
 
             <InfoWrapper>
               <NickName>{info?.name}</NickName>
               <Address>
                 {info?.user_short_wallet}
                 {info?.user_short_wallet ? (
-                    <CopyToClipboard text={info?.user_wallet} onCopy={() => {
-                      setCopied(info?.user_wallet)
-                      setTimeout(() => setCopied(null), 2000)
+                  <CopyToClipboard text={info?.user_wallet} onCopy={() => {
+                    setCopied(info?.user_wallet)
+                    setTimeout(() => setCopied(null), 2000)
+                  }}>
+                    <CopyWrapper onClick={(e) => {
+                      e.stopPropagation()
                     }}>
-                      <CopyWrapper onClick={(e) => {
-                        e.stopPropagation()
-                      }}>
-                        <CopyButton/>
-                        <Tooltip isTooltipDisplayed={copy === info?.user_wallet}>{t('copied')}</Tooltip>
-                      </CopyWrapper>
-                    </CopyToClipboard>
+                      <CopyButton />
+                      <Tooltip isTooltipDisplayed={copy === info?.user_wallet}>{t('copied')}</Tooltip>
+                    </CopyWrapper>
+                  </CopyToClipboard>
                 ) : null}
               </Address>
             </InfoWrapper>
           </TopBarLeft>
           <TopBarRight>
             {
-              info?.links?.twitter_link ? <TwitterIcon src="/images/dcs/twitter.png" onClick={() => {window.open(info?.links?.twitter_link)}} /> : null
+              info?.links?.twitter_link ? <TwitterIcon src="/images/dcs/twitter.png" onClick={() => { window.open(info?.links?.twitter_link) }} /> : null
             }
             {
-              info?.links?.tg_link ? <TelegramIcon src="/images/dcs/telegram.png" onClick={() => {window.open(info?.links?.tg_link)}} /> : null
+              info?.links?.tg_link ? <TelegramIcon src="/images/dcs/telegram.png" onClick={() => { window.open(info?.links?.tg_link) }} /> : null
             }
           </TopBarRight>
         </TopBar>
@@ -492,23 +493,23 @@ const DetailsPage: React.FC<React.PropsWithChildren<{ address: string }>> = ({ a
               <TradeItemSpan>{t('dcsName')}</TradeItemSpan>
             </TradeItemLeft>
             <TradeItemRight>
-              <TradeItemSpan style={{marginLeft: '24px'}}>{t('dcsGains')}</TradeItemSpan>
+              <TradeItemSpan style={{ marginLeft: '24px' }}>{t('dcsGains')}</TradeItemSpan>
               <TradeItemSpan>{t('dcs%Chg')}</TradeItemSpan>
             </TradeItemRight>
           </TradeItem>
           {
             info?.trade_list?.length > 0 ? info?.trade_list.map((item) => (
-                <TradeItem>
-                  <TradeItemLeft>
-                    <TradeItemIcon src={item.icon} />
-                    <TradeItemTokenName>{item.token_name}</TradeItemTokenName>
-                    <TradeItemDesc>{item.token_description}</TradeItemDesc>
-                  </TradeItemLeft>
-                  <TradeItemRight>
-                    <TradeItemGains>{`+$${item.gains}`}</TradeItemGains>
-                    <TradeItemChg>{`+${item.chg}%`}</TradeItemChg>
-                  </TradeItemRight>
-                </TradeItem>
+              <TradeItem>
+                <TradeItemLeft>
+                  <TradeItemIcon src={item.icon} />
+                  <TradeItemTokenName>{item.token_name}</TradeItemTokenName>
+                  <TradeItemDesc>{item.token_description}</TradeItemDesc>
+                </TradeItemLeft>
+                <TradeItemRight>
+                  <TradeItemGains>{`+$${item.gains}`}</TradeItemGains>
+                  <TradeItemChg>{`+${item.chg}%`}</TradeItemChg>
+                </TradeItemRight>
+              </TradeItem>
             )) : null
           }
         </TradeWrapper>

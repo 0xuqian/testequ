@@ -60,7 +60,7 @@ text-align: center;
 `;
 
 const MintSucText = styled.p`
-font-size: 20px;c
+font-size: 20px;
 margin-top: 30px;
 font-weight: 800;
 text-align: center;

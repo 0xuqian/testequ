@@ -240,7 +240,7 @@ export default function WealthList({ timeType, type, pageName }) {
                         <Index>
                           {item?.symbol ? (String(i + (currentPage - 1) * 10 + 1).length === 1 ? `0${i + (currentPage - 1) * 10 + 1}` : i + (currentPage - 1) * 10 + 1) : ''}
                         </Index>
-                        <Avatar src={item.icon} />
+                        {item.icon && <Avatar src={item.icon} />}
                         <UserWrapper>
                           <UserName title={item.symbol}>{item.symbol}</UserName>
                           <Address>
