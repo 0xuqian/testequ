@@ -9,7 +9,7 @@ export const BASES_TO_TRACK_LIQUIDITY_FOR: ChainTokenList = {
   [ChainId.BSC_TESTNET]: [bscTestnetTokens.wbnb, bscTestnetTokens.pe, bscTestnetTokens.busd],
   [ChainId.ARB_TESTNET]: [arbTestnetTokens.pe, arbTestnetTokens.usdt],
   [ChainId.ETHEREUM]: [],
-  [ChainId.opBNB]: [opBNBTokens.USDT],
+  [ChainId.opBNB]: [opBNBTokens.PV001, opBNBTokens.PV002],
   [ChainId.ARB]: [],
   [ChainId.ZKSYNC]: [],
   [ChainId.ZKSYNC_TESTNET]: []

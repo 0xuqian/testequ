@@ -2554,14 +2554,23 @@ export const arbTestnetTokens = {
 }
 
 export const opBNBTokens = {
-  USDT: new Token(
+  wbnb: WBNB[ChainId.opBNB],
+  PV001: new Token(
     ChainId.opBNB,
-    '0xcf712f20c85421d00eaa1b6f6545aaeeb4492b75',
+    '0x2764d463727Ee17CA2C581F437c3fa8ea5daa1D6',
     18,
-    'USDT',
-    'USDT',
+    'PV001',
+    'Pv001'
+  ),
+  PV002: new Token(
+    ChainId.opBNB,
+    '0x3b322BCE4b6215A6C0c2667e40A7D249c442178d',
+    18,
+    'PV002',
+    'PV002'
   )
 }
+
 
 
 export const PE = {

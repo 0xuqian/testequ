@@ -8,7 +8,7 @@ export const ROUTER_ADDRESS = {
   [ChainId.BSC]: '0x85C47Fe0aD03e09E87fe1987b04aff01861e6e04',
   [ChainId.BSC_TESTNET]: '0x59EF9079Aff1da41ef4f20c9B4A770C4232B6a35',
   [ChainId.ARB_TESTNET]: '0x0B0c953Ac2DB11c469aA90D780594A3B6B87F7e3',
-  [ChainId.opBNB]: '0x85C47Fe0aD03e09E87fe1987b04aff01861e6e04'
+  [ChainId.opBNB]: '0x45500361eAEe1030a4e76f59396F10f1C5374Fb6'
 }
 
 export const AIRDOP_ADDRESS = {
@@ -40,7 +40,7 @@ export const BASES_TO_CHECK_TRADES_AGAINST: ChainTokenList = {
   [ChainId.BSC_TESTNET]: [bscTestnetTokens.wbnb, bscTestnetTokens.usdt, bscTestnetTokens.es, bscTestnetTokens.ms, bscTestnetTokens.ew],
   [ChainId.ARB_TESTNET]: [arbTestnetTokens.pe, arbTestnetTokens.usdt],
   [ChainId.ETHEREUM]: [],
-  [ChainId.opBNB]: [opBNBTokens.USDT],
+  [ChainId.opBNB]: [opBNBTokens.PV001, opBNBTokens.PV002, opBNBTokens.wbnb],
   [ChainId.ARB]: [],
   [ChainId.ZKSYNC]: [],
   [ChainId.ZKSYNC_TESTNET]: []
@@ -73,7 +73,7 @@ export const SUGGESTED_BASES: ChainTokenList = {
   [ChainId.ARB]: [],
   [ChainId.ZKSYNC]: [],
   [ChainId.ZKSYNC_TESTNET]: [],
-  [ChainId.opBNB]: [opBNBTokens.USDT]
+  [ChainId.opBNB]: [opBNBTokens.PV001, opBNBTokens.PV002, opBNBTokens.wbnb]
 }
 
 // used to construct the list of all pairs we consider by default in the frontend
@@ -86,7 +86,7 @@ export const BASES_TO_TRACK_LIQUIDITY_FOR: ChainTokenList = {
   [ChainId.ARB]: [],
   [ChainId.ZKSYNC]: [],
   [ChainId.ZKSYNC_TESTNET]: [],
-  [ChainId.opBNB]: [opBNBTokens.USDT]
+  [ChainId.opBNB]: [opBNBTokens.PV001, opBNBTokens.PV002, opBNBTokens.wbnb]
 }
 
 export const PINNED_PAIRS: { readonly [chainId in ChainId]?: [Token, Token][] } = {

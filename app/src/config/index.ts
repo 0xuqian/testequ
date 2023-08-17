@@ -12,7 +12,7 @@ export enum ChainId {
   GOERLI = 5,
   BSC = 56,
   BSC_TESTNET = 97,
-  opBNB = 5611,
+  opBNB = 204,
   ARB_TESTNET = 421613,
   ARB = 42161,
   ZKSYNC = 324,
@@ -96,21 +96,21 @@ export const NETWORK_CONFIG = {
     testnet: true,
   },
   [ChainId.opBNB]: {
-    name: 'opBNB testnet',
-    network: 'bsc-testnet',
-    scanURL: 'https://opbnbscan.com/',
+    name: 'opBNB Mainnet',
+    network: 'opBNB-Mainnet',
+    scanURL: 'https://mainnet.opbnbscan.com/',
     rpcUrls: [
-      'https://opbnb-testnet-rpc.bnbchain.org'
+      'https://opbnb-mainnet-rpc.bnbchain.org'
     ],
     scan: 'opbnbscan',
-    tokenName: 'tBNB',
-    symbol: 'tBNB',
+    tokenName: 'BNB',
+    symbol: 'BNB',
     decimals: 18,
     blockExplorers: {
-      default: { name: 'opbnbscan', url: 'https://opbnbscan.com/' },
+      default: { name: 'opbnbscan', url: 'https://mainnet.opbnbscan.com/' },
     },
     multicall: {
-      address: '0x701F6f1133d2883Af3780D222f60cAEe8BE7c0bd',
+      address: '0x9C63ADb6C88F33317e7405c7a0c1c15cC752f093',
       blockCreated: 9759845,
     },
     testnet: true,

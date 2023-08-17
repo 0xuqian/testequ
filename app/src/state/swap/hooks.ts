@@ -36,7 +36,7 @@ import { derivedPairByDataIdSelector, pairByDataIdSelector } from './selectors'
 import fetchDerivedPriceData from './fetch/fetchDerivedPriceData'
 import { pairHasEnoughLiquidity } from './fetch/utils'
 import { parsePoolData, fetchPoolData, FormattedPoolFields } from '../info/queries/pools/poolData'
-import { PE, PV, USDT } from "../../config/constants/tokens";
+import { PE, PV, USDT, opBNBTokens } from "../../config/constants/tokens";
 
 export function useSwapState(): AppState['swap'] {
   return useSelector<AppState, AppState['swap']>((state) => state.swap)
@@ -212,9 +212,9 @@ export function queryParametersToSwapState(parsedQs: ParsedUrlQuery, chainId: st
   let outputCurrency = parseCurrencyFromURLParameter(parsedQs.outputCurrency) || chainId.toString() !== "56" ? PE[chainId]?.address : PV[chainId]?.address
 
   switch (chainId.toString()) {
-    case "5611":
-      inputCurrency = parseCurrencyFromURLParameter(parsedQs.inputCurrency) || DEFAULT_INPUT_CURRENCY
-      outputCurrency = parseCurrencyFromURLParameter(parsedQs.inputCurrency) || USDT[chainId]?.address
+    case "204":
+      inputCurrency = parseCurrencyFromURLParameter(parsedQs.inputCurrency) || opBNBTokens.PV001.address
+      outputCurrency = parseCurrencyFromURLParameter(parsedQs.inputCurrency) || opBNBTokens.PV002.address
       break;
     default:
       // console.log();

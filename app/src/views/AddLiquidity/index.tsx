@@ -211,8 +211,8 @@ export default function AddLiquidity() {
     () => ({
       [independentField]:
         canZap &&
-        ((independentField === Field.CURRENCY_A && !zapTokenCheckedA) ||
-          (independentField === Field.CURRENCY_B && !zapTokenCheckedB))
+          ((independentField === Field.CURRENCY_A && !zapTokenCheckedA) ||
+            (independentField === Field.CURRENCY_B && !zapTokenCheckedB))
           ? ''
           : typedValue,
       // [dependentField]: noLiquidity ? otherTypedValue : parsedAmounts[dependentField]?.toSignificant(6) ?? '',
@@ -318,9 +318,8 @@ export default function AddLiquidity() {
           setLiquidityState({ attemptingTxn: false, liquidityErrorMessage: undefined, txHash: response.hash })
 
           addTransaction(response, {
-            summary: `Add ${parsedAmounts[Field.CURRENCY_A]?.toSignificant(3)} ${
-              currencies[Field.CURRENCY_A]?.symbol
-            } and ${parsedAmounts[Field.CURRENCY_B]?.toSignificant(3)} ${currencies[Field.CURRENCY_B]?.symbol}`,
+            summary: `Add ${parsedAmounts[Field.CURRENCY_A]?.toSignificant(3)} ${currencies[Field.CURRENCY_A]?.symbol
+              } and ${parsedAmounts[Field.CURRENCY_B]?.toSignificant(3)} ${currencies[Field.CURRENCY_B]?.symbol}`,
             type: 'add-liquidity',
           })
         }),
@@ -343,17 +342,17 @@ export default function AddLiquidity() {
 
   const pendingText = preferZapInstead
     ? t('Zapping %amountA% %symbolA% and %amountB% %symbolB%', {
-        amountA: parsedAmounts[Field.CURRENCY_A]?.toSignificant(6) ?? '0',
-        symbolA: currencies[Field.CURRENCY_A]?.symbol ?? '',
-        amountB: parsedAmounts[Field.CURRENCY_B]?.toSignificant(6) ?? '0',
-        symbolB: currencies[Field.CURRENCY_B]?.symbol ?? '',
-      })
+      amountA: parsedAmounts[Field.CURRENCY_A]?.toSignificant(6) ?? '0',
+      symbolA: currencies[Field.CURRENCY_A]?.symbol ?? '',
+      amountB: parsedAmounts[Field.CURRENCY_B]?.toSignificant(6) ?? '0',
+      symbolB: currencies[Field.CURRENCY_B]?.symbol ?? '',
+    })
     : t('Supplying %amountA% %symbolA% and %amountB% %symbolB%', {
-        amountA: parsedAmounts[Field.CURRENCY_A]?.toSignificant(6) ?? '',
-        symbolA: currencies[Field.CURRENCY_A]?.symbol ?? '',
-        amountB: parsedAmounts[Field.CURRENCY_B]?.toSignificant(6) ?? '',
-        symbolB: currencies[Field.CURRENCY_B]?.symbol ?? '',
-      })
+      amountA: parsedAmounts[Field.CURRENCY_A]?.toSignificant(6) ?? '',
+      symbolA: currencies[Field.CURRENCY_A]?.symbol ?? '',
+      amountB: parsedAmounts[Field.CURRENCY_B]?.toSignificant(6) ?? '',
+      symbolB: currencies[Field.CURRENCY_B]?.symbol ?? '',
+    })
 
   const handleDismissConfirmation = useCallback(() => {
     // if there was a tx hash, we want to clear the input
@@ -403,9 +402,8 @@ export default function AddLiquidity() {
     const minAmountOut = zapIn.zapInEstimated.swapAmountOut.mul(10000 - allowedSlippage).div(10000)
     if (rebalancing) {
       const maxAmountIn = zapIn.zapInEstimated.swapAmountIn.mul(10000 + allowedSlippage).div(10000)
-      summary = `Zap ${parsedAmounts[Field.CURRENCY_A]?.toSignificant(3)} ${
-        currencies[Field.CURRENCY_A]?.symbol
-      } and ${parsedAmounts[Field.CURRENCY_B]?.toSignificant(3)} ${currencies[Field.CURRENCY_B]?.symbol}`
+      summary = `Zap ${parsedAmounts[Field.CURRENCY_A]?.toSignificant(3)} ${currencies[Field.CURRENCY_A]?.symbol
+        } and ${parsedAmounts[Field.CURRENCY_B]?.toSignificant(3)} ${currencies[Field.CURRENCY_B]?.symbol}`
       if (currencyA === ETHER || currencyB === ETHER) {
         const tokenBIsBNB = currencyB === ETHER
         method = 'zapInBNBRebalancing'
@@ -447,9 +445,8 @@ export default function AddLiquidity() {
         pair.liquidityToken.address,
         minAmountOut,
       ]
-      summary = `Zap in ${parsedAmounts[zapIn.swapTokenField]?.toSignificant(3)} ${
-        currencies[zapIn.swapTokenField].symbol
-      } for ${getLPSymbol(pair.token0.symbol, pair.token1.symbol)}`
+      summary = `Zap in ${parsedAmounts[zapIn.swapTokenField]?.toSignificant(3)} ${currencies[zapIn.swapTokenField].symbol
+        } for ${getLPSymbol(pair.token0.symbol, pair.token1.symbol)}`
     }
 
     setLiquidityState({ attemptingTxn: true, liquidityErrorMessage: undefined, txHash: undefined })
@@ -540,8 +537,8 @@ export default function AddLiquidity() {
 
   const oneCurrencyIsWBNB = Boolean(
     chainId &&
-      ((currencyA && currencyEquals(currencyA, WNATIVE[chainId])) ||
-        (currencyB && currencyEquals(currencyB, WNATIVE[chainId]))),
+    ((currencyA && currencyEquals(currencyA, WNATIVE[chainId])) ||
+      (currencyB && currencyEquals(currencyB, WNATIVE[chainId]))),
   )
 
   const noAnyInputAmount = !parsedAmounts[Field.CURRENCY_A] && !parsedAmounts[Field.CURRENCY_B]
@@ -595,10 +592,10 @@ export default function AddLiquidity() {
               <Text textAlign="center" style={{ margin: '-16px auto 0px' }}>
                 {
                   currencyA && currencyB ?
-                      <div style={{ display: 'flex', justifyContent: 'center', marginTop: '0px' }}>
-                        <Text style={{ marginRight: '20px' }}>{swapFormulaList[ammType - 1].label}</Text>
-                        <Text>{swapFormulaList[ammType - 1].alias}</Text>
-                      </div> : null
+                    <div style={{ display: 'flex', justifyContent: 'center', marginTop: '0px' }}>
+                      <Text style={{ marginRight: '20px' }}>{swapFormulaList[ammType - 1].label}</Text>
+                      <Text>{swapFormulaList[ammType - 1].alias}</Text>
+                    </div> : null
                 }
               </Text>
               <AutoColumn gap="20px">
@@ -633,71 +630,71 @@ export default function AddLiquidity() {
                 )}
                 <div>
                   <CurrencyInputPanel
-                      disableCurrencySelect={canZap}
-                      showBUSD
-                      onInputBlur={zapIn.onInputBlurOnce}
-                      error={zapIn.priceSeverity > 3 && zapIn.swapTokenField === Field.CURRENCY_A}
-                      disabled={canZap && !zapTokenCheckedA}
-                      beforeButton={
-                        canZap && (
-                            <ZapCheckbox
-                                disabled={currencyBalances?.[Field.CURRENCY_A]?.equalTo(0)}
-                                checked={zapTokenCheckedA}
-                                onChange={(e) => {
-                                  setZapTokenToggleA(e.target.checked)
-                                }}
-                            />
-                        )
-                      }
-                      onCurrencySelect={handleCurrencyASelect}
-                      zapStyle={canZap ? 'zap' : 'noZap'}
-                      value={formattedAmounts[Field.CURRENCY_A]}
-                      onUserInput={onFieldAInput}
-                      onMax={() => {
-                        onFieldAInput(maxAmounts[Field.CURRENCY_A]?.toExact() ?? '')
-                      }}
-                      showMaxButton={!atMaxAmounts[Field.CURRENCY_A]}
-                      currency={currencies[Field.CURRENCY_A]}
-                      id="add-liquidity-input-tokena"
-                      showCommonBases
-                      commonBasesType={CommonBasesType.LIQUIDITY}
-                      label="X"
-                      noLiquidity={noLiquidity}
+                    disableCurrencySelect={canZap}
+                    showBUSD
+                    onInputBlur={zapIn.onInputBlurOnce}
+                    error={zapIn.priceSeverity > 3 && zapIn.swapTokenField === Field.CURRENCY_A}
+                    disabled={canZap && !zapTokenCheckedA}
+                    beforeButton={
+                      canZap && (
+                        <ZapCheckbox
+                          disabled={currencyBalances?.[Field.CURRENCY_A]?.equalTo(0)}
+                          checked={zapTokenCheckedA}
+                          onChange={(e) => {
+                            setZapTokenToggleA(e.target.checked)
+                          }}
+                        />
+                      )
+                    }
+                    onCurrencySelect={handleCurrencyASelect}
+                    zapStyle={canZap ? 'zap' : 'noZap'}
+                    value={formattedAmounts[Field.CURRENCY_A]}
+                    onUserInput={onFieldAInput}
+                    onMax={() => {
+                      onFieldAInput(maxAmounts[Field.CURRENCY_A]?.toExact() ?? '')
+                    }}
+                    showMaxButton={!atMaxAmounts[Field.CURRENCY_A]}
+                    currency={currencies[Field.CURRENCY_A]}
+                    id="add-liquidity-input-tokena"
+                    showCommonBases
+                    commonBasesType={CommonBasesType.LIQUIDITY}
+                    label="X"
+                    noLiquidity={noLiquidity}
                   />
                   <StyledColumnCenter>
                     <AddIcon width="16px" />
                   </StyledColumnCenter>
                   <CurrencyInputPanel
-                      showBUSD
-                      onInputBlur={zapIn.onInputBlurOnce}
-                      disabled={canZap && !zapTokenCheckedB}
-                      error={zapIn.priceSeverity > 3 && zapIn.swapTokenField === Field.CURRENCY_B}
-                      beforeButton={
-                        canZap && (
-                            <ZapCheckbox
-                                disabled={currencyBalances?.[Field.CURRENCY_B]?.equalTo(0)}
-                                checked={zapTokenCheckedB}
-                                onChange={(e) => {
-                                  setZapTokenToggleB(e.target.checked)
-                                }}
-                            />
-                        )
-                      }
-                      onCurrencySelect={handleCurrencyBSelect}
-                      disableCurrencySelect={canZap}
-                      zapStyle={canZap ? 'zap' : 'noZap'}
-                      value={formattedAmounts[Field.CURRENCY_B]}
-                      onUserInput={onFieldBInput}
-                      onMax={() => {
-                        onFieldBInput(maxAmounts[Field.CURRENCY_B]?.toExact() ?? '')
-                      }}
-                      showMaxButton={!atMaxAmounts[Field.CURRENCY_B]}
-                      currency={currencies[Field.CURRENCY_B]}
-                      id="add-liquidity-input-tokenb"
-                      showCommonBases
-                      commonBasesType={CommonBasesType.LIQUIDITY}
-                      label="Y"
-                      noLiquidity={noLiquidity}
+                    showBUSD
+                    onInputBlur={zapIn.onInputBlurOnce}
+                    disabled={canZap && !zapTokenCheckedB}
+                    error={zapIn.priceSeverity > 3 && zapIn.swapTokenField === Field.CURRENCY_B}
+                    beforeButton={
+                      canZap && (
+                        <ZapCheckbox
+                          disabled={currencyBalances?.[Field.CURRENCY_B]?.equalTo(0)}
+                          checked={zapTokenCheckedB}
+                          onChange={(e) => {
+                            setZapTokenToggleB(e.target.checked)
+                          }}
+                        />
+                      )
+                    }
+                    onCurrencySelect={handleCurrencyBSelect}
+                    disableCurrencySelect={canZap}
+                    zapStyle={canZap ? 'zap' : 'noZap'}
+                    value={formattedAmounts[Field.CURRENCY_B]}
+                    onUserInput={onFieldBInput}
+                    onMax={() => {
+                      onFieldBInput(maxAmounts[Field.CURRENCY_B]?.toExact() ?? '')
+                    }}
+                    showMaxButton={!atMaxAmounts[Field.CURRENCY_B]}
+                    currency={currencies[Field.CURRENCY_B]}
+                    id="add-liquidity-input-tokenb"
+                    showCommonBases
+                    commonBasesType={CommonBasesType.LIQUIDITY}
+                    label="Y"
+                    noLiquidity={noLiquidity}
                   />
                 </div>
                 {showZapWarning && (
@@ -751,16 +748,16 @@ export default function AddLiquidity() {
                         </strong>{' '}
                         {zapIn.gasOverhead
                           ? t(
-                              'Some of your %token0% will be converted to %token1% before adding liquidity, but this may cause higher gas fees.',
-                              {
-                                token0: currencies[zapIn.swapTokenField]?.symbol,
-                                token1: currencies[zapIn.swapOutTokenField]?.symbol,
-                              },
-                            )
-                          : t('Some of your %token0% will be converted to %token1%.', {
+                            'Some of your %token0% will be converted to %token1% before adding liquidity, but this may cause higher gas fees.',
+                            {
                               token0: currencies[zapIn.swapTokenField]?.symbol,
                               token1: currencies[zapIn.swapOutTokenField]?.symbol,
-                            })}
+                            },
+                          )
+                          : t('Some of your %token0% will be converted to %token1%.', {
+                            token0: currencies[zapIn.swapTokenField]?.symbol,
+                            token1: currencies[zapIn.swapOutTokenField]?.symbol,
+                          })}
                       </MessageText>
                     </AutoColumn>
                   </Message>
@@ -850,19 +847,19 @@ export default function AddLiquidity() {
                       </RowBetween>
                     )}
                     {noLiquidity && (
-                        <ColumnCenter>
-                          <div>
-                            <Text display="inline" fontSize="10px" color="#4263eb">
-                              {t('You are the first liquidity provider.')}
-                            </Text>
-                            <Text display="inline" fontSize="10px" color="#4263eb">
-                              {t('The ratio of tokens you add will set the price of this pool.')}
-                            </Text>
-                            <Text display="inline" fontSize="10px" color="#4263eb">
-                              {t('Once you are happy with the rate click supply to review.')}
-                            </Text>
-                          </div>
-                        </ColumnCenter>
+                      <ColumnCenter>
+                        <div>
+                          <Text display="inline" fontSize="10px" color="#4263eb">
+                            {t('You are the first liquidity provider.')}
+                          </Text>
+                          <Text display="inline" fontSize="10px" color="#4263eb">
+                            {t('The ratio of tokens you add will set the price of this pool.')}
+                          </Text>
+                          <Text display="inline" fontSize="10px" color="#4263eb">
+                            {t('Once you are happy with the rate click supply to review.')}
+                          </Text>
+                        </div>
+                      </ColumnCenter>
                     )}
                     <StyledButton
                       isLoading={preferZapInstead && zapInEstimating}

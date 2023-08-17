@@ -213,6 +213,7 @@ export class Pair {
     if (JSBI.equal(this.reserve0.raw, ZERO) || JSBI.equal(this.reserve1.raw, ZERO)) {
       throw new InsufficientReservesError()
     }
+    console.log(inputAmount)
     const inputReserve = this.reserveOf(inputAmount.token)
     const outputReserve = this.reserveOf(inputAmount.token.equals(this.token0) ? this.token1 : this.token0)
     const inputExponent = this.exponentOf(inputAmount.token)
@@ -248,6 +249,7 @@ export class Pair {
       inputAmount.token.equals(this.token0) ? this.token1 : this.token0,
       JSBI.subtract(JSBI.BigInt(outputReserve.raw), tmp)
     )
+    console.info(outputAmount)
     console.log('result:', JSBI.toNumber(JSBI.subtract(JSBI.BigInt(outputReserve.raw), tmp)))
     return [outputAmount, new Pair(inputReserve.add(inputAmount), outputReserve.subtract(outputAmount))]
   }

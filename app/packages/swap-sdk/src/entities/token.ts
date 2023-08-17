@@ -116,7 +116,7 @@ export const WBNB = {
   ),
   [ChainId.opBNB]: new Token(
     ChainId.opBNB,
-    '0xe5e663b43ba66e8d7128b92097d96fe699b005b7',
+    '0xa035710A5Ac6bcC8bc892C91EC73F49b540DfB1f',
     18,
     'WBNB',
     'WBNB',
