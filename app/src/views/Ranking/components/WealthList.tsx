@@ -262,7 +262,8 @@ export default function WealthList({ timeType, type, pageName }) {
                         </UserWrapper>
                       </InfoWrapper>
                       <ValueWrapper>
-                        {item?.symbol ? `${toStringAmt(item.amt)} ${item.unit}` : ''}
+                        {/* {item?.symbol ? `${toStringAmt(item.amt)} ${item.unit}` : ''} */}
+                        {item?.symbol ? (typeof item.amt === "string" ? `${item.amt} ${item.unit}` : `${toStringAmt(item.amt)} ${item.unit}`) : ''}
                       </ValueWrapper>
                     </ListItem>
                   ))

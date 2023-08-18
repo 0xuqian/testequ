@@ -62,7 +62,17 @@ const useRankingInfo = (pathName, size, timeType, type, currentPage, setLoading,
       )
       const obj = await res.json()
       if (obj?.code === 0) {
-        const newList = obj?.datas?.list.map((item, i) => ({ ...item, index: i }))
+        let newList;
+        if (type === 'people') {
+          newList = obj?.datas?.list.map((item, i) => ({ ...item, index: i, unit: '', amt: item.amt.toString() }))
+        } else {
+          newList = obj?.datas?.list.map((item, i) => ({ ...item, index: i }))
+        }
+        //   const updatedList = newList.map(item => ({
+        //     ...item,
+        //     unit: ''
+        //   }));
+        // }
         if (newList.length < size) {
           for (let i = newList.length; i < size; i++) {
             newList.push({ index: i + 1 })
