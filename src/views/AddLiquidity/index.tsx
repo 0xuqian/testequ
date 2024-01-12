@@ -85,6 +85,12 @@ const StyledButton = styled(Button)`
 
 const zapAddress = getZapAddress()
 
+const contractMirrorMap = {
+  1: 3,
+  2: 2,
+  3: 1
+}
+
 export default function AddLiquidity() {
   const theme = useTheme()
   const router = useRouter()
@@ -261,7 +267,6 @@ export default function AddLiquidity() {
   async function onAdd() {
     if (!chainId || !library || !account) return
     const routerContract = getRouterContract(chainId, library, account)
-
     const { [Field.CURRENCY_A]: parsedAmountA, [Field.CURRENCY_B]: parsedAmountB } = mintParsedAmounts
     if (!parsedAmountA || !parsedAmountB || !currencyA || !currencyB || !deadline) {
       return
@@ -285,11 +290,13 @@ export default function AddLiquidity() {
         (tokenBIsBNB ? parsedAmountA : parsedAmountB).raw.toString(), // token desired
         amountsMin[tokenBIsBNB ? Field.CURRENCY_A : Field.CURRENCY_B].toString(), // token min
         amountsMin[tokenBIsBNB ? Field.CURRENCY_B : Field.CURRENCY_A].toString(), // eth min
-        ammType,
+        contractMirrorMap[ammType],
+        tokenBIsBNB ? 0 : 1,
         account,
         deadline.toHexString(),
       ]
       value = BigNumber.from((tokenBIsBNB ? parsedAmountB : parsedAmountA).raw.toString())
+      console.info(args)
     } else {
       estimate = routerContract.estimateGas.addLiquidity
       method = routerContract.addLiquidity
@@ -300,13 +307,13 @@ export default function AddLiquidity() {
         parsedAmountB.raw.toString(),
         amountsMin[Field.CURRENCY_A].toString(),
         amountsMin[Field.CURRENCY_B].toString(),
-        ammType,
+        contractMirrorMap[ammType],
         account,
         deadline.toHexString(),
       ]
       value = null
     }
-
+    console.info(args)
     setLiquidityState({ attemptingTxn: true, liquidityErrorMessage: undefined, txHash: undefined })
     await estimate(...args, value ? { value } : {})
       .then((estimatedGasLimit) =>

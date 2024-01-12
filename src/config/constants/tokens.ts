@@ -90,6 +90,14 @@ export const USDT = {
     'USDT',
     'https://www.binance.com/en/trade/BNB_USDT',
   ),
+  [ChainId.opBNB]: new Token(
+    ChainId.opBNB,
+    '0xcf712f20c85421d00eaa1b6f6545aaeeb4492b75',
+    18,
+    'USDT',
+    'USDT',
+    'https://www.binance.com/en/trade/BNB_USDT',
+  ),
   [ChainId.BSC_TESTNET]: new Token(
     ChainId.BSC_TESTNET,
     '0x2314DB6CB675E400eFfe74CCf6f5ea3c7D37AF68',
@@ -130,6 +138,14 @@ export const BUSD: Record<ChainId, Token> = {
   [ChainId.GOERLI]: new Token(
     ChainId.ARB_TESTNET,
     '0x491AD950e6cE33B1c5911Ed091Bc19eF1B257F46',
+    6,
+    'USDT',
+    'USDT',
+    '',
+  ),
+  [ChainId.opBNB]: new Token(
+    ChainId.opBNB,
+    '0xe5e663b43ba66e8d7128b92097d96fe699b005b7',
     6,
     'USDT',
     'USDT',
@@ -2457,6 +2473,30 @@ export const bscTestnetTokens = {
     'MS Token',
     'https://www.equityswap.club/',
   ),
+  testToken: new Token(
+    ChainId.BSC_TESTNET,
+    '0x3F1710b5ab74262771FBC0Dd5589d7AcdDdEab2c',
+    18,
+    'TT',
+    'TT Token',
+    'https://www.equityswap.club/',
+  ),
+  testToken1: new Token(
+    ChainId.BSC_TESTNET,
+    '0xd084d1eaA3b12aFce357B57bbe742746007BA36e',
+    18,
+    'TT1',
+    'TT1 Token',
+    'https://www.equityswap.club/',
+  ),
+  testToken2: new Token(
+    ChainId.BSC_TESTNET,
+    '0x39D807cE5f75f1fddBa5D47aA97B6D643E70b039',
+    18,
+    'TT2',
+    'TT2 Token',
+    'https://www.equityswap.club/',
+  ),
   ew: new Token(
     ChainId.BSC_TESTNET,
     '0x7eAE2e759048C3dc860D20c5026D3fD0C1D88391',
@@ -2536,6 +2576,26 @@ export const arbTestnetTokens = {
     '',
   ),
 }
+
+export const opBNBTokens = {
+  wbnb: WBNB[ChainId.opBNB],
+  PV001: new Token(
+    ChainId.opBNB,
+    '0x2764d463727Ee17CA2C581F437c3fa8ea5daa1D6',
+    18,
+    'PV001',
+    'Pv001'
+  ),
+  PV002: new Token(
+    ChainId.opBNB,
+    '0x3b322BCE4b6215A6C0c2667e40A7D249c442178d',
+    18,
+    'PV002',
+    'PV002'
+  )
+}
+
+
 
 export const PE = {
   [ChainId.GOERLI]: goerliTokens.pe,

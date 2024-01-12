@@ -197,13 +197,13 @@ const CircleShare: React.FC<React.PropsWithChildren<{ projectAddress: string }>>
     const accountAddress = accounts[0];
     const signer = library.getSigner();
     const overrides = {
-      value: ethers.utils.parseUnits((Number(amount) * NFTsInfo.MintPrice).toString(), 'ether')
+      value: ethers.utils.parseUnits((Number(amount) * NFTsInfo[chainId].MintPrice).toString(), 'ether')
     }
-    const contract = new ethers.Contract(NFTsInfo.BatchMintContract, TokenTransferAbi, signer);
+    const contract = new ethers.Contract(NFTsInfo[chainId].BatchMintContract, TokenTransferAbi, signer);
 
     try {
       isMinting(true)
-      const tx = await contract.mintNfts(NFTsInfo.NFTsContract, projectAddress, accountAddress, amount, overrides);
+      const tx = await contract.mintNfts(NFTsInfo[chainId].NFTsContract, projectAddress, accountAddress, amount, overrides);
       const receipt = await tx.wait();
 
 

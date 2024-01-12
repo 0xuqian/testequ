@@ -1,3 +1,4 @@
+/* eslint-disable no-continue */
 import invariant from 'tiny-invariant'
 import { InsufficientInputAmountError, InsufficientReservesError } from '..'
 
@@ -278,7 +279,7 @@ export class Trade {
 
       let amountOut: TokenAmount
       try {
-        ;[amountOut] = pair.getOutputAmount(amountIn)
+        [amountOut] = pair.getOutputAmount(amountIn)
       } catch (error) {
         // input too low
         if ((error as InsufficientInputAmountError).isInsufficientInputAmountError) {
@@ -316,7 +317,7 @@ export class Trade {
         )
       }
     }
-
+    console.log("bestTrades", bestTrades)
     return bestTrades
   }
 

@@ -7,8 +7,8 @@ import BigNumber from 'bignumber.js'
 import { AutoColumn } from '../../components/Layout/Column'
 import { AutoRow } from '../../components/Layout/Row'
 import { Field } from '../../state/mint/actions'
-import {useAmmType} from "../../state/amm/hooks";
-import {AmmType} from "../../state/amm/types";
+import { useAmmType } from "../../state/amm/hooks";
+import { AmmType } from "../../state/amm/types";
 
 const StyledText = styled(Text)`
   white-space: pre;
@@ -40,22 +40,22 @@ function PoolPriceBar({
 
   if (ammType === AmmType.Five) {
     multiply = 1
-    divide = 4
+    divide = 32
   }
 
   if (ammType === AmmType.SevenFive) {
     multiply = 1
-    divide = 2
+    divide = 4
   }
 
   const isReserve = (currencies?.CURRENCY_A?.address - currencies?.CURRENCY_B?.address) > 0
   const decimals = currencies?.CURRENCY_A?.decimals - currencies?.CURRENCY_B?.decimals
   const a = price ? (isReserve ?
-      new BigNumber(price?.toSignificant(18)).times(divide).times(10 ** decimals).toFixed(6) :
-      new BigNumber(price?.invert().toSignificant(18)).dividedBy(divide).dividedBy(10 ** decimals).toFixed(6)) : '-'
+    new BigNumber(price?.toSignificant(18)).times(divide).times(10 ** decimals).toFixed(6) :
+    new BigNumber(price?.invert().toSignificant(18)).dividedBy(divide).dividedBy(10 ** decimals).toFixed(6)) : '-'
   const b = price ? (isReserve ?
-      new BigNumber(price?.invert()?.toSignificant(18)).dividedBy(divide).dividedBy(10 ** decimals).toFixed(6) :
-      new BigNumber(price?.toSignificant(18)).times(divide).times(10 ** decimals).toFixed(6)) : '-'
+    new BigNumber(price?.invert()?.toSignificant(18)).dividedBy(divide).dividedBy(10 ** decimals).toFixed(6) :
+    new BigNumber(price?.toSignificant(18)).times(divide).times(10 ** decimals).toFixed(6)) : '-'
 
   return (
     <AutoColumn gap="md">
@@ -84,8 +84,8 @@ function PoolPriceBar({
         </AutoColumn>
         <AutoColumn justify="center">
           <StyledText title={`${noLiquidity && price
-              ? '100'
-              : (poolTokenPercentage?.lessThan(ONE_BIPS) ? '<0.01' : poolTokenPercentage?.toFixed(2)) ?? '0'}
+            ? '100'
+            : (poolTokenPercentage?.lessThan(ONE_BIPS) ? '<0.01' : poolTokenPercentage?.toFixed(2)) ?? '0'}
             %`} fontSize="14px" color="#333">
             {noLiquidity && price
               ? '100'

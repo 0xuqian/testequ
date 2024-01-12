@@ -103,16 +103,16 @@ export function useDerivedMintInfo(
   const ammType = useAmmType()
 
   let multiply = '1'
-  let divide = '1'
+  let divide = '32'
 
   if (ammType === AmmType.Five) {
     multiply = '1'
-    divide = '4'
+    divide = '1'
   }
 
   if (ammType === AmmType.SevenFive) {
     multiply = '1'
-    divide = '2'
+    divide = '4'
   }
 
   // tokens
@@ -159,19 +159,19 @@ export function useDerivedMintInfo(
           const dependentTokenAmount =
             dependentField === Field.CURRENCY_B
               ? new TokenAmount(
-                  tokenB,
-                  wrappedIndependentAmount
-                    .multiply(multiply)
-                    .divide(divide)
-                    .multiply(+customPrice * 10 ** tokenB.decimals).quotient,
-                )
+                tokenB,
+                wrappedIndependentAmount
+                  .multiply(multiply)
+                  .divide(divide)
+                  .multiply(+customPrice * 10 ** tokenB.decimals).quotient,
+              )
               : new TokenAmount(
-                  tokenA,
-                  wrappedIndependentAmount
-                    .multiply(Number(divide) * 10 ** (tokenA.decimals + 9))
-                    .divide(multiply)
-                    .divide(+customPrice * 1000000000).quotient,
-                )
+                tokenA,
+                wrappedIndependentAmount
+                  .multiply(Number(divide) * 10 ** (tokenA.decimals + 9))
+                  .divide(multiply)
+                  .divide(+customPrice * 1000000000).quotient,
+              )
           return dependentCurrency === ETHER ? CurrencyAmount.ether(dependentTokenAmount.raw) : dependentTokenAmount
         }
       }
@@ -244,7 +244,7 @@ export function useDerivedMintInfo(
     }
     const wrappedCurrencyA = wrappedCurrency(currencyA, chainId)
     return pair && wrappedCurrencyA ? pair.priceOf(wrappedCurrencyA).divide(multiply) : undefined
-  }, [chainId, currencyA, currencyB, noLiquidity, pair, parsedAmounts,  divide, multiply])
+  }, [chainId, currencyA, currencyB, noLiquidity, pair, parsedAmounts, divide, multiply])
   // liquidity minted
   const liquidityMinted = useMemo(() => {
     const { [Field.CURRENCY_A]: currencyAAmount, [Field.CURRENCY_B]: currencyBAmount } = parsedAmounts
@@ -450,13 +450,13 @@ export function useZapIn({
       [Field.CURRENCY_A]: !zapTokenCheckedA
         ? undefined
         : independentField === Field.CURRENCY_A
-        ? independentAmount
-        : dependentAmount,
+          ? independentAmount
+          : dependentAmount,
       [Field.CURRENCY_B]: !zapTokenCheckedB
         ? undefined
         : independentField === Field.CURRENCY_A
-        ? dependentAmount
-        : independentAmount,
+          ? dependentAmount
+          : independentAmount,
     }),
     [dependentAmount, independentAmount, independentField, zapTokenCheckedA, zapTokenCheckedB],
   )
@@ -518,20 +518,20 @@ export function useZapIn({
 
   const singleZapEstimate = useSWRContract(
     canZap &&
-      !noNeedZap &&
-      zapContract &&
-      singleTokenToZapAmount &&
-      singleTokenToZapAmount?.token &&
-      pair &&
-      !rebalancing && {
-        contract: zapContract,
-        methodName: 'estimateZapInSwap',
-        params: [
-          singleTokenToZapAmount.token.address,
-          singleTokenToZapAmount.raw.toString(),
-          pair.liquidityToken.address,
-        ],
-      },
+    !noNeedZap &&
+    zapContract &&
+    singleTokenToZapAmount &&
+    singleTokenToZapAmount?.token &&
+    pair &&
+    !rebalancing && {
+      contract: zapContract,
+      methodName: 'estimateZapInSwap',
+      params: [
+        singleTokenToZapAmount.token.address,
+        singleTokenToZapAmount.raw.toString(),
+        pair.liquidityToken.address,
+      ],
+    },
     {
       onError(err) {
         console.error(err)
@@ -541,23 +541,23 @@ export function useZapIn({
 
   const rebalancingZapEstimate = useSWRContract(
     canZap &&
-      zapContract &&
-      !noNeedZap &&
-      wrappedParsedAmounts &&
-      wrappedParsedAmounts[Field.CURRENCY_A] &&
-      wrappedParsedAmounts[Field.CURRENCY_B] &&
-      pair &&
-      rebalancing && {
-        contract: zapContract,
-        methodName: 'estimateZapInRebalancingSwap',
-        params: [
-          wrappedParsedAmounts[Field.CURRENCY_A].token.address,
-          wrappedParsedAmounts[Field.CURRENCY_B].token.address,
-          wrappedParsedAmounts[Field.CURRENCY_A].raw.toString(),
-          wrappedParsedAmounts[Field.CURRENCY_B]?.raw?.toString(),
-          pair.liquidityToken.address,
-        ],
-      },
+    zapContract &&
+    !noNeedZap &&
+    wrappedParsedAmounts &&
+    wrappedParsedAmounts[Field.CURRENCY_A] &&
+    wrappedParsedAmounts[Field.CURRENCY_B] &&
+    pair &&
+    rebalancing && {
+      contract: zapContract,
+      methodName: 'estimateZapInRebalancingSwap',
+      params: [
+        wrappedParsedAmounts[Field.CURRENCY_A].token.address,
+        wrappedParsedAmounts[Field.CURRENCY_B].token.address,
+        wrappedParsedAmounts[Field.CURRENCY_A].raw.toString(),
+        wrappedParsedAmounts[Field.CURRENCY_B]?.raw?.toString(),
+        pair.liquidityToken.address,
+      ],
+    },
     {
       onError(err) {
         console.error(err)
@@ -600,8 +600,8 @@ export function useZapIn({
   const swapTokenField = !rebalancing
     ? singleTokenToZapField
     : rebalancingSellToken0
-    ? Field.CURRENCY_A
-    : Field.CURRENCY_B
+      ? Field.CURRENCY_A
+      : Field.CURRENCY_B
   const swapOutTokenField = swapTokenField === Field.CURRENCY_A ? Field.CURRENCY_B : Field.CURRENCY_A
 
   const swapTokens: { [field in Field]?: Token } = useMemo(
@@ -698,8 +698,8 @@ export function useZapIn({
           zapInEstimated.swapAmountIn.toString(),
         )
           ? wrappedParsedAmounts[swapTokenField].subtract(
-              new TokenAmount(swapTokens[swapTokenField], zapInEstimated.swapAmountIn.toString()),
-            )
+            new TokenAmount(swapTokens[swapTokenField], zapInEstimated.swapAmountIn.toString()),
+          )
           : wrappedParsedAmounts[swapTokenField]
 
         let zappedTokenAmountB = new TokenAmount(swapTokens[swapOutTokenField], zapInEstimated.swapAmountOut.toString())

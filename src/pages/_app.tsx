@@ -127,8 +127,8 @@ const ProductionErrorBoundary = process.env.NODE_ENV === 'production' ? ErrorBou
 
 const App = ({ Component, pageProps, ...appProps }: AppPropsWithLayout) => {
   const noNeedLayout = [`/451`].includes(appProps.router.pathname)
-  const [_, setSingleHopOnly] = useUserSingleHopOnly()
-  setSingleHopOnly(true)
+  // const [_, setSingleHopOnly] = useUserSingleHopOnly()
+  // setSingleHopOnly(true)
   if (noNeedLayout) {
     return <Component {...pageProps} />
   }

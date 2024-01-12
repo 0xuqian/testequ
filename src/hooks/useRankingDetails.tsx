@@ -53,7 +53,7 @@ const useRankingInfo = (address, reloadUserInfo) => {
   const fetchListInfo = useCallback(async () => {
     try {
       const res: any = await fetch(
-        `https://www.equityswap.club/app/user/userinfo`,
+        `https://www.equityswap.club/ranks/user/userinfo`,
         {
           method: 'post',
           body: JSON.stringify({

@@ -1,4 +1,4 @@
-import {useCallback, useEffect, useState} from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import useActiveWeb3React from "./useActiveWeb3React";
 
 interface Data {
@@ -36,32 +36,46 @@ const useRankingInfo = (pathName, size, timeType, type, currentPage, setLoading,
     }
     setLoading(true)
     setList(null)
+    let url = `https://www.equityswap.club/ranks/index/${pathName}`;
+    if (pathName === 'currencies') {
+      url = 'https://www.equityswap.club/app/index/currencies';
+    }
     try {
       const res: any = await fetch(
-          `https://www.equityswap.club/app/index/${pathName}`,
-          {
-            method: 'post',
-            body: JSON.stringify({
-              net: account ? `evm--${Number(chainId)}` : `evm--97`,
-              page: pageNumber,
-              size,
-              sortName: '',
-              sortOrder: '',
-              timeType,
-              typew: type,
-              token_addr: tokenAddress,
-            }),
-            headers: new Headers({
-              'Content-Type': 'application/json'
-            })
-          },
+        url,
+        {
+          method: 'post',
+          body: JSON.stringify({
+            net: account ? `evm--${Number(chainId)}` : `evm--56`,
+            page: pageNumber,
+            size,
+            sortName: '',
+            sortOrder: '',
+            timeType,
+            typew: type,
+            token_addr: tokenAddress,
+          }),
+          headers: new Headers({
+            'Content-Type': 'application/json'
+          })
+        },
       )
       const obj = await res.json()
       if (obj?.code === 0) {
-        const newList = obj?.datas?.list.map((item, i) => ({...item, index: i}))
+        let newList;
+        if (type === 'people') {
+          newList = obj?.datas?.list.map((item, i) => ({ ...item, index: i, unit: '', amt: item.amt.toString() }))
+        } else {
+          newList = obj?.datas?.list.map((item, i) => ({ ...item, index: i }))
+        }
+        //   const updatedList = newList.map(item => ({
+        //     ...item,
+        //     unit: ''
+        //   }));
+        // }
         if (newList.length < size) {
           for (let i = newList.length; i < size; i++) {
-            newList.push({index: i + 1})
+            newList.push({ index: i + 1 })
           }
         }
         setList(newList)

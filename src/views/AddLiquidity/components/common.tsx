@@ -9,11 +9,11 @@ import { Field } from 'state/burn/actions'
 import { DoubleCurrencyLogo, CurrencyLogo } from 'components/Logo'
 import { GreyCard } from 'components/Card'
 import { getLPSymbol } from 'utils/getLpSymbol'
-import {useAmmType} from "../../../state/amm/hooks";
+import { useAmmType } from "../../../state/amm/hooks";
 import { swapFormulaList } from '../../../utils'
-import {AmmType} from "../../../state/amm/types";
+import { AmmType } from "../../../state/amm/types";
 
-const Dot = styled(Box)<{ scale?: 'sm' | 'md' }>`
+const Dot = styled(Box) <{ scale?: 'sm' | 'md' }>`
   width: 12px;
   height: 12px;
   border-radius: 50%;
@@ -92,14 +92,14 @@ export const PairDistribution = ({
         )}
         <AutoColumn style={{ width: '100%' }}>
           {currencyB && (
-              <RowBetween>
-                <AutoRow gap="4px">
-                  <Dot bg="secondary" />
-                  <CurrencyLogo currency={currencyB} />
-                  <Text>{currencyB?.symbol}</Text>
-                </AutoRow>
-                <Text>{currencyBValue}</Text>
-              </RowBetween>
+            <RowBetween>
+              <AutoRow gap="4px">
+                <Dot bg="secondary" />
+                <CurrencyLogo currency={currencyB} />
+                <Text>{currencyB?.symbol}</Text>
+              </AutoRow>
+              <Text>{currencyBValue}</Text>
+            </RowBetween>
           )}
 
           {currencyA && (
@@ -147,11 +147,11 @@ export const AddLiquidityModalHeader = ({
     }),
     { placement: 'auto' },
   )
-
   const ammType = useAmmType()
 
   let multiply = '1'
-  let divide = '1'
+  let divide = '32'
+
 
   if (ammType === AmmType.Five) {
     multiply = '1'
@@ -160,7 +160,7 @@ export const AddLiquidityModalHeader = ({
 
   if (ammType === AmmType.SevenFive) {
     multiply = '1'
-    divide = '2'
+    divide = '1'
   }
 
   const isReserve = (currencies?.CURRENCY_A?.address - currencies?.CURRENCY_B?.address) > 0
@@ -196,16 +196,14 @@ export const AddLiquidityModalHeader = ({
         <RowBetween>
           <Subtitle>{t('Rates')}</Subtitle>
           <Text>
-            {`1 ${currencies[Field.CURRENCY_A]?.symbol} = ${myPrice ?? (isReserve ? price?.multiply(divide)?.toSignificant(4) : price?.divide(divide)?.toSignificant(4))} ${
-              currencies[Field.CURRENCY_B]?.symbol
-            }`}
+            {`1 ${currencies[Field.CURRENCY_A]?.symbol} = ${myPrice ?? (isReserve ? price?.multiply(divide)?.toSignificant(4) : price?.divide(divide)?.toSignificant(4))} ${currencies[Field.CURRENCY_B]?.symbol
+              }`}
           </Text>
         </RowBetween>
         <RowBetween style={{ justifyContent: 'flex-end' }}>
           <Text>
-            {`1 ${currencies[Field.CURRENCY_B]?.symbol} = ${myPrice ? 1 / Number(myPrice) : (isReserve ? price?.invert()?.divide(divide)?.toSignificant(4) : price?.invert()?.multiply(divide)?.toSignificant(4))} ${
-              currencies[Field.CURRENCY_A]?.symbol
-            }`}
+            {`1 ${currencies[Field.CURRENCY_B]?.symbol} = ${myPrice ? 1 / Number(myPrice) : (isReserve ? price?.invert()?.divide(divide)?.toSignificant(4) : price?.invert()?.multiply(divide)?.toSignificant(4))} ${currencies[Field.CURRENCY_A]?.symbol
+              }`}
           </Text>
         </RowBetween>
       </AutoColumn>

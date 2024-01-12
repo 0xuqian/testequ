@@ -94,9 +94,9 @@ export const CurrencySelect = ({
                 <Text id="pair" bold>
                   {selectedCurrency && selectedCurrency.symbol && selectedCurrency.symbol.length > 20
                     ? `${selectedCurrency.symbol.slice(0, 4)}...${selectedCurrency.symbol.slice(
-                        selectedCurrency.symbol.length - 5,
-                        selectedCurrency.symbol.length,
-                      )}`
+                      selectedCurrency.symbol.length - 5,
+                      selectedCurrency.symbol.length,
+                    )}`
                     : selectedCurrency?.symbol}
                 </Text>
               </Flex>
@@ -112,9 +112,9 @@ export const CurrencySelect = ({
               {t('Balance')}:
             </Text>
             <Text
-                title={selectedCurrencyBalance?.toSignificant(6) ?? t('Loading')}
-                style={{maxWidth: '100px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'}}
-                fontSize="12px">{selectedCurrencyBalance?.toSignificant(6) ?? t('Loading')}</Text>
+              title={selectedCurrencyBalance?.toSignificant(6) ?? t('Loading')}
+              style={{ maxWidth: '100px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}
+              fontSize="12px">{selectedCurrencyBalance?.toSignificant(6) ?? t('Loading')}</Text>
           </AutoRow>
           <RowBetween>
             <div />

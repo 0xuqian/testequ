@@ -40,25 +40,25 @@ const useDefaultAmm = ({
     () =>
       tokenA && tokenB
         ? [
-            // the direct pair
-            [tokenA, tokenB]
-          ]
-            .filter((tokens): tokens is [Token, Token] => Boolean(tokens[0] && tokens[1]))
-            .filter(([t0, t1]) => t0.address !== t1.address)
-            .filter(([tokenA_, tokenB_]) => {
-              if (!chainId) return true
-              const customBases = CUSTOM_BASES[chainId]
+          // the direct pair
+          [tokenA, tokenB]
+        ]
+          .filter((tokens): tokens is [Token, Token] => Boolean(tokens[0] && tokens[1]))
+          .filter(([t0, t1]) => t0.address !== t1.address)
+          .filter(([tokenA_, tokenB_]) => {
+            if (!chainId) return true
+            const customBases = CUSTOM_BASES[chainId]
 
-              const customBasesA: Token[] | undefined = customBases?.[tokenA_.address]
-              const customBasesB: Token[] | undefined = customBases?.[tokenB_.address]
+            const customBasesA: Token[] | undefined = customBases?.[tokenA_.address]
+            const customBasesB: Token[] | undefined = customBases?.[tokenB_.address]
 
-              if (!customBasesA && !customBasesB) return true
+            if (!customBasesA && !customBasesB) return true
 
-              if (customBasesA && !customBasesA.find((base) => tokenB_.equals(base))) return false
-              if (customBasesB && !customBasesB.find((base) => tokenA_.equals(base))) return false
+            if (customBasesA && !customBasesA.find((base) => tokenB_.equals(base))) return false
+            if (customBasesB && !customBasesB.find((base) => tokenA_.equals(base))) return false
 
-              return true
-            })
+            return true
+          })
         : [],
     [tokenA, tokenB, chainId],
   )
@@ -89,16 +89,16 @@ const useDefaultAmm = ({
     const decimalExponent0 = parseInt(exponent0, 10)
     const decimalExponent1 = parseInt(exponent1, 10)
 
-    if ((decimalExponent0 === 100 && decimalExponent1 === 25) || (decimalExponent0 === 25 && decimalExponent1 === 100)) {
+    if ((decimalExponent0 === 32 && decimalExponent1 === 1) || (decimalExponent0 === 1 && decimalExponent1 === 32)) {
       dispatch(changeAmmType(AmmType.Five))
       return
     }
-    if ((decimalExponent0 === 100 && decimalExponent1 === 50) || (decimalExponent0 === 50 && decimalExponent1 === 100)) {
+    if ((decimalExponent0 === 32 && decimalExponent1 === 8) || (decimalExponent0 === 8 && decimalExponent1 === 32)) {
       dispatch(changeAmmType(AmmType.SevenFive))
       return
     }
-    if (decimalExponent0 === 100 && decimalExponent1 === 100) {
-      dispatch(changeAmmType(AmmType.Default))
+    if (decimalExponent0 === 32 && decimalExponent1 === 32) {
+      dispatch(changeAmmType(AmmType.Five))
     }
   })
 

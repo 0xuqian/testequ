@@ -1,6 +1,6 @@
 import { Web3Provider } from '@ethersproject/providers'
-import IPancakeRouter02ABI from 'config/abi/IPancakeRouter02.json'
-import { IPancakeRouter02 } from 'config/types/IPancakeRouter02'
+import EquityRouterABI from 'config/abi/EquityRouter_metadata.json'
+import { EquityRouter } from 'config/types/EquityRouter_metadata'
 import { JSBI, Percent, CurrencyAmount, Trade, Fraction, TokenAmount } from '@pancakeswap/sdk'
 import {
   ROUTER_ADDRESS,
@@ -34,9 +34,9 @@ export function calculateSlippageAmount(value: CurrencyAmount, slippage: number)
 export function getRouterContract(chainId: number, library: Web3Provider, account?: string) {
   return getContract(
     ROUTER_ADDRESS[chainId],
-    IPancakeRouter02ABI,
+    EquityRouterABI,
     getProviderOrSigner(library, account),
-  ) as IPancakeRouter02
+  ) as EquityRouter
 }
 
 // computes price breakdown for the trade
@@ -49,11 +49,11 @@ export function computeTradePriceBreakdown(trade?: Trade | null): {
   const realizedLPFee = !trade
     ? undefined
     : ONE_HUNDRED_PERCENT.subtract(
-        trade.route.pairs.reduce<Fraction>(
-          (currentFee: Fraction): Fraction => currentFee.multiply(INPUT_FRACTION_AFTER_FEE),
-          ONE_HUNDRED_PERCENT,
-        ),
-      )
+      trade.route.pairs.reduce<Fraction>(
+        (currentFee: Fraction): Fraction => currentFee.multiply(INPUT_FRACTION_AFTER_FEE),
+        ONE_HUNDRED_PERCENT,
+      ),
+    )
 
   // remove lp fees from price impact
   const priceImpactWithoutFeeFraction = trade && realizedLPFee ? trade.priceImpact.subtract(realizedLPFee) : undefined
@@ -101,10 +101,8 @@ export function formatExecutionPrice(trade?: Trade, inverted?: boolean): string 
     return ''
   }
   return inverted
-    ? `${trade.executionPrice.invert().toSignificant(6)} ${trade.inputAmount.currency.symbol} / ${
-        trade.outputAmount.currency.symbol
-      }`
-    : `${trade.executionPrice.toSignificant(6)} ${trade.outputAmount.currency.symbol} / ${
-        trade.inputAmount.currency.symbol
-      }`
+    ? `${trade.executionPrice.invert().toSignificant(6)} ${trade.inputAmount.currency.symbol} / ${trade.outputAmount.currency.symbol
+    }`
+    : `${trade.executionPrice.toSignificant(6)} ${trade.outputAmount.currency.symbol} / ${trade.inputAmount.currency.symbol
+    }`
 }

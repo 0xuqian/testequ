@@ -134,7 +134,7 @@ const CircleClaim: React.FC<React.PropsWithChildren<{ projectAddr: string, leade
 
     // const provider = new ethers.providers.Web3Provider(window.ethereum);
     const signer = library.getSigner();
-    const contract = new ethers.Contract(NFTsInfo.NFTsContract, HandNftAbi, signer);
+    const contract = new ethers.Contract(NFTsInfo[chainId].NFTsContract, HandNftAbi, signer);
     console.info(nftId)
     const overrides = {
       value: ethers.utils.parseUnits(claimPrice.toString(), 'ether')
@@ -153,8 +153,7 @@ const CircleClaim: React.FC<React.PropsWithChildren<{ projectAddr: string, leade
       setIsClaiming(false)
       setIsDisabled(false)
 
-      router.push(`/circle/claimed/${NFTsInfo.NFTsContract}/${nftId}`)
-      console.log(receipt1);
+      router.push(`/circle/claimed/${NFTsInfo[chainId]}/${nftId}`)
 
     } catch (error: any) {
       setIsClaiming(false)

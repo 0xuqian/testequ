@@ -155,7 +155,7 @@
   {
     "inputs": [],
     "name": "pancakeRouter",
-    "outputs": [{ "internalType": "contract IPancakeRouter02", "name": "", "type": "address" }],
+    "outputs": [{ "internalType": "contract EquityRouter_metadata", "name": "", "type": "address" }],
     "stateMutability": "view",
     "type": "function"
   },

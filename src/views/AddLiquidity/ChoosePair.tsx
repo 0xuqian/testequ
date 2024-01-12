@@ -9,7 +9,7 @@ import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { AppHeader } from '../../components/App'
 import { useCurrencySelectRoute } from './useCurrencySelectRoute'
 import { CommonBasesType } from '../../components/SearchModal/types'
-import {useAmmType} from "../../state/amm/hooks";
+import { useAmmType } from "../../state/amm/hooks";
 import { swapFormulaList } from '../../utils'
 
 const StyledButton = styled(Button)`
@@ -76,10 +76,10 @@ export function ChoosePair({
         {/* exp diff */}
         {
           currencyA && currencyB ?
-              <div style={{ display: 'flex', justifyContent: 'center', marginTop: '0px' }}>
-                <Text style={{ marginRight: '20px' }}>{swapFormulaList[ammType - 1].label}</Text>
-                <Text>{swapFormulaList[ammType - 1].alias}</Text>
-              </div> : null
+            <div style={{ display: 'flex', justifyContent: 'center', marginTop: '0px' }}>
+              <Text style={{ marginRight: '20px' }}>{swapFormulaList[ammType - 1].label}</Text>
+              <Text>{swapFormulaList[ammType - 1].alias}</Text>
+            </div> : null
         }
         {!account ? (
           <ConnectWalletButton width="100%" />

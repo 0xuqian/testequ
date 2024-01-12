@@ -374,19 +374,19 @@ export default function Swap() {
     if (v2TradeOne?.route?.pairs?.[0]?.exponent0 && v2TradeOne?.route?.pairs?.[0]?.exponent1) {
       switch (Number(v2TradeOne?.route?.pairs?.[0]?.exponent0) / Number(v2TradeOne?.route?.pairs?.[0]?.exponent1)) {
         case 1:
+          return 3
+          break;
+        case 32:
           return 1
           break;
-        case 2:
-          return 2
-          break;
-        case 0.5:
-          return 2
+        case 0.03125:
+          return 1
           break;
         case 4:
-          return 3
+          return 2
           break;
         case 0.25:
-          return 3
+          return 2
           break;
         default:
           return null

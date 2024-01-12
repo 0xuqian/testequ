@@ -32,7 +32,7 @@ const ListItem = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: #fff;
+  // background: #fff;
   @media screen and (max-width: 852px) {
     height: 80px;
   }
@@ -55,7 +55,7 @@ const Index = styled.div`
   font-style: normal;
   font-weight: 600;
   font-size: 16px;
-  color: #15141f;
+  // color: #15141f;
   align-items: center;
   width: 20px;
   @media screen and (max-width: 852px) {
@@ -70,7 +70,7 @@ const UserName = styled.div`
   font-style: normal;
   font-weight: 600;
   font-size: 16px;
-  color: #15141f;
+  // color: #15141f;
   overflow: hidden;
   white-space: pre;
   line-height: 26px;
@@ -182,7 +182,7 @@ const Price = styled.div`
   font-weight: 500;
   font-size: 14px;
   width: 120px;
-  color: #000;
+  // color: #000;
   margin-right: 20px;
   overflow: hidden;
   white-space: pre;

@@ -1,38 +1,35 @@
-import {InjectedConnector} from '@web3-react/injected-connector'
-import {WalletConnectConnector} from '@web3-react/walletconnect-connector'
-import {AbstractConnector} from '@web3-react/abstract-connector'
-import {ChainId} from '@pancakeswap/sdk'
-import {BscConnector} from '@binance-chain/bsc-connector'
-import {ConnectorNames} from '@pancakeswap/uikit'
+import { InjectedConnector } from '@web3-react/injected-connector'
+import { WalletConnectConnector } from '@web3-react/walletconnect-connector'
+import { AbstractConnector } from '@web3-react/abstract-connector'
+import { ChainId } from '@pancakeswap/sdk'
+import { BscConnector } from '@binance-chain/bsc-connector'
+import { ConnectorNames } from '@pancakeswap/uikit'
 import useWeb3Provider from 'hooks/useActiveWeb3React'
-import {hexlify} from '@ethersproject/bytes'
-import {toUtf8Bytes} from '@ethersproject/strings'
-import {Web3Provider} from '@ethersproject/providers'
+import { hexlify } from '@ethersproject/bytes'
+import { toUtf8Bytes } from '@ethersproject/strings'
+import { Web3Provider } from '@ethersproject/providers'
+import { SUPPORTED_CHAINS } from 'components/NetworkSwitcher'
+import { NETWORK_CONFIG } from 'config'
 
 const POLLING_INTERVAL = 12000
 
-const SUPPORTED_CHAIN_ID = [ChainId.GOERLI, ChainId.BSC, ChainId.BSC_TESTNET, ChainId.ARB_TESTNET,ChainId.ZKSYNC,ChainId.ZKSYNC_TESTNET ].filter((chain) => {
-  if (process.env.NEXT_PUBLIC_SUPPORTED_CHAINID){
-    return process.env.NEXT_PUBLIC_SUPPORTED_CHAINID.split(',').indexOf(chain.toString()) > -1
-  }
-  return false
-})
 
-export const injected = new InjectedConnector({ supportedChainIds: SUPPORTED_CHAIN_ID })
+const SUPPORTED_CHAINS_ID = SUPPORTED_CHAINS.map(chain => parseInt(chain))
+
+export const injected = new InjectedConnector({ supportedChainIds: SUPPORTED_CHAINS_ID })
 
 const walletconnect = new WalletConnectConnector({
-  rpc: {
-    [ChainId.GOERLI]: 'https://goerli.infura.io/v3/',
-    [ChainId.BSC]: 'https://bsc-dataseed.binance.org',
-    [ChainId.BSC_TESTNET]: 'https://bsc-testnet.publicnode.com',
-    [ChainId.ZKSYNC]: 'https://mainnet.era.zksync.io',
-    [ChainId.ZKSYNC_TESTNET]: 'https://testnet.era.zksync.dev',
-  },
+  rpc: SUPPORTED_CHAINS_ID.reduce((acc, current) => {
+    return {
+      ...acc,
+      [current]: NETWORK_CONFIG[current].rpcUrls[0]
+    }
+  }, {}),
   qrcode: true,
   pollingInterval: POLLING_INTERVAL,
 })
 
-const bscConnector = new BscConnector({ supportedChainIds: SUPPORTED_CHAIN_ID })
+const bscConnector = new BscConnector({ supportedChainIds: SUPPORTED_CHAINS_ID })
 
 export const connectorsByName = {
   [ConnectorNames.Injected]: injected,
@@ -48,7 +45,7 @@ export const connectorsByName = {
       url: 'https://equityswap.club',
       appName: 'EquitySwap',
       appLogoUrl: 'https://equityswap.club/images/logo/logoText.png',
-      supportedChainIds: SUPPORTED_CHAIN_ID,
+      supportedChainIds: SUPPORTED_CHAINS_ID,
     })
   },
 } as const

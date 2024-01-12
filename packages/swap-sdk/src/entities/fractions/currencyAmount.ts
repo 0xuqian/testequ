@@ -1,9 +1,9 @@
-import { currencyEquals } from '../token'
-import { Currency, ETHER } from '../currency'
 import invariant from 'tiny-invariant'
 import JSBI from 'jsbi'
 import _Big from 'big.js'
 import toFormat from 'toformat'
+import { Currency, ETHER } from '../currency'
+import { currencyEquals } from '../token'
 
 import { BigintIsh, Rounding, TEN, SolidityType } from '../../constants'
 import { parseBigintIsh, validateSolidityTypeInstance } from '../../utils'
@@ -64,7 +64,6 @@ export class CurrencyAmount extends Fraction {
 
   public toExact(format: object = { groupSeparator: '' }): string {
     Big.DP = this.currency.decimals
-    console.log(this.numerator.toString(), this.denominator.toString())
     return new Big(this.numerator.toString()).div(this.denominator.toString()).toFormat(format)
   }
 }

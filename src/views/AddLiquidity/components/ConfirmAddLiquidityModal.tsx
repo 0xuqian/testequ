@@ -57,77 +57,77 @@ const ConfirmAddLiquidityModal: React.FC<
   liquidityMinted,
   currencyToAdd,
 }) => {
-  const { t } = useTranslation()
+    const { t } = useTranslation()
 
-  const ammType = useAmmType()
+    const ammType = useAmmType()
 
-  const currencyAValue = parsedAmounts[Field.CURRENCY_A]?.toSignificant(6)
-  const currencyBValue = parsedAmounts[Field.CURRENCY_B]?.toSignificant(6)
+    const currencyAValue = parsedAmounts[Field.CURRENCY_A]?.toSignificant(6)
+    const currencyBValue = parsedAmounts[Field.CURRENCY_B]?.toSignificant(6)
 
-  let percent = 0.5
+    let percent = 1 / 32
 
-  if (ammType === AmmType.Five) {
-    percent = 4 / 5
-  }
+    if (ammType === AmmType.Five) {
+      percent = 1 / 2
+    }
 
-  if (ammType === AmmType.SevenFive) {
-    percent = 2 / 3
-  }
+    if (ammType === AmmType.SevenFive) {
+      percent = 1 / 4
+    }
 
-  const modalHeader = useCallback(() => {
-    return (
-      <AddLiquidityModalHeader
-        allowedSlippage={allowedSlippage}
-        currencies={currencies}
-        liquidityMinted={liquidityMinted}
-        poolTokenPercentage={poolTokenPercentage}
-        price={price}
-        myPrice={myPrice}
-        noLiquidity={noLiquidity}
-      >
-        <PairDistribution
-          title={t('Input')}
-          percent={percent}
-          currencyA={currencies[Field.CURRENCY_A]}
-          currencyAValue={currencyAValue}
-          currencyB={currencies[Field.CURRENCY_B]}
-          currencyBValue={currencyBValue}
-        />
-      </AddLiquidityModalHeader>
+    const modalHeader = useCallback(() => {
+      return (
+        <AddLiquidityModalHeader
+          allowedSlippage={allowedSlippage}
+          currencies={currencies}
+          liquidityMinted={liquidityMinted}
+          poolTokenPercentage={poolTokenPercentage}
+          price={price}
+          myPrice={myPrice}
+          noLiquidity={noLiquidity}
+        >
+          <PairDistribution
+            title={t('Input')}
+            percent={percent}
+            currencyA={currencies[Field.CURRENCY_A]}
+            currencyAValue={currencyAValue}
+            currencyB={currencies[Field.CURRENCY_B]}
+            currencyBValue={currencyBValue}
+          />
+        </AddLiquidityModalHeader>
+      )
+    }, [allowedSlippage, currencies, currencyAValue, currencyBValue, liquidityMinted, myPrice, noLiquidity, percent, poolTokenPercentage, price, t])
+
+    const modalBottom = useCallback(() => {
+      return (
+        <StyledButton width="100%" onClick={onAdd} mt="20px">
+          {noLiquidity ? t('Create Pool & Supply') : t('Confirm Supply')}
+        </StyledButton>
+      )
+    }, [noLiquidity, onAdd, t])
+
+    const confirmationContent = useCallback(
+      () =>
+        liquidityErrorMessage ? (
+          <TransactionErrorBackToAddPageContent onDismiss={onDismiss} message={liquidityErrorMessage} />
+        ) : (
+          <ConfirmationModalContent topContent={modalHeader} bottomContent={modalBottom} />
+        ),
+      [onDismiss, modalBottom, modalHeader, liquidityErrorMessage],
     )
-  }, [allowedSlippage, currencies, currencyAValue, currencyBValue, liquidityMinted, myPrice, noLiquidity, percent, poolTokenPercentage, price, t])
 
-  const modalBottom = useCallback(() => {
     return (
-      <StyledButton width="100%" onClick={onAdd} mt="20px">
-        {noLiquidity ? t('Create Pool & Supply') : t('Confirm Supply')}
-      </StyledButton>
+      <TransactionConfirmationModal
+        minWidth={['100%', , '420px']}
+        title={title}
+        onDismiss={onDismiss}
+        customOnDismiss={customOnDismiss}
+        attemptingTxn={attemptingTxn}
+        currencyToAdd={currencyToAdd}
+        hash={hash}
+        content={confirmationContent}
+        pendingText={pendingText}
+      />
     )
-  }, [noLiquidity, onAdd, t])
-
-  const confirmationContent = useCallback(
-    () =>
-      liquidityErrorMessage ? (
-        <TransactionErrorBackToAddPageContent onDismiss={onDismiss} message={liquidityErrorMessage} />
-      ) : (
-        <ConfirmationModalContent topContent={modalHeader} bottomContent={modalBottom} />
-      ),
-    [onDismiss, modalBottom, modalHeader, liquidityErrorMessage],
-  )
-
-  return (
-    <TransactionConfirmationModal
-      minWidth={['100%', , '420px']}
-      title={title}
-      onDismiss={onDismiss}
-      customOnDismiss={customOnDismiss}
-      attemptingTxn={attemptingTxn}
-      currencyToAdd={currencyToAdd}
-      hash={hash}
-      content={confirmationContent}
-      pendingText={pendingText}
-    />
-  )
-}
+  }
 
 export default ConfirmAddLiquidityModal

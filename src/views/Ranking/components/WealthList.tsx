@@ -1,4 +1,4 @@
-import styled, { useTheme } from 'styled-components'
+import styled from 'styled-components'
 import { useTranslation } from '@pancakeswap/localization'
 import { BigNumber } from "bignumber.js";
 import Skeleton from "react-loading-skeleton";
@@ -160,14 +160,14 @@ const Tooltip = styled.div<{
   width: max-content;
 `
 
-export default function WealthList({ timeType, type }) {
+export default function WealthList({ timeType, type, pageName }) {
   const { t } = useTranslation()
   const [currentPage, setCurrentPage] = useState(1)
   const { isDesktop } = useMatchBreakpointsContext()
   const [copy, setCopied] = useState(false)
   const [isLoading, setLoading] = useState(false)
   const size = 10
-  const { list, page } = useRankingInfo('wealth', size, timeType.key, type, currentPage, setLoading)
+  const { list, page } = useRankingInfo(pageName, size, timeType.key, type, currentPage, setLoading)
 
   const SkeletonWrapper = []
   for (let i = 0; i < size; i++) {
@@ -240,7 +240,7 @@ export default function WealthList({ timeType, type }) {
                         <Index>
                           {item?.symbol ? (String(i + (currentPage - 1) * 10 + 1).length === 1 ? `0${i + (currentPage - 1) * 10 + 1}` : i + (currentPage - 1) * 10 + 1) : ''}
                         </Index>
-                        <Avatar src={item.icon} />
+                        {item.icon && <Avatar src={item.icon} />}
                         <UserWrapper>
                           <UserName title={item.symbol}>{item.symbol}</UserName>
                           <Address>
@@ -262,7 +262,8 @@ export default function WealthList({ timeType, type }) {
                         </UserWrapper>
                       </InfoWrapper>
                       <ValueWrapper>
-                        {item?.symbol ? `${toStringAmt(item.amt)} ${item.unit}` : ''}
+                        {/* {item?.symbol ? `${toStringAmt(item.amt)} ${item.unit}` : ''} */}
+                        {item?.symbol ? (typeof item.amt === "string" ? `${item.amt} ${item.unit}` : `${toStringAmt(item.amt)} ${item.unit}`) : ''}
                       </ValueWrapper>
                     </ListItem>
                   ))

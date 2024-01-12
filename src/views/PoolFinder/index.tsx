@@ -53,9 +53,9 @@ export default function PoolFinder() {
     pairState === PairState.NOT_EXISTS ||
     Boolean(
       pairState === PairState.EXISTS &&
-        pair &&
-        JSBI.equal(pair.reserve0.raw, BIG_INT_ZERO) &&
-        JSBI.equal(pair.reserve1.raw, BIG_INT_ZERO),
+      pair &&
+      JSBI.equal(pair.reserve0.raw, BIG_INT_ZERO) &&
+      JSBI.equal(pair.reserve1.raw, BIG_INT_ZERO),
     )
 
   const position: TokenAmount | undefined = useTokenBalance(account ?? undefined, pair?.liquidityToken)

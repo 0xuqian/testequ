@@ -116,17 +116,17 @@ export default function Pool() {
           <br />
           {
             isMore ?
-                <>
-                  {t('liquidityText4')}
-                  <br />
-                  {t('liquidityText5')}
-                  <br />
-                  {t('liquidityText6')}
-                  <br />
-                  {t('liquidityText7')}
-                </> : null
+              <>
+                {t('liquidityText4')}
+                <br />
+                {t('liquidityText5')}
+                <br />
+                {t('liquidityText6')}
+                <br />
+                {t('liquidityText7')}
+              </> : null
           }
-          <div role="button" tabIndex="0" onKeyDown={() => {setMore(!isMore)}} style={{zoom: '0.96', color: '#5c53d3', cursor: 'pointer', textAlign: 'right'}} onClick={() => {setMore(!isMore)}}>{isMore ? t('hide') : t('more')}</div>
+          <div role="button" tabIndex="0" onKeyDown={() => { setMore(!isMore) }} style={{ zoom: '0.96', color: '#5c53d3', cursor: 'pointer', textAlign: 'right' }} onClick={() => { setMore(!isMore) }}>{isMore ? t('hide') : t('more')}</div>
         </Text>
         <Body
           style={{
@@ -205,15 +205,15 @@ export default function Pool() {
             <br />
             {
               isMore ?
-                  <>
-                    {t('liquidityText5')}
-                    <br />
-                    {t('liquidityText6')}
-                    <br />
-                    {t('liquidityText7')}
-                  </> : null
+                <>
+                  {t('liquidityText5')}
+                  <br />
+                  {t('liquidityText6')}
+                  <br />
+                  {t('liquidityText7')}
+                </> : null
             }
-            <div role="button" tabIndex="0" onKeyDown={() => {setMore(!isMore)}} style={{zoom: '0.96', color: '#5c53d3', cursor: 'pointer', textAlign: 'right'}} onClick={() => {setMore(!isMore)}}>{isMore ? t('hide') : t('more')}</div>
+            <div role="button" tabIndex="0" onKeyDown={() => { setMore(!isMore) }} style={{ zoom: '0.96', color: '#5c53d3', cursor: 'pointer', textAlign: 'right' }} onClick={() => { setMore(!isMore) }}>{isMore ? t('hide') : t('more')}</div>
           </div>
         </div>
         <div

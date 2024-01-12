@@ -4,7 +4,6 @@ import { useTranslation } from '@pancakeswap/localization'
 import { Card, useMatchBreakpointsContext, useOnClickOutside, useTooltip } from '@pancakeswap/uikit'
 import Page from '../Page'
 import WealthList from './components/WealthList'
-import TrendingList from './components/TrendingList'
 import CurrenciesList from './components/CurrenciesList'
 
 const ReferenceElement = styled.div`
@@ -39,7 +38,11 @@ const Menu = styled.div`
   align-items: center;
   text-align: center;
 `
-
+const MenuContainer = styled.div`
+  width: 90%;
+  margin: 0 auto;
+  padding-top: 10px;
+`
 const MenuItem = styled.div`
   font-family: 'PingFang SC';
   font-style: normal;
@@ -186,6 +189,7 @@ export default function Ranking() {
 
   const { t, currentLanguage } = useTranslation()
   const [listType, setListType] = useState<'Wealth' | 'Trending' | 'Currencies'>('Wealth')
+  const [type, setType] = useState<'income' | 'people' | 'recommend' | 'team' | ''>('recommend')
   const [visible, setVisible] = useState(false)
   const [isShowMenu, setIsShowMenu] = useState(true)
   const { isDesktop } = useMatchBreakpointsContext()
@@ -198,8 +202,6 @@ export default function Ranking() {
 
   const node = useRef<HTMLDivElement>()
   useOnClickOutside(node, setVisible ? () => setVisible(false) : undefined)
-
-  const [type, setType] = useState<'income' | 'people' | 'recommend' | 'team' | ''>('recommend')
 
   const timeList = useMemo(() => {
     return [
@@ -224,7 +226,7 @@ export default function Ranking() {
         value: t('dcsAll')
       }
     ]
-  }, [currentLanguage.language, t])
+  }, [t])
 
   const [timeType, setTimeType] = useState(timeList[0])
 
@@ -259,6 +261,7 @@ export default function Ranking() {
         break;
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [type, currentLanguage.language])
 
   const List = useMemo(() => {
@@ -267,12 +270,14 @@ export default function Ranking() {
         return <WealthList
           timeType={timeType}
           type={type}
+          pageName="wealth"
         />
       }
       case "Trending": {
-        return <TrendingList
+        return <WealthList
           timeType={timeType}
           type={type}
+          pageName="trending"
         />
       }
       case "Currencies": {
@@ -285,6 +290,7 @@ export default function Ranking() {
         return <WealthList
           timeType={timeType}
           type={type}
+          pageName="wealth"
         />
       }
     }
@@ -292,9 +298,9 @@ export default function Ranking() {
 
   const menu = useMemo(() => {
     return (
-      <TimeMenu ref={node as any}>
+      <TimeMenu>
         {
-          timeList.map((item, i) => (
+          timeList.map((item) => (
             <TimeMenuItem onClick={() => {
               setTimeType(item)
               setVisible(false)
@@ -361,6 +367,7 @@ export default function Ranking() {
       </>
     )
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [listType, type, setType, currentLanguage])
 
   return (
@@ -369,34 +376,34 @@ export default function Ranking() {
         {
           isDesktop ?
             <>
-              <Menu>
-                <MenuItem className={listType === 'Wealth' ? 'active left' : 'left'} onClick={() => {
-                  setListType('Wealth')
-                  setType('recommend')
-                  setTimeType(timeList[0])
-                }}>{t('dcsEarnings')}</MenuItem>
-                <MenuItem className={listType === 'Trending' ? 'active' : ''} onClick={() => {
-                  setListType('Trending')
-                  setType('income')
-                  setTimeType(timeList[0])
-                }}>{t('dcsTrendingKOL')}</MenuItem>
-                <MenuItem className={listType === 'Currencies' ? 'active right' : 'right'} onClick={() => {
-                  setListType('Currencies')
-                  setType('')
-                  setTimeType(timeList[0])
-                }}>{t('dcsToken')}</MenuItem>
-              </Menu>
+              <MenuContainer>
+                <Menu>
+                  <MenuItem className={listType === 'Wealth' ? 'active left' : 'left'} onClick={() => {
+                    setListType('Wealth')
+                    setType('recommend')
+                    setTimeType(timeList[0])
+                  }}>{t('dcsEarnings')}</MenuItem>
+                  <MenuItem className={listType === 'Trending' ? 'active' : ''} onClick={() => {
+                    setListType('Trending')
+                    setType('income')
+                    setTimeType(timeList[0])
+                  }}>{t('dcsTrendingKOL')}</MenuItem>
+                  <MenuItem className={listType === 'Currencies' ? 'active right' : 'right'} onClick={() => {
+                    setListType('Currencies')
+                    setType('')
+                    setTimeType(timeList[0])
+                  }}>{t('dcsToken')}</MenuItem>
+                </Menu>
+              </MenuContainer>
               {
                 listType !== 'Currencies' ?
                   <TopBar>
                     <SubTab>
                       {subTab}
                     </SubTab>
-                    <FilterTimeWrapper onClick={(e) => {
+                    <FilterTimeWrapper ref={node as any} onClick={(e) => {
                       e.preventDefault()
-                      if (!visible) {
-                        setVisible(true)
-                      }
+                      setVisible(!visible);
                     }}>
                       <FilterTime>{timeType.value}</FilterTime>
                       <span className={visible ? 'active' : ''} />
@@ -458,6 +465,6 @@ export default function Ranking() {
         <HelpBtn src='/images/questionIcon.png' />
       </ReferenceElement>
       {tooltipVisible && tooltip}
-    </Page>
+    </Page >
   )
 }

@@ -56,13 +56,10 @@ export class Token extends Currency {
 export function currencyEquals(currencyA: Currency, currencyB: Currency): boolean {
   if (currencyA instanceof Token && currencyB instanceof Token) {
     return currencyA.equals(currencyB)
-  } else if (currencyA instanceof Token) {
+  } if (currencyA instanceof Token || currencyB instanceof Token) {
     return false
-  } else if (currencyB instanceof Token) {
-    return false
-  } else {
-    return currencyA === currencyB
   }
+  return currencyA === currencyB
 }
 
 // export const WETH9 = {
@@ -86,12 +83,12 @@ export function currencyEquals(currencyA: Currency, currencyB: Currency): boolea
 
 export const WBNB = {
   [ChainId.GOERLI]: new Token(
-      ChainId.GOERLI,
-      '0x308c1be1A89A144711cFE78dD67dBf8b7F179b17',
-      18,
-      'WETH',
-      'WETH',
-      ''
+    ChainId.GOERLI,
+    '0x308c1be1A89A144711cFE78dD67dBf8b7F179b17',
+    18,
+    'WETH',
+    'WETH',
+    ''
   ),
   [ChainId.BSC]: new Token(
     ChainId.BSC,
@@ -110,12 +107,20 @@ export const WBNB = {
     'https://www.binance.org'
   ),
   [ChainId.ARB_TESTNET]: new Token(
-      ChainId.ARB_TESTNET,
-      '0x2372aD6C4dD859bcce41d6D2451168eCF23Be3aB',
-      18,
-      'WETH',
-      'WETH',
-      ''
+    ChainId.ARB_TESTNET,
+    '0x2372aD6C4dD859bcce41d6D2451168eCF23Be3aB',
+    18,
+    'WETH',
+    'WETH',
+    ''
+  ),
+  [ChainId.opBNB]: new Token(
+    ChainId.opBNB,
+    '0xa035710A5Ac6bcC8bc892C91EC73F49b540DfB1f',
+    18,
+    'WBNB',
+    'WBNB',
+    ''
   ),
 }
 
@@ -126,4 +131,5 @@ export const WNATIVE = {
   [ChainId.BSC]: WBNB[ChainId.BSC],
   [ChainId.BSC_TESTNET]: WBNB[ChainId.BSC_TESTNET],
   [ChainId.ARB_TESTNET]: WBNB[ChainId.ARB_TESTNET],
+  [ChainId.opBNB]: WBNB[ChainId.opBNB],
 }

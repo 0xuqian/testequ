@@ -80,7 +80,6 @@ export function useAllCommonPairs(currencyA?: Currency, currencyB?: Currency): P
   const allPairs = usePairs(allPairCombinations).filter((result): result is [PairState.EXISTS, Pair] =>
     Boolean(result[0] === PairState.EXISTS && result[1]),
   )
-
   const validPairAddresses = allPairs.map((result) => {
     return Pair.getAddress(result[1].token0, result[1].token1)
   })
@@ -116,7 +115,7 @@ export function useAllCommonPairs(currencyA?: Currency, currencyB?: Currency): P
   )
 }
 
-const MAX_HOPS = 3
+const MAX_HOPS = 1
 
 /**
  * Returns the best trade for the exact amount of tokens in to the given token out
