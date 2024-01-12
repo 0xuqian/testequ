@@ -188,7 +188,7 @@ export class Pair {
       // console.info("4:1")
       n = JSBI.divide(JSBI.multiply(JSBI.multiply(n, n), JSBI.multiply(n, n)), JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(decimal2)))
     } else if ((a === 32 && b === 1)) {
-      // console.info("32:1")
+      console.info("32:1")
       const pow64 = JSBI.exponentiate(JSBI.BigInt(10), JSBI.BigInt(decimal));
       let q = n;
       for (let i = 0; i < 31; i++) {
