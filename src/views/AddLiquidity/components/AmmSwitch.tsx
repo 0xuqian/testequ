@@ -18,7 +18,6 @@ interface Props {
 
 const AmmSwitch: React.FC<React.PropsWithChildren<Props>> = ({ backTo, noLiquidity }) => {
   const ammType = useAmmType()
-  console.info(ammType)
   const dispatch = useAppDispatch()
 
   const [expertMode] = useExpertModeManager()
