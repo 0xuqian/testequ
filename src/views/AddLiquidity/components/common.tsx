@@ -150,15 +150,15 @@ export const AddLiquidityModalHeader = ({
   const ammType = useAmmType()
 
   let multiply = '1'
-  let divide = '32'
+  let divide = '4'
 
 
-  if (ammType === AmmType.Five) {
+  if (ammType === AmmType.OneThirtytwo) {
     multiply = '1'
-    divide = '4'
+    divide = '32'
   }
 
-  if (ammType === AmmType.SevenFive) {
+  if (ammType === AmmType.OneOne) {
     multiply = '1'
     divide = '1'
   }

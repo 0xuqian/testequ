@@ -103,16 +103,16 @@ export function useDerivedMintInfo(
   const ammType = useAmmType()
 
   let multiply = '1'
-  let divide = '32'
+  let divide = '4'
 
-  if (ammType === AmmType.Five) {
+  if (ammType === AmmType.OneOne) {
     multiply = '1'
     divide = '1'
   }
 
-  if (ammType === AmmType.SevenFive) {
+  if (ammType === AmmType.OneThirtytwo) {
     multiply = '1'
-    divide = '4'
+    divide = '32'
   }
 
   // tokens
@@ -395,16 +395,16 @@ export function useZapIn({
   const ammType = useAmmType()
 
   let multiply = '1'
-  let divide = '1'
+  let divide = '4'
 
-  if (ammType === AmmType.Five) {
+  if (ammType === AmmType.OneOne) {
     multiply = '1'
-    divide = '4'
+    divide = '1'
   }
 
-  if (ammType === AmmType.SevenFive) {
+  if (ammType === AmmType.OneThirtytwo) {
     multiply = '1'
-    divide = '2'
+    divide = '32'
   }
 
   const dependentField = independentField === Field.CURRENCY_A ? Field.CURRENCY_B : Field.CURRENCY_A

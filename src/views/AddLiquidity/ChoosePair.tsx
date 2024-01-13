@@ -34,7 +34,6 @@ export function ChoosePair({
   const { handleCurrencyASelect, handleCurrencyBSelect } = useCurrencySelectRoute()
 
   const ammType = useAmmType()
-
   return (
     <>
       <AppHeader

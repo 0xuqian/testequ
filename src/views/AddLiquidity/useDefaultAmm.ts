@@ -1,5 +1,4 @@
 import { useMemo } from 'react'
-import flatMap from 'lodash/flatMap'
 
 import { Interface } from '@ethersproject/abi'
 import { Currency, Token, Pair } from '@pancakeswap/sdk'
@@ -7,7 +6,7 @@ import { Currency, Token, Pair } from '@pancakeswap/sdk'
 import { useAppDispatch } from 'state'
 import { changeAmmType } from 'state/amm/reducer'
 
-import { BASES_TO_CHECK_TRADES_AGAINST, CUSTOM_BASES, ADDITIONAL_BASES } from 'config/constants/exchange'
+import { CUSTOM_BASES } from 'config/constants/exchange'
 import IPancakePairABI from 'config/abi/IPancakePair.json'
 
 import { wrappedCurrency } from 'utils/wrappedCurrency'
@@ -89,16 +88,16 @@ const useDefaultAmm = ({
     const decimalExponent0 = parseInt(exponent0, 10)
     const decimalExponent1 = parseInt(exponent1, 10)
 
-    if ((decimalExponent0 === 32 && decimalExponent1 === 1) || (decimalExponent0 === 1 && decimalExponent1 === 32)) {
-      dispatch(changeAmmType(AmmType.Five))
+    if ((decimalExponent0 === 32 && decimalExponent1 === 8) || (decimalExponent0 === 8 && decimalExponent1 === 32)) {
+      dispatch(changeAmmType(AmmType.Default))
       return
     }
-    if ((decimalExponent0 === 32 && decimalExponent1 === 8) || (decimalExponent0 === 8 && decimalExponent1 === 32)) {
-      dispatch(changeAmmType(AmmType.SevenFive))
+    if ((decimalExponent0 === 32 && decimalExponent1 === 1) || (decimalExponent0 === 1 && decimalExponent1 === 32)) {
+      dispatch(changeAmmType(AmmType.OneThirtytwo))
       return
     }
     if (decimalExponent0 === 32 && decimalExponent1 === 32) {
-      dispatch(changeAmmType(AmmType.Five))
+      dispatch(changeAmmType(AmmType.OneOne))
     }
   })
 

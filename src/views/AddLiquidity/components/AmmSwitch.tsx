@@ -1,7 +1,7 @@
 import React from 'react'
 import Link from 'next/link'
 
-import { NotificationDot, ArrowBackIcon, IconButton, Button, ButtonMenu, ButtonMenuItem } from '@pancakeswap/uikit'
+import { NotificationDot, ArrowBackIcon, IconButton, Button } from '@pancakeswap/uikit'
 import { useAppDispatch } from 'state'
 import { changeAmmType } from 'state/amm/reducer'
 import { AmmType } from 'state/amm/types'
@@ -89,7 +89,7 @@ const AmmSwitch: React.FC<React.PropsWithChildren<Props>> = ({ backTo, noLiquidi
           }}
           disabled={!noLiquidity}
           onClick={() => {
-            setAmmType(AmmType.SevenFive)
+            setAmmType(AmmType.OneThirtytwo)
           }}
         >ES II</Button>
         <Button
@@ -110,7 +110,7 @@ const AmmSwitch: React.FC<React.PropsWithChildren<Props>> = ({ backTo, noLiquidi
           }}
           disabled={!noLiquidity}
           onClick={() => {
-            setAmmType(AmmType.Five)
+            setAmmType(AmmType.OneOne)
           }}
         >ES III</Button>
       </div>

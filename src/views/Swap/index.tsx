@@ -377,16 +377,16 @@ export default function Swap() {
           return 3
           break;
         case 32:
-          return 1
+          return 2
           break;
         case 0.03125:
-          return 1
+          return 2
           break;
         case 4:
-          return 2
+          return 1
           break;
         case 0.25:
-          return 2
+          return 1
           break;
         default:
           return null
@@ -394,7 +394,7 @@ export default function Swap() {
     }
     return null
   }, [v2TradeOne])
-
+  console.info(ammType)
   return (
     <Page>
       <Flex width="100%" justifyContent="center" position="relative">

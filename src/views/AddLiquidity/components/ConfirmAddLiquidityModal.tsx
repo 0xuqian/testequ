@@ -64,14 +64,14 @@ const ConfirmAddLiquidityModal: React.FC<
     const currencyAValue = parsedAmounts[Field.CURRENCY_A]?.toSignificant(6)
     const currencyBValue = parsedAmounts[Field.CURRENCY_B]?.toSignificant(6)
 
-    let percent = 1 / 32
+    let percent = 1 / 4
 
-    if (ammType === AmmType.Five) {
+    if (ammType === AmmType.OneOne) {
       percent = 1 / 2
     }
 
-    if (ammType === AmmType.SevenFive) {
-      percent = 1 / 4
+    if (ammType === AmmType.OneThirtytwo) {
+      percent = 1 / 32
     }
 
     const modalHeader = useCallback(() => {
