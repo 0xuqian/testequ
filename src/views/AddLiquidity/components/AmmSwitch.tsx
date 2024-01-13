@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
 
 import { NotificationDot, ArrowBackIcon, IconButton, Button } from '@pancakeswap/uikit'
@@ -26,6 +26,13 @@ const AmmSwitch: React.FC<React.PropsWithChildren<Props>> = ({ backTo, noLiquidi
   const setAmmType = (index: AmmType) => {
     dispatch(changeAmmType(index))
   }
+
+  useEffect(() => {
+    if (noLiquidity) {
+      setAmmType(AmmType.Default)
+    }
+  }, [])
+
 
   return (
     <div
