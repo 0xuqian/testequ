@@ -121,15 +121,17 @@ export default function AddWhiteList() {
         reject(new Error('Please connect wallet'))
         return
       }
-
+      console.info(`/api/creator-address?chainId=${chainId}&token=${token}&address=${whiteListAddress}`)
       fetch(`/api/creator-address?chainId=${chainId}&token=${token}&address=${whiteListAddress}`)
         .then((res): Promise<{ creatorAddress: string; alreadyExist: number }> => {
           if (res.ok) {
+            console.info(res)
             return res.json()
           }
           return null
         })
         .then(({ creatorAddress, alreadyExist }) => {
+          console.info(creatorAddress, account)
           if (creatorAddress?.toLowerCase() !== account.toLowerCase()) {
             reject(new Error('You are not Creator'))
             return
