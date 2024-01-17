@@ -32,7 +32,7 @@ const config = {
     gas_price: 10,
     node_url: 'https://bsc-testnet.publicnode.com',
     /* node_url: 'https://data-seed-prebsc-1-s3.binance.org:8545', */
-    reg: /Creator Address'>(.*?)</
+    reg: /Creator.*?(0x[a-fA-F0-9]{42})/
   },
   '421613': {
     pre_url: 'https://goerli.arbiscan.io/address/',
@@ -123,7 +123,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   try {
     rst = await creatorAddress(req)
   } catch (error) {
-    console.log('error', error)
+    console.info('error', error)
   }
 
   if (rst) {

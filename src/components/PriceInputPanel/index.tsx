@@ -1,6 +1,6 @@
 import { Currency, Pair, Token } from '@pancakeswap/sdk'
 import { Button, ChevronDownIcon, Text, useModal, Flex, Box } from '@pancakeswap/uikit'
-import styled, {css, useTheme} from 'styled-components'
+import styled, { css, useTheme } from 'styled-components'
 import { isAddress } from 'utils'
 import { useTranslation } from '@pancakeswap/localization'
 import { WrappedTokenInfo } from 'state/types'
@@ -24,7 +24,7 @@ const InputRow = styled.div<{ selected: boolean }>`
   padding-bottom: 0px;
   padding-top: 8px;
 `
-const CurrencySelectButton = styled(Button).attrs({ variant: 'text', scale: 'sm' })<{ zapStyle?: ZapStyle }>`
+const CurrencySelectButton = styled(Button).attrs({ variant: 'text', scale: 'sm' }) <{ zapStyle?: ZapStyle }>`
   padding: 0 0.5rem;
 
   ${({ zapStyle, theme }) =>
@@ -62,8 +62,8 @@ const Container = styled.div<{ zapStyle?: ZapStyle; error?: boolean; isDark?: bo
   border-radius: 16px;
   /*background-color: ${({ theme }) => theme.colors.input};*/
   box-shadow: ${({ theme, error }) => theme.shadows[error ? 'warning' : 'inset']};
-  border: ${({isDark}) => isDark ? '1px solid #372F47' : '1px solid #f6f5fe' };
-  background-color: ${({isDark}) => isDark ? '#372F47' : '#f6f5fe' };
+  border: ${({ isDark }) => isDark ? '1px solid #372F47' : '1px solid #f6f5fe'};
+  background-color: ${({ isDark }) => isDark ? '#372F47' : '#f6f5fe'};
   ${({ zapStyle }) =>
     !!zapStyle &&
     css`
@@ -301,9 +301,9 @@ export default function PriceInputPanel({
                   <Text id="pair" bold style={{ fontSize: '12px' }}>
                     {(currency && currency.symbol && currency.symbol.length > 20
                       ? `${currency.symbol.slice(0, 4)}...${currency.symbol.slice(
-                          currency.symbol.length - 5,
-                          currency.symbol.length,
-                        )}`
+                        currency.symbol.length - 5,
+                        currency.symbol.length,
+                      )}`
                       : currency?.symbol) || t('Select a currency')}
                   </Text>
                 )}
@@ -332,9 +332,9 @@ export default function PriceInputPanel({
                 <Text id="pair" bold style={{ fontSize: '12px' }}>
                   {(otherCurrency && otherCurrency.symbol && otherCurrency.symbol.length > 20
                     ? `${otherCurrency.symbol.slice(0, 4)}...${otherCurrency.symbol.slice(
-                        otherCurrency.symbol.length - 5,
-                        otherCurrency.symbol.length,
-                      )}`
+                      otherCurrency.symbol.length - 5,
+                      otherCurrency.symbol.length,
+                    )}`
                     : otherCurrency?.symbol) || t('Select a currency')}
                 </Text>
                 {!disableCurrencySelectbBottomToken && <ChevronDownIcon />}

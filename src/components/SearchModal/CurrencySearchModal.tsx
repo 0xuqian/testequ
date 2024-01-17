@@ -1,4 +1,4 @@
-import { useCallback, useState, useRef } from 'react'
+import { useCallback, useState, useRef, useEffect } from 'react'
 import { Currency, Token } from '@pancakeswap/sdk'
 import {
   ModalContainer,
@@ -73,7 +73,33 @@ export default function CurrencySearchModal({
     },
     [onDismiss, onCurrencySelect],
   )
+  const [height, setHeight] = useState(0);
+  const parentRef = useRef(null);
+  const wrapperRef = useRef<HTMLDivElement>(null)
 
+  const setRefs = (element) => {
+    parentRef.current = element;
+    wrapperRef.current = element;
+  };
+
+  useEffect(() => {
+    const { current } = parentRef;
+    const resizeObserver = new ResizeObserver(entries => {
+      entries.forEach(entry => {
+        setHeight(entry.contentRect.height);
+      });
+    });
+
+    if (parentRef.current) {
+      resizeObserver.observe(parentRef.current);
+    }
+
+    return () => {
+      if (current) {
+        resizeObserver.unobserve(current);
+      }
+    };
+  }, []);
   // for token import view
   const prevView = usePreviousValue(modalView)
 
@@ -97,7 +123,6 @@ export default function CurrencySearchModal({
     [CurrencyModalView.importList]: { title: t('Import List'), onBack: () => setModalView(CurrencyModalView.search) },
   }
   const { isMobile } = useMatchBreakpointsContext()
-  const wrapperRef = useRef<HTMLDivElement>(null)
 
   return (
     <StyledModalContainer
@@ -112,7 +137,7 @@ export default function CurrencySearchModal({
       onDragEnd={(e, info) => {
         if (info.velocity.y > MODAL_SWIPE_TO_CLOSE_VELOCITY && onDismiss) onDismiss()
       }}
-      ref={wrapperRef}
+      ref={setRefs}
     >
       <ModalHeader>
         <ModalTitle>
@@ -131,6 +156,7 @@ export default function CurrencySearchModal({
             commonBasesType={commonBasesType}
             showImportView={() => setModalView(CurrencyModalView.importToken)}
             setImportToken={setImportToken}
+            parentHeight={height}
           />
         ) : modalView === CurrencyModalView.importToken && importToken ? (
           <ImportToken tokens={[importToken]} handleCurrencySelect={handleCurrencySelect} />
