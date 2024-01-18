@@ -129,9 +129,7 @@ export default function Pool() {
           <div role="button" tabIndex="0" onKeyDown={() => { setMore(!isMore) }} style={{ zoom: '0.96', color: '#5c53d3', cursor: 'pointer', textAlign: 'right' }} onClick={() => { setMore(!isMore) }}>{isMore ? t('hide') : t('more')}</div>
         </Text>
         <Body
-          style={{
-            background: '#F6F5FE',
-          }}
+
         >
           {renderBody()}
           {account && !v2IsLoading && (

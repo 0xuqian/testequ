@@ -11,6 +11,7 @@ import {
 import TransactionsModal from 'components/App/Transactions/TransactionsModal'
 import { GlobalSettings } from 'components/Menu/GlobalSettings'
 import { useExpertModeManager } from 'state/user/hooks'
+import useTheme from 'hooks/useTheme'
 import RefreshIcon from 'components/Svg/RefreshIcon'
 import { useCallback } from 'react'
 import { useRouter } from 'next/router'
@@ -58,6 +59,8 @@ const CurrencyInputHeader: React.FC<React.PropsWithChildren<Props>> = ({
   const toggleChartDisplayed = () => {
     setIsChartDisplayed((currentIsChartDisplayed) => !currentIsChartDisplayed)
   }
+  const { isDark } = useTheme()
+  const getStrokeColor = () => isDark ? "#FFFFFF" : "#333333";
   const [onPresentTransactionsModal] = useModal(<TransactionsModal />)
   const handleOnClick = useCallback(() => onRefreshPrice?.(), [onRefreshPrice])
   const router = useRouter()
@@ -81,13 +84,13 @@ const CurrencyInputHeader: React.FC<React.PropsWithChildren<Props>> = ({
             <ChartImg onClick={() => router.push('/trading-view')} src='/images/kchart.png' alt='gg' />
           </IconButton>
           <NotificationDot show={expertMode}>
-            <GlobalSettings mr="0" mode={SettingsMode.SWAP_LIQUIDITY} />
+            <GlobalSettings color={getStrokeColor()} mr="0" mode={SettingsMode.SWAP_LIQUIDITY} />
           </NotificationDot>
           <IconButton onClick={onPresentTransactionsModal} variant="text" scale="sm">
-            <HistoryIcon width="20px" />
+            <HistoryIcon width="20px" stroke={getStrokeColor()} />
           </IconButton>
           <IconButton variant="text" scale="sm" onClick={handleOnClick}>
-            <RefreshIcon disabled={!hasAmount} width="22px" />
+            <RefreshIcon disabled={!hasAmount} width="22px" stroke={getStrokeColor()} />
           </IconButton>
         </Flex>
       </Flex>
