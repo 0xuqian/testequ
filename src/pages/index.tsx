@@ -1,21 +1,21 @@
 // import { useRouter } from 'next/router'
-import {ChainId, FACTORY_ADDRESS_MAP} from '@pancakeswap/sdk'
-import {getUnixTime, sub} from 'date-fns'
-import {gql} from 'graphql-request'
-import {GetStaticProps} from 'next'
-import {SWRConfig} from 'swr'
-import {bitQueryServerClient, infoServerClient} from 'utils/graphql'
-import {getCakeVaultAddress} from 'utils/addressHelpers'
-import {getCakeContract} from 'utils/contractHelpers'
-import {getBlocksFromTimestamps} from 'utils/getBlocksFromTimestamps'
-import {formatEther} from '@ethersproject/units'
+import { ChainId, FACTORY_ADDRESS_MAP } from '@pancakeswap/sdk'
+import { getUnixTime, sub } from 'date-fns'
+import { gql } from 'graphql-request'
+import { GetStaticProps } from 'next'
+import { SWRConfig } from 'swr'
+import { bitQueryServerClient, infoServerClient } from 'utils/graphql'
+import { getCakeVaultAddress } from 'utils/addressHelpers'
+import { getCakeContract } from 'utils/contractHelpers'
+import { getBlocksFromTimestamps } from 'utils/getBlocksFromTimestamps'
+import { formatEther } from '@ethersproject/units'
 import Home from '../views/Home'
 
 const IndexPage = ({ totalTx30Days, addressCount30Days, tvl, ...props }) => {
-//   const router = useRouter()
-//   useEffect(()=>{
-//     router.push('/swap')
-//   },[])
+  //   const router = useRouter()
+  //   useEffect(()=>{
+  //     router.push('/swap')
+  //   },[])
   return (
     <SWRConfig
       value={{

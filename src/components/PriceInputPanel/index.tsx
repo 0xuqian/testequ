@@ -81,7 +81,6 @@ const Overlay = styled.div`
 const StyledFormulaList = styled.div`
   font-size: 12px;
   margin-bottom: 2px;
-  color: #280d5f;
   font-weight: 400;
   line-height: 1.5;
 `

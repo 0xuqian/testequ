@@ -61,14 +61,14 @@ export const VaultRoiCalculatorModal = ({
       strategy={
         cakeVaultView
           ? (state, dispatch) => (
-              <LockedRoiStrategy
-                state={state}
-                dispatch={dispatch}
-                stakingTokenPrice={pool.stakingTokenPrice}
-                earningTokenPrice={pool.earningTokenPrice}
-                duration={duration}
-              />
-            )
+            <LockedRoiStrategy
+              state={state}
+              dispatch={dispatch}
+              stakingTokenPrice={pool.stakingTokenPrice}
+              earningTokenPrice={pool.earningTokenPrice}
+              duration={duration}
+            />
+          )
           : null
       }
       header={
@@ -114,9 +114,9 @@ function LockedRoiStrategy({ state, dispatch, earningTokenPrice, duration, staki
       const roiAsUSD = hasInterest ? roiTokens * earningTokenPrice : 0
       const roiPercentage = hasInterest
         ? getRoi({
-            amountEarned: roiAsUSD,
-            amountInvested: principalInUSDAsNumber,
-          })
+          amountEarned: roiAsUSD,
+          amountInvested: principalInUSDAsNumber,
+        })
         : 0
       dispatch({ type: 'setRoi', payload: { roiUSD: roiAsUSD, roiTokens, roiPercentage } })
     }

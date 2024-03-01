@@ -394,7 +394,7 @@ export default function Swap() {
     }
     return null
   }, [v2TradeOne])
-  console.info(ammType)
+
   return (
     <Page>
       <Flex width="100%" justifyContent="center" position="relative">

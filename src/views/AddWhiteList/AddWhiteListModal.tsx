@@ -1,5 +1,5 @@
 import { useCallback, useState } from 'react'
-import styled from 'styled-components'
+import styled, { useTheme } from 'styled-components'
 import { Button, Flex, Modal, InjectedModalProps, ModalProps, Text } from '@pancakeswap/uikit'
 import useActiveWeb3React from 'hooks/useActiveWeb3React'
 import { useTranslation } from "@pancakeswap/localization";
@@ -31,7 +31,6 @@ const StyledTitle = styled.div`
   font-size: 20px;
   line-height: 24px;
   text-align: center;
-  color: #000000;
   width: 100%;
 `
 
@@ -41,7 +40,6 @@ const StyledText = styled.div`
   font-weight: 400;
   font-size: 12px;
   line-height: 15px;
-  color: #111526;
   margin-bottom: 12px;
 `
 
@@ -51,7 +49,6 @@ const StyledSubTitle = styled.div`
   font-weight: 400;
   font-size: 12px;
   line-height: 15px;
-  color: #111526;
   text-align: left;
 `
 
@@ -61,7 +58,6 @@ const StyledAddress = styled.div`
   font-weight: 400;
   font-size: 12px;
   line-height: 15px;
-  color: #111526;
 `
 
 const AddWhiteListModal: React.FC<
@@ -70,6 +66,7 @@ const AddWhiteListModal: React.FC<
   const { chainId } = useActiveWeb3React()
   const { t } = useTranslation()
   const [isMore, setMore] = useState(false)
+  const { isDark } = useTheme()
 
   const handleDismiss = useCallback(() => {
     onDismiss?.()
@@ -79,11 +76,11 @@ const AddWhiteListModal: React.FC<
 
   return (
     <Modal {...props} hideHeader hideCloseButton onDismiss={handleDismiss}>
-      <Flex flexDirection="column" alignItems="baseline" justifyContent="center" maxWidth="320px">
-        <StyledTitle>{title}</StyledTitle>
+      <Flex style={{ color: isDark ? "#FFFFFF" : "#000000" }} flexDirection="column" alignItems="baseline" justifyContent="center" maxWidth="320px">
+        <StyledTitle >{title}</StyledTitle>
         {/* <StyledText>{t('whiteListText')}</StyledText> */}
-        <StyledText>
-          <TextCenter>{t('liquidityTitle')}</TextCenter>
+        <StyledText >
+          <TextCenter >{t('liquidityTitle')}</TextCenter>
           {t('liquidityText1')}
           <br />
           {t('liquidityText2')}
@@ -104,7 +101,7 @@ const AddWhiteListModal: React.FC<
           }
           <div role="button" tabIndex="0" onKeyDown={() => { setMore(!isMore) }} style={{ zoom: '0.96', color: '#5c53d3', cursor: 'pointer', textAlign: 'right' }} onClick={() => { setMore(!isMore) }}>{isMore ? t('hide') : t('more')}</div>
         </StyledText>
-        <StyledSubTitle>
+        <StyledSubTitle >
           <span>
             {t('accountAddress')}
           </span>

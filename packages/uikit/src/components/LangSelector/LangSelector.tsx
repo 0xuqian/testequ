@@ -27,27 +27,35 @@ const LangSelector: React.FC<React.PropsWithChildren<Props>> = ({
   dropdownPosition = "bottom",
   buttonScale = "md",
   hideLanguage = false,
-}) => (
-  <Dropdown
-    position={dropdownPosition}
-    target={
-      <Button scale={buttonScale} variant="text" startIcon={<LanguageIcon color={color} width="24px" />}>
-        {!hideLanguage && <Text color={color}>{currentLang?.toUpperCase()}</Text>}
-      </Button>
-    }
-  >
-    {langs.map((lang) => (
-      <MenuButton
-        key={lang.locale}
-        fullWidth
-        onClick={() => setLang(lang)}
-        // Safari fix
-        style={{ minHeight: "32px", height: "auto" }}
-      >
-        {lang.language}
-      </MenuButton>
-    ))}
-  </Dropdown>
-);
+}) => {
 
-export default React.memo(LangSelector, (prev, next) => prev.currentLang === next.currentLang);
+  return (
+    <Dropdown
+      position={dropdownPosition}
+      target={
+        <Button scale={buttonScale} variant="text" startIcon={<LanguageIcon color={color} width="24px" />}>
+          {!hideLanguage && <Text color={color}>{currentLang?.toUpperCase()}</Text>}
+        </Button>
+      }
+    >
+      {langs.map((lang) => (
+        <MenuButton
+          key={lang.locale}
+          fullWidth
+          onClick={() => setLang(lang)}
+          // Safari fix
+          style={{ minHeight: "32px", height: "auto" }}
+        >
+          {lang.language}
+        </MenuButton>
+      ))}
+    </Dropdown>
+  )
+};
+export default React.memo(
+  LangSelector,
+  (prevProps, nextProps) => (
+    prevProps.currentLang === nextProps.currentLang &&
+    prevProps.dropdownPosition === nextProps.dropdownPosition
+  )
+);

@@ -6,7 +6,7 @@ import re
 import urllib.request
 
 config = {
-    '56': { # BSCMAIN
+    '56': {  # BSCMAIN
         'pre_url': 'https://bscscan.com/address/{}',
         'factory_address': '0x84c189d8B52Be28AD4C4c9427aBd304268b2FCBA',
         'setter_address': '',
@@ -15,7 +15,7 @@ config = {
         'gas_price': 5,
         'node_url': ""
     },
-    '97': { # BSCTEST
+    '97': {  # BSCTEST
         'pre_url': 'https://testnet.bscscan.com/address/{}',
         'factory_address': '0x317c925Ea5F57e925BE584610A8b7b0c6AdC7E31',
         'setter_address': '0x994D95Ea4C37C4b586Fa9668211Daa4Aa03be060',
@@ -26,7 +26,9 @@ config = {
     }
 }
 
-factory_abi = [{"constant":True,"inputs":[{"internalType":"address","name":"token","type":"address"},{"internalType":"address","name":"creater","type":"address"}],"name":"isWhite","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"payable":False,"stateMutability":"view","type":"function"},{"constant":False,"inputs":[{"internalType":"address","name":"token","type":"address"},{"internalType":"address","name":"creater","type":"address"},{"internalType":"uint256","name":"flag","type":"uint256"}],"name":"addWhiteList","outputs":[{"internalType":"bool","name":"","type":"bool"}],"payable":False,"stateMutability":"nonpayable","type":"function"}]
+factory_abi = [{"constant": True, "inputs": [{"internalType": "address", "name": "token", "type": "address"}, {"internalType": "address", "name": "creater", "type": "address"}], "name": "isWhite", "outputs": [{"internalType": "uint256", "name": "", "type": "uint256"}], "payable": False, "stateMutability": "view", "type": "function"}, {"constant": False, "inputs": [
+    {"internalType": "address", "name": "token", "type": "address"}, {"internalType": "address", "name": "creater", "type": "address"}, {"internalType": "uint256", "name": "flag", "type": "uint256"}], "name": "addWhiteList", "outputs": [{"internalType": "bool", "name": "", "type": "bool"}], "payable": False, "stateMutability": "nonpayable", "type": "function"}]
+
 
 class MainHandler(tornado.web.RequestHandler):
     def get(self):
@@ -39,7 +41,8 @@ class MainHandler(tornado.web.RequestHandler):
         # headers = {'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.60 Safari/537.36'}
         headers = {'User-Agent': 'Mozilla/5.0'}
         req = urllib.request.Request(url=url, headers=headers)
-        html = urllib.request.urlopen(req).read().decode('utf-8') #读取源代码并转为unicode
+        html = urllib.request.urlopen(req).read().decode(
+            'utf-8')  # 读取源代码并转为unicode
 #        print(html)
         # <a href="/address/0x8c2c76702538dfcc3b7baa3f0c01f4f354adf75b" class="hash-tag text-truncate keychainify-checked" data-toggle="tooltip" title="" data-original-title="Creator Address">0x8c2c76702538dfcc3b7baa3f0c01f4f354adf75b</a>
         pattern = r"Creator Address'>(.*?)<"
@@ -49,17 +52,21 @@ class MainHandler(tornado.web.RequestHandler):
         # 创建工厂合约
         provider = Web3.HTTPProvider(config[chain_id]['node_url'])
         web3 = Web3(provider)
-        factory_address = Web3.toChecksumAddress(config[chain_id]['factory_address'])
-        factory_contract = web3.eth.contract(address=factory_address, abi=factory_abi)
+        factory_address = Web3.toChecksumAddress(
+            config[chain_id]['factory_address'])
+        factory_contract = web3.eth.contract(
+            address=factory_address, abi=factory_abi)
 
         # 判断代币的创建者是否已经在白名单中
-        flag = factory_contract.functions.isWhite(token, creator_address).call()
+        flag = factory_contract.functions.isWhite(
+            token, creator_address).call()
         print(flag)
         if flag > 0:
             return
 
         # 如果创建者不在白名单中，则将代币的创建人添加到factory合约的白名单中
-        setter_address = Web3.toChecksumAddress(config[chain_id]['setter_address'])
+        setter_address = Web3.toChecksumAddress(
+            config[chain_id]['setter_address'])
         tx = factory_contract.functions.addWhiteList(token, creator_address, 1).buildTransaction({
             'from': setter_address,
             'value': 0,
@@ -67,7 +74,8 @@ class MainHandler(tornado.web.RequestHandler):
             'gasPrice': Web3.toWei(config[chain_id]['gas_price'], 'gwei'),
             'nonce': web3.eth.getTransactionCount(setter_address)
         })
-        singed_tx = web3.eth.account.sign_transaction(tx, config[chain_id]['setter_private_key'])
+        singed_tx = web3.eth.account.sign_transaction(
+            tx, config[chain_id]['setter_private_key'])
         tx_hash = web3.eth.send_raw_transaction(singed_tx.rawTransaction)
         print(Web3.toHex(tx_hash))
         self.write(Web3.toHex(tx_hash))

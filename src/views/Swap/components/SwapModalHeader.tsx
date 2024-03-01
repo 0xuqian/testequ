@@ -41,13 +41,13 @@ export default function SwapModalHeader({
   const tradeInfoText =
     trade.tradeType === TradeType.EXACT_INPUT
       ? t('Output is estimated. You will receive at least %amount% %symbol% or the transaction will revert.', {
-          amount,
-          symbol,
-        })
+        amount,
+        symbol,
+      })
       : t('Input is estimated. You will sell at most %amount% %symbol% or the transaction will revert.', {
-          amount,
-          symbol,
-        })
+        amount,
+        symbol,
+      })
 
   const [estimatedText, transactionRevertText] = tradeInfoText.split(`${amount} ${symbol}`)
 
@@ -89,8 +89,8 @@ export default function SwapModalHeader({
               priceImpactSeverity > 2
                 ? 'failure'
                 : showAcceptChanges && trade.tradeType === TradeType.EXACT_INPUT
-                ? 'primary'
-                : 'text'
+                  ? 'primary'
+                  : 'text'
             }
           >
             {trade.outputAmount.toSignificant(6)}

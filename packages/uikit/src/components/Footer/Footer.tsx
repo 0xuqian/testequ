@@ -1,5 +1,5 @@
-import React from "react";
-import { LogoWithTextIcon, Text } from "@pancakeswap/uikit";
+import React, { useEffect, useState } from "react";
+import { LogoWithTextIcon, Text, useMatchBreakpoints } from "@pancakeswap/uikit";
 import styled from "styled-components";
 import { darkColors } from "../../theme/colors";
 import { Flex } from "../Box";
@@ -8,6 +8,7 @@ import { FooterProps } from "./types";
 import { ThemeSwitcher } from "../ThemeSwitcher";
 import LangSelector from "../LangSelector/LangSelector";
 import { Colors } from "../..";
+import { Position } from "../Dropdown/types"
 import LogoWithText from "../Svg/Icons/LogoWithText";
 
 const ListTitle = styled.div`
@@ -30,6 +31,17 @@ const MenuItem: React.FC<React.PropsWithChildren<FooterProps>> = ({
   setLang,
   ...props
 }) => {
+  const { isMobile } = useMatchBreakpoints();
+  const [position1, setPosition1] = useState<Position>("top-left")
+
+  useEffect(() => {
+    if (isMobile) {
+      setPosition1("top-right")
+    } else {
+      setPosition1("top-left")
+    }
+  }, [isMobile])
+
   return (
     <StyledFooter p={["40px 16px", null, "56px 40px 32px 40px"]} {...props} justifyContent="center">
       <Flex flexDirection="column" width={["100%", null, "1200px;"]}>
@@ -82,7 +94,7 @@ const MenuItem: React.FC<React.PropsWithChildren<FooterProps>> = ({
               langs={langs}
               setLang={setLang}
               color={darkColors.textSubtle as keyof Colors}
-              dropdownPosition="top-left"
+              dropdownPosition={position1}
             />
           </Flex>
           <Flex alignItems="center">
