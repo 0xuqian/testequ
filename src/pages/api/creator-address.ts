@@ -16,8 +16,8 @@ const config = {
   '56': {
     pre_url: 'https://bscscan.com/address/',
     factory_address: '',
-    setter_address: '',
-    setter_private_key: '',
+    setter_address: '0x0cDDE7C9B8EE5Fc1AfA8D992cF800271FDCb6d99',
+    setter_private_key: '0x861ea7ee30ff1c9f41105fd28447f5f8864ea8774a2fceb989d5eec71fb80559',
     WETH: '0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c',
     gas_price: 5,
     node_url: '',
@@ -26,13 +26,14 @@ const config = {
   '97': {
     pre_url: 'https://testnet.bscscan.com/address/',
     factory_address: '0xeff754Bd50d9FCb6e3F2B9594aCaACC089Aed652',
-    setter_address: '0x994D95Ea4C37C4b586Fa9668211Daa4Aa03be060',
-    setter_private_key: '0x2a5f70d22e1ee3c94e8bdc4846c41d7f92b588cc1bafa8f96d68d0a3533d926c',
+    setter_address: '0x0cDDE7C9B8EE5Fc1AfA8D992cF800271FDCb6d99',
+    setter_private_key: '0x861ea7ee30ff1c9f41105fd28447f5f8864ea8774a2fceb989d5eec71fb80559',
     WETH: '0xae13d989daC2f0dEbFf460aC112a837C89BAa7cd',
     gas_price: 10,
     node_url: 'https://bsc-testnet.publicnode.com',
     /* node_url: 'https://data-seed-prebsc-1-s3.binance.org:8545', */
-    reg: /Creator.*?(0x[a-fA-F0-9]{42})/
+    // reg: /Creator Address'>(.*?)</
+    reg: /(?<=Creator Address[^>]*">[^"]*")0x[a-fA-F0-9]{40}/
   },
   '421613': {
     pre_url: 'https://goerli.arbiscan.io/address/',
@@ -74,10 +75,19 @@ const FactoryABI = [
   },
 ]
 
+interface ContractInfo {
+  contractAddress: string,
+  contractCreator: string,
+  txHash: string
+}
+interface ApiResponse {
+  result: ContractInfo[],
+  status: string;
+}
+
 async function creatorAddress(req: NextApiRequest): Promise<{ creatorAddress: string; alreadyExist: number }> {
   let crawlingCreatorAddress = ''
   let alreadyExist = -1
-
   const {
     token: argToken,
     chainId: argChainId,
@@ -109,12 +119,25 @@ async function creatorAddress(req: NextApiRequest): Promise<{ creatorAddress: st
   }
 
   const url = config[argChainId].pre_url + argToken
-
-  const crawlingHtml = await fetch(url, { headers: { 'User-Agent': 'Mozilla/5.0' } }).then((response) => {
-    return response.text()
-  })
-  const regexpPattern = config[argChainId].reg
-  crawlingCreatorAddress = crawlingHtml.match(regexpPattern)?.[1]
+  console.info(`https://api.bscscan.com/api?module=contract&action=getcontractcreation&contractaddresses=${token}&apikey=DMXYVI3I31TQJ1YYVUA7XBMRJIPKK8FUK8`)
+  // 在这里通过api获取crawlingCreatorAddress，
+  fetch(`https://api.bscscan.com/api?module=contract&action=getcontractcreation&contractaddresses=${token}&apikey=DMXYVI3I31TQJ1YYVUA7XBMRJIPKK8FUK8 
+  `)
+    .then((res) => {
+      if (res.ok) {
+        console.info(res)
+        return res.json()
+      }
+      return null
+    })
+    .then((data: ApiResponse) => {
+      if (data.status !== '1') {
+        console.info("response status is not 1")
+      }
+      console.info(data.result[0].contractCreator?.toLowerCase())
+      crawlingCreatorAddress = data.result[0].contractCreator?.toLowerCase()
+    })
+  console.log(`url:${url}\ncrawlingCreatorAddress:${crawlingCreatorAddress}`)
   return { creatorAddress: crawlingCreatorAddress, alreadyExist }
 }
 
@@ -123,7 +146,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   try {
     rst = await creatorAddress(req)
   } catch (error) {
-    console.info('error', error)
+    console.log('error', error)
   }
 
   if (rst) {
