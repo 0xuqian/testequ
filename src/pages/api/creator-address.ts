@@ -121,22 +121,19 @@ async function creatorAddress(req: NextApiRequest): Promise<{ creatorAddress: st
   const url = config[argChainId].pre_url + argToken
   console.info(`https://api.bscscan.com/api?module=contract&action=getcontractcreation&contractaddresses=${token}&apikey=DMXYVI3I31TQJ1YYVUA7XBMRJIPKK8FUK8`)
   // 在这里通过api获取crawlingCreatorAddress，
-  fetch(`https://api.bscscan.com/api?module=contract&action=getcontractcreation&contractaddresses=${token}&apikey=DMXYVI3I31TQJ1YYVUA7XBMRJIPKK8FUK8 
+  const response = await fetch(`https://api.bscscan.com/api?module=contract&action=getcontractcreation&contractaddresses=${token}&apikey=DMXYVI3I31TQJ1YYVUA7XBMRJIPKK8FUK8 
   `)
-    .then((res) => {
-      if (res.ok) {
-        console.info(res)
-        return res.json()
-      }
-      return null
-    })
-    .then((data: ApiResponse) => {
-      if (data.status !== '1') {
-        console.info("response status is not 1")
-      }
-      console.info(data.result[0].contractCreator?.toLowerCase())
-      crawlingCreatorAddress = data.result[0].contractCreator?.toLowerCase()
-    })
+  if (response.ok) {
+    const data = await response.json();
+    if (data.status !== '1') {
+      console.info("response status is not 1");
+    } else {
+      console.info(data.result[0].contractCreator?.toLowerCase());
+      crawlingCreatorAddress = data.result[0].contractCreator?.toLowerCase();
+    }
+  } else {
+    return null;
+  }
   console.log(`url:${url}\ncrawlingCreatorAddress:${crawlingCreatorAddress}`)
   return { creatorAddress: crawlingCreatorAddress, alreadyExist }
 }
